@@ -2584,10 +2584,10 @@ const scene_7_draw = (x, f) => {
   const t = f / scene_7_DUR;
   x.drawImage(getPaper(), 0, 0);
   const pull = easeInOut(ss(0, 0.5, t));
-  const sheetW = lerp(W * 1.32, W * 0.6, pull);
+  const sheetW = lerp(W * 1.32, W * 0.525, pull);
   const sheetH = sheetW * 0.5625;
   const sx = W * 0.5 - sheetW / 2;
-  const sy = lerp(-H * 0.16, H * 0.13, pull);
+  const sy = lerp(-H * 0.16, H * 0.075, pull);
   x.save();
   x.globalCompositeOperation = "multiply";
   const desk = x.createRadialGradient(W * 0.5, H * 0.44, H * 0.2, W * 0.5, H * 0.44, W * 0.82);
@@ -2624,18 +2624,18 @@ const scene_7_draw = (x, f) => {
   x.strokeRect(sx, sy, sheetW, sheetH);
   x.restore();
   const tt = ss(0.42, 0.8, t);
-  const ty = H * 0.72;
+  const ty = H * 0.755;
   if (tt > 0) {
-    inkText(x, "\u7559\u767D", W * 0.5 - 96, ty, {
-      size: 150,
+    inkText(x, "\u7559\u767D", W * 0.5 - 104, ty, {
+      size: 158,
       font: SERIF,
       tone: 0.93,
-      spacing: 20,
+      spacing: 22,
       align: "center",
       reveal: tt,
       seed: 551
     });
-    inkText(x, "T H E   B L A N K", W * 0.5 - 96, ty + 92, {
+    inkText(x, "T H E   B L A N K", W * 0.5 - 104, ty + 96, {
       size: 21,
       font: MONO,
       tone: 0.5,
@@ -2644,12 +2644,12 @@ const scene_7_draw = (x, f) => {
       reveal: clamp01((tt - 0.45) / 0.5),
       seed: 553
     });
-    hairline(x, W * 0.5 - 96 - 120, ty - 118, W * 0.5 - 96 + 120, ty - 118, clamp01((tt - 0.2) / 0.6), 561, 0.3);
-    seal(x, W * 0.5 + 176, ty - 34, 96, ["\u7559", "\u767D"], { reveal: clamp01((tt - 0.7) / 0.3), seed: 563, rot: -0.015 });
+    hairline(x, W * 0.5 - 104 - 130, ty - 124, W * 0.5 - 104 + 130, ty - 124, clamp01((tt - 0.2) / 0.6), 561, 0.3);
+    seal(x, W * 0.5 + 190, ty - 40, 96, ["\u7559", "\u767D"], { reveal: clamp01((tt - 0.7) / 0.3), seed: 563, rot: -0.015 });
   }
   const ta = ss(0.62, 0.92, t);
   if (ta > 0) {
-    inkText(x, "\u4E00\u7EB8\u4E4B\u4E0A\uFF0C\u4E07\u7269\u6765\u8FC7", W * 0.86, H * 0.7, {
+    inkText(x, "\u4E00\u7EB8\u4E4B\u4E0A\uFF0C\u4E07\u7269\u6765\u8FC7", W * 0.865, H * 0.16, {
       size: 26,
       font: SERIF,
       tone: 0.5,
@@ -2660,12 +2660,6 @@ const scene_7_draw = (x, f) => {
       seed: 571
     });
   }
-  x.fillStyle = "#C4281E";
-  x.fillRect(40, 40, 160, 40);
-  inkText(x, "\u7559\u767D", 520, 200, { size: 150, font: SERIF, tone: 0.93, align: "center", reveal: 1 });
-  inkText(x, "\u7559\u767D", 520, 440, { size: 150, font: SERIF, tone: 0.93, align: "center", reveal: 0.99 });
-  inkText(x, "\u7559\u767D", 520, 700, { size: 150, font: SERIF, tone: 0.93, align: "center", reveal: 0.99, spacing: 20 });
-  inkText(x, "\u6267\u7B14\u8005\uFF0C\u4EA6\u662F\u7B14\u3002", 1180, 380, { size: 96, font: SERIF, tone: 0.93, align: "center", reveal: 0.99 });
   drawGrain(x, f, 0.045, 23);
 };
 function scene_7_Scene(_) {

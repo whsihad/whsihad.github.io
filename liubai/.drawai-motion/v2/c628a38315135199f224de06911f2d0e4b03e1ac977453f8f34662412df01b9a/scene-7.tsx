@@ -16,10 +16,10 @@ const draw = (x: CanvasRenderingContext2D, f: number): void => {
 
   // 案上的纸比画里的纸暗一档：这样「一张纸」才立得起来
   const pull = easeInOut(ss(0.0, 0.5, t))
-  const sheetW = lerp(W * 1.32, W * 0.6, pull)
+  const sheetW = lerp(W * 1.32, W * 0.525, pull)
   const sheetH = sheetW * 0.5625
   const sx = W * 0.5 - sheetW / 2
-  const sy = lerp(-H * 0.16, H * 0.13, pull)
+  const sy = lerp(-H * 0.16, H * 0.075, pull)
 
   // 桌面：一圈更深的纸色
   x.save()
@@ -69,29 +69,26 @@ const draw = (x: CanvasRenderingContext2D, f: number): void => {
 
   // 题名
   const tt = ss(0.42, 0.8, t)
-  const ty = H * 0.72
+  const ty = H * 0.755
   if (tt > 0) {
-    inkText(x, '留白', W * 0.5 - 96, ty, {
-      size: 150, font: SERIF, tone: 0.93, spacing: 20, align: 'center', reveal: tt, seed: 551,
+    inkText(x, '留白', W * 0.5 - 104, ty, {
+      size: 158, font: SERIF, tone: 0.93, spacing: 22, align: 'center', reveal: tt, seed: 551,
     })
-    inkText(x, 'T H E   B L A N K', W * 0.5 - 96, ty + 92, {
+    inkText(x, 'T H E   B L A N K', W * 0.5 - 104, ty + 96, {
       size: 21, font: MONO, tone: 0.5, spacing: 3, align: 'center', reveal: clamp01((tt - 0.45) / 0.5), seed: 553,
     })
-    hairline(x, W * 0.5 - 96 - 120, ty - 118, W * 0.5 - 96 + 120, ty - 118, clamp01((tt - 0.2) / 0.6), 561, 0.3)
+    hairline(x, W * 0.5 - 104 - 130, ty - 124, W * 0.5 - 104 + 130, ty - 124, clamp01((tt - 0.2) / 0.6), 561, 0.3)
     // 大印：压住画面
-    seal(x, W * 0.5 + 176, ty - 34, 96, ['留', '白'], { reveal: clamp01((tt - 0.7) / 0.3), seed: 563, rot: -0.015 })
+    seal(x, W * 0.5 + 190, ty - 40, 96, ['留', '白'], { reveal: clamp01((tt - 0.7) / 0.3), seed: 563, rot: -0.015 })
   }
 
   // 右下一列小字：题跋
   const ta = ss(0.62, 0.92, t)
   if (ta > 0) {
-    inkText(x, '一纸之上，万物来过', W * 0.86, H * 0.7, {
+    inkText(x, '一纸之上，万物来过', W * 0.865, H * 0.16, {
       size: 26, font: SERIF, tone: 0.5, vertical: true, spacing: 8, align: 'center', reveal: ta, seed: 571,
     })
   }
-
-  x.fillStyle = '#C4281E'
-  x.fillRect(40, 40, 160, 40)
 
   drawGrain(x, f, 0.045, 23)
 }
