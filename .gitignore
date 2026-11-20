@@ -2,3 +2,23 @@ _rea/
 node_modules/
 .DS_Store
 Thumbs.db
+
+# 本地工作目录 / 一次性脚本（不进仓库）
+_*
+千问1生图/
+照片/
+shaders/
+xingyun/
+xinyun2/
+dsh-image-gen/
+
+# 旧素材 / 参考文件
+scene.pkg
+project.json
+preview.gif
+*.docx
+微信图片_*
+2026*.png
+x.png
+index-9页*.html
+参考-*.md

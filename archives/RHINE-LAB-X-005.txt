@@ -1,0 +1,36 @@
+LU JIAHANG · PERSONAL ARCHIVE
+FILE X-005 / 技能与专长
+LU JIAHANG 鲁家杭
+
+栏目：个人简历
+编目范围：个人简历
+记录日期：基于个人主页整理
+访问范围：PERSONAL RECORD
+
+编程是自学的路子：先想做什么，再去查怎么做。写得最多的是 JavaScript 和 Python；最近写得最多的，是和 AI 一起写。
+
+编程语言 / LANGUAGES
+1. JavaScript：最常用，游戏和页面都是它。
+2. Python：写脚本和小工具。
+3. HTML / CSS：样式自己写，不套模板。
+
+开发技术 / TOOLING
+1. Canvas 2D：手写游戏循环、状态机、碰撞判定。
+2. 单文件网页：不引框架，一个文件跑起来。
+3. AI 协作：把需求讲清楚，让它写一版，自己读一遍，再跑起来验证。
+4. 单片机与 Keil：在学，还在照着手册点灯。
+
+思维与兴趣 / MINDSET
+1. 拆问题：先把要什么、边界在哪写清楚。
+2. 做出来：先有一版能跑的，再谈好不好看。
+3. 验一遍：跑不起来就不算完成。
+4. 不写「精通」，做过什么就展示什么。
+
+索引
+1. 编程语言：JavaScript、Python、HTML / CSS。
+2. 图形：Canvas 2D，手写渲染与游戏循环。
+3. 工具链：DSH、Codex、Qoder，用来写和改。
+4. 硬件：单片机、Keil，在学。
+
+来源：https://whsihad.github.io/
+本文为个人主页的档案式整理，非机构文件。

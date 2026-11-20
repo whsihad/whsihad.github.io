@@ -1,10 +1,67 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh-CN">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>whsihad</title>
-</head>
-<body>
-</body>
+  <head>
+    <script>
+      // Wallpaper Engine host shim (same contract the engine expects).
+      window.rhineWallpaperHost = { properties: {}, fps: 30, paused: false };
+      let resolveInitialWallpaperProperties;
+      window.rhineWallpaperPropertiesReady = new Promise(resolve => { resolveInitialWallpaperProperties = resolve; });
+      window.wallpaperPropertyListener = {
+        applyUserProperties(properties) {
+          Object.assign(window.rhineWallpaperHost.properties, properties);
+          window.dispatchEvent(new CustomEvent("rhine-wallpaper-properties", { detail: properties }));
+          resolveInitialWallpaperProperties();
+        },
+        applyGeneralProperties(properties) {
+          if (Number.isFinite(properties.fps) && properties.fps > 0)
+            window.rhineWallpaperHost.fps = properties.fps;
+        },
+        setPaused(paused) {
+          window.rhineWallpaperHost.paused = !!paused;
+          window.dispatchEvent(new Event("rhine-wallpaper-pause"));
+        },
+      };
+      if (location.protocol !== "file:" && typeof window.wallpaperRegisterAudioListener !== "function")
+        setTimeout(() => resolveInitialWallpaperProperties(), 0);
+      window.rhineWallpaperMedia = {};
+      window.rhineWallpaperSpectrum = { samples: [], time: 0 };
+      if (typeof window.wallpaperRegisterAudioListener === "function") {
+        window.wallpaperRegisterAudioListener(function wallpaperAudioListener(samples) {
+          if (!samples || samples.length !== 128) return;
+          window.rhineWallpaperSpectrum = {
+            samples: Array.from(samples, function (value) { return Number.isFinite(value) ? Math.max(0, Math.min(1, value)) : 0; }),
+            time: performance.now() / 1000,
+          };
+        });
+      }
+      for (const kind of ["Status", "Properties", "Thumbnail", "Playback", "Timeline"]) {
+        const register = window["wallpaperRegisterMedia" + kind + "Listener"];
+        if (typeof register === "function") register(function (event) {
+          window.rhineWallpaperMedia[kind.toLowerCase()] = event;
+          if (kind === "Playback") {
+            const constants = window.wallpaperMediaIntegration || {};
+            window.rhineWallpaperMedia.playing = event.state === (constants.PLAYBACK_PLAYING ?? constants.playback?.PLAYING ?? 1);
+          }
+          window.dispatchEvent(new Event("rhine-wallpaper-media"));
+        });
+      }
+    </script>
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#e8e5e1" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="Lu Jiahang" />
+    <link rel="apple-touch-icon" sizes="180x180" href="./icons/apple-touch-icon.png" />
+    <meta name="description" content="鲁家杭的个人介绍：自动化在读，做校园工具、小游戏，以及这一页。" />
+    <title>鲁家杭 · 个人介绍</title>
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+    <script type="module" crossorigin src="./assets/app.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-fctQMwOk.css" />
+  </head>
+  <body>
+    <main id="viewport"><div id="stage"></div></main>
+  </body>
 </html>
