@@ -1,70 +1,78 @@
-# 鲁家杭 · 个人介绍（莱茵生命引擎版）
+# DESIGN.md · 鲁家杭 / 个人介绍（莱茵引擎版）
 
-单页应用：入口浮层 → 开机动画 → 3D 档案台 → 档案详情。
-引擎来自 Wallpaper Engine 工程《莱茵生命 · 交互桌面》（workshop 3799142774）；陈锦锋的个人介绍是这层引擎换内容后的产物，这一版把内容换成鲁家杭。
+公开地址：**https://whsihad.github.io/**
+仓库：`whsihad/whsihad.github.io`（`main`），推上去即自动构建。
 
-## 文件
+## 这是什么
+
+不是重画，是**照搬引擎再换内容**：cjf 的个人介绍本身就是把「莱茵生命 · 交互桌面」这套 Wallpaper Engine 工程改了内容做成的。所以这里直接把同一套引擎（three.js 场景 + GLB 档案模型 + 开机动画 + 档案台 + 详情页）搬进来，只替换身份与八份档案。
+
+- 引擎：`assets/app.js`（约 0.95 MB，Vite 打包产物）与 `assets/index-fctQMwOk.css`（0.65 MB）。
+- 3D：`assets/archive-cassette.*.glb`（3.4 MB，开机时加载）、`archive-assembly.*.glb`（3.2 MB，详情页按需）。
+- 字体：MiSans 4 个字重 × 188 个按 `unicode-range` 切片的 woff2，`fonts/misans-webfont-4.3.1/`。
+- 音频：`audio/`（atmosphere / motif / pulse / 键盘音）。
+- 档案导出：`archives/RHINE-LAB-X-001..008.txt`（详情页 EXPORT 下载的就是它们）。
+
+## 内容改造（`_build/ljh/`）
+
+`records.mjs` = 八份档案数据，`build.mjs` 把 bundle 里的 `G_` 数组整块换掉，并替换身份字符串：
+
+| 原 | 现 |
+|---|---|
+| CHEN JINFENG / Chen Jinfeng | LU JIAHANG / Lu Jiahang |
+| 陈锦锋 | 鲁家杭 |
+| CJF | LJH |
+| cjf0423706@qq.com | l18868142811@163.com |
+| sakura4388 | whsihad |
+| chenjinfeng-homepage.pages.dev | whsihad.github.io |
+
+八份档案：X-001 人生概览 / 002 学习经历 / 003 职业经历 / 004 项目与成果 / 005 技能与专长 / 006 荣誉与证书 / 007 重要经历 / 008 未来规划。内容只写事实：`003` 明写「无正式任职、无实习」，`006` 明写「暂无公开奖项/证书」。
+
+## 两个状态
 
 ```
-index.html                     入口（Wallpaper Engine host shim 改版）
-assets/app.js                  引擎（three.js r183 已打包，967 KB）
-assets/index-fctQMwOk.css      样式（MiSans 分块字体，667 KB）
-assets/archive-*.glb           档案磁带 / 装配 / 精度三档模型
-fonts/misans-webfont-4.3.1/    MiSans 4 字重 × 190 分块（24 MB）
-audio/                         氛围 / 动机 / 脉冲 / 打字音
-archives/RHINE-LAB-X-00N.txt   八份档案的导出文本（EXPORT 用）
-icons/ favicon.svg             无限符号标记（+ / −）
-_old/                          旧版「星轨终端」与「档案台」两份备份
-_build/ljh/                    八份档案的源数据与构建脚本
-_tools/                        本地预览 / 截图 / 字体工具
+entry   入口：LJH 无限符号 + PERSONAL PROFILE / READY + 打开个人介绍 / 直接查看简历
+boot    开机：WELCOME TO MY PROFILE → LJH → PROFILE READY → 逐字解密 → WELCOME TO LU JIAHANG
+archive 档案台：FILE NUMBER + 01/08 + 八格刻度，↑↓/拖动/滚轮切换
+detail  详情：左 3D 磁带模型（拖动 360°），右档案正文、标签页、SAVE / EXPORT
 ```
 
-## 四屏
+## 部署与加载
 
-1. **入口**：磨砂白 `#e8e5e1`，居中无限符号标记 + `LJH`，`PERSONAL PROFILE / READY`，两条下划线按钮「打开个人介绍」「直接查看简历」。
-2. **开机**：`WELCOME TO MY PROFILE` → 标记放大 → 逐字打出 `PROFILE READY` → `WELCOME TO LU JIAHANG`，随后镜头推进到档案台。
-3. **档案台**：真 3D 档案阵列（GLB + 光影），HUD 浮层——左上 `PERSONAL INTRODUCTION`、右上档案索引/收藏/设置、中央 `FILE NUMBER: X-001`、左下 `01 / 08` 与八格刻度、右下 `ABOUT LU JIAHANG`、底部人物与时间。
-4. **详情**：左侧 3D 磁带模型（可拖拽 360°）+ `NO.001 / PERSONAL PROFILE`，右侧档案正文、分节导航、`SAVE ARCHIVE` / `EXPORT` / 页码。
+- HTML 留在 GitHub Pages；JS / CSS / 字体 / GLB 走 `gcore.jsdelivr.net/gh/whsihad/whsihad.github.io@main/...`，国内实测比 Pages 快约 10 倍（40 KB/s → 450 KB/s）。CDN 失败时 `index.html` 自动回落到本地副本。
+- 入口**不再等 3D 模型**（`assets/app.js` 里的 patch：`qe?.load()` 不再进 `Promise.all`），所以首屏 5 秒左右就能点；模型在后台下载，进场后自然补齐。
+- 实测冷启动（国内直连）：入口可点约 5 s，档案台约 8–10 s 完整。
 
-## 八份档案
+## 手机端
 
-| 编号 | 标题 | 栏目 |
-|---|---|---|
-| X-001 | 人生概览 / LIFE OVERVIEW | 个人概况 · 在做的事 · 兴趣与目标 |
-| X-002 | 学习经历 / EDUCATION | 在学 · 怎么学 · 接下来 |
-| X-003 | 职业经历 / EXPERIENCE | 现状（无正式任职） · 合作过的事 |
-| X-004 | 项目与成果 / PROJECTS | 五个项目 · 做完的与没做完的 |
-| X-005 | 技能与专长 / CAPABILITIES | 能上手 · 在学 |
-| X-006 | 荣誉与证书 / RECORDS | 暂无公开奖项（如实写明） |
-| X-007 | 重要经历 / MILESTONES | 时间线 |
-| X-008 | 未来规划 / NEXT | 短期 · 长期 |
+`assets/ljh-mobile.css`（只在 ≤480px 生效）：
 
-内容全部来自旧版个人主页，没有编造；没有的部分直接写明「暂无」。
+- 右上角图标下移一行，避开标题；
+- 档案描诉块加纸色渐变纱（`linear-gradient` + `backdrop-filter: blur(4px)`），文字不再压在密集的 3D 条上；
+- 底部信息条允许换行、字号提一档。
 
-## 运行
+引擎自带的 portrait 布局已处理刻度、底部栏和 44px 触控尺寸。
 
-`file://` 打不开（ES module + GLB 走 fetch，被 CORS 拦），要起本地服务：
+## 本地预览
 
-```powershell
-node _tools/serve.mjs . 8800     # 或任意静态服务器
-# http://127.0.0.1:8800
+```
+双击  启动预览.cmd
+或    node _tools/serve.mjs . 8800     → http://127.0.0.1:8800/
 ```
 
-部署到 GitHub Pages（`whsihad.github.io`）即可直接访问。也可把整个目录丢进 Wallpaper Engine 当 web 壁纸。
+必须走 http：`file://` 会被 ES module 与 GLB fetch 的 CORS 拦掉。
 
-## 交互
+## 目录
 
-- 拖动档案台切换档案；`↑ ↓` 翻档案、`Enter` 读取、`Esc` 返回、`/` 索引、`S` 收藏。
-- 右上 `设置`：配色（磨砂白 / 石墨黑）、动效开关。
-- 详情页 `EXPORT` 下载 `archives/RHINE-LAB-X-00N.txt`。
-
-## 改内容
-
-八份档案的正文在 `_build/ljh/records.mjs`，改完跑：
-
-```powershell
-node _build/ljh/build.mjs      # 重写 assets/app.js 里的记录数组 + 替换身份串
-node _tools/archive_txt.mjs    # 重新生成 archives/*.txt
+```
+index.html                 页面骨架 + Wallpaper Engine host shim
+assets/                    app.js、CSS、GLB、ljh-mobile.css
+fonts/ audio/ archives/ icons/ licenses/
+_build/ljh/                档案数据与构建脚本（不进仓库）
+_old/                      旧版（星轨版、档案台版）与 v1 素材
+_tools/                    serve.mjs、shot.mjs、archive_txt.mjs、patch_noblock.mjs
 ```
 
-身份串（姓名、邮箱、GitHub、缩写）在 `_build/ljh/build.mjs` 的替换表里。
+## 版权
+
+引擎与 3D 素材来自创意工坊作品 *Rhine Lab · 莱茵生命交互桌面*，字体为 MiSans（小米，见 `fonts/MiSans-license.pdf`），许可与第三方说明保留在 `licenses/`。个人自用，不作商用。
