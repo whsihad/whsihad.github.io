@@ -63,10 +63,34 @@
           href="https://gcore.jsdelivr.net/gh/whsihad/whsihad.github.io@main/assets/index-fctQMwOk.css"
           onerror="this.onerror=null;this.href='./assets/index-fctQMwOk.css'" />
     <link rel="stylesheet" href="./assets/ljh-mobile.css" />
+    <link rel="stylesheet" href="./assets/ljh-records.css" />
     <script type="module">
       const local = new URL('./assets/app.js', location.href).href;
       const remote = 'https://gcore.jsdelivr.net/gh/whsihad/whsihad.github.io@main/assets/app.js';
-      import(remote).catch(() => import(local));
+      // 线上走 CDN（国内更快），本机预览始终用本地文件，免得改完看不到效果
+      const useRemote = /\.github\.io$/.test(location.hostname);
+      (useRemote ? import(remote).catch(() => import(local)) : import(local));
+    </script>
+    <script>
+      /* 3D 模型没下完时，详情页文字会被场景动画卡在透明状态；5 秒后兜底显示 */
+      (function () {
+        var since = 0;
+        setInterval(function () {
+          var detail = document.getElementById('detail-ui');
+          var content = document.getElementById('detail-content');
+          var root = document.documentElement;
+          if (!detail || !content || detail.hidden) {
+            since = 0;
+            root.classList.remove('force-detail-visible');
+            return;
+          }
+          since += 400;
+          if (since > 5000 && !root.classList.contains('force-detail-visible')) {
+            root.classList.add('force-detail-visible');
+            content.inert = false;
+          }
+        }, 400);
+      })();
     </script>
   </head>
   <body>
