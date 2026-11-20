@@ -58,9 +58,16 @@
     <meta name="description" content="鲁家杭的个人介绍：自动化在读，做校园工具、小游戏，以及这一页。" />
     <title>鲁家杭 · 个人介绍</title>
     <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
-    <script type="module" crossorigin src="./assets/app.js"></script>
-    <link rel="stylesheet" crossorigin href="./assets/index-fctQMwOk.css" />
+    <!-- 大文件走 jsDelivr（国内通常比 GitHub Pages 快一个量级），失败自动回落到本地副本 -->
+    <link rel="stylesheet" crossorigin
+          href="https://gcore.jsdelivr.net/gh/whsihad/whsihad.github.io@main/assets/index-fctQMwOk.css"
+          onerror="this.onerror=null;this.href='./assets/index-fctQMwOk.css'" />
     <link rel="stylesheet" href="./assets/ljh-mobile.css" />
+    <script type="module">
+      const local = new URL('./assets/app.js', location.href).href;
+      const remote = 'https://gcore.jsdelivr.net/gh/whsihad/whsihad.github.io@main/assets/app.js';
+      import(remote).catch(() => import(local));
+    </script>
   </head>
   <body>
     <main id="viewport"><div id="stage"></div></main>
