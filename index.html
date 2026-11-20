@@ -72,6 +72,22 @@
       (useRemote ? import(remote).catch(() => import(local)) : import(local));
     </script>
     <script>
+      /* 先把 3D 模型和音乐预热到浏览器缓存：引擎自己 fetch 时就能秒回，不再卡在「正在准备声音」 */
+      (function () {
+        if (/^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname)) return;
+        var base = 'https://gcore.jsdelivr.net/gh/whsihad/whsihad.github.io@main/';
+        [
+          'assets/archive-cassette.dda42b9b3b471d11.glb',
+          'assets/archive-assembly.d411170676f55a32.glb',
+          'audio/atmosphere.ogg',
+          'audio/motif.ogg',
+          'audio/pulse.ogg',
+        ].forEach(function (f) {
+          fetch(base + f).catch(function () {});
+        });
+      })();
+    </script>
+    <script>
       /* 3D 模型没下完时，详情页文字会被场景动画卡在透明状态；5 秒后兜底显示 */
       (function () {
         var since = 0;

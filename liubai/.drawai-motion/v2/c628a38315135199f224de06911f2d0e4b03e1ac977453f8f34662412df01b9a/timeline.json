@@ -1,0 +1,130 @@
+{
+  "version": 1,
+  "width": 1920,
+  "height": 1080,
+  "fps": 24,
+  "durationInFrames": 2880,
+  "shots": [
+    {
+      "id": "shot-1",
+      "file": "scene-0.tsx",
+      "startFrame": 0,
+      "durationFrames": 192
+    },
+    {
+      "id": "shot-2",
+      "file": "scene-1.tsx",
+      "startFrame": 192,
+      "durationFrames": 240
+    },
+    {
+      "id": "shot-3",
+      "file": "scene-2.tsx",
+      "startFrame": 432,
+      "durationFrames": 240
+    },
+    {
+      "id": "shot-4",
+      "file": "scene-3.tsx",
+      "startFrame": 672,
+      "durationFrames": 240
+    },
+    {
+      "id": "shot-5",
+      "file": "scene-4.tsx",
+      "startFrame": 912,
+      "durationFrames": 240
+    },
+    {
+      "id": "shot-6",
+      "file": "scene-5.tsx",
+      "startFrame": 1152,
+      "durationFrames": 240
+    },
+    {
+      "id": "shot-7",
+      "file": "scene-6.tsx",
+      "startFrame": 1392,
+      "durationFrames": 240
+    },
+    {
+      "id": "shot-8",
+      "file": "scene-7.tsx",
+      "startFrame": 1632,
+      "durationFrames": 288
+    },
+    {
+      "id": "shot-9",
+      "file": "scene-8.tsx",
+      "startFrame": 1920,
+      "durationFrames": 288
+    },
+    {
+      "id": "shot-10",
+      "file": "scene-9.tsx",
+      "startFrame": 2208,
+      "durationFrames": 288
+    },
+    {
+      "id": "shot-11",
+      "file": "scene-10.tsx",
+      "startFrame": 2496,
+      "durationFrames": 384
+    }
+  ],
+  "style": {
+    "slug": "23-ink-wash",
+    "name": "水墨写意",
+    "commit": "49052d80bfaf9fa8412cc9710530e5e95a3b8d8c",
+    "palette": {
+      "page": "#EFE6D0",
+      "surface": "#F7F1E2",
+      "field": "#6F8AA0",
+      "text": "#14120F",
+      "muted": "#8A7C64",
+      "accent": "#C4281E",
+      "border": "#C9B58C"
+    },
+    "fonts": {
+      "display": "\"Long Cang\",\"Noto Serif SC\",serif",
+      "text": "\"Noto Serif SC\",\"HarmonyOS Sans SC\",serif",
+      "mono": "\"IBM Plex Mono\",monospace"
+    },
+    "rhythm": {
+      "bpm": 60,
+      "fps": 30,
+      "duration": 10,
+      "aspect": "16:9",
+      "cutFrames": 30
+    },
+    "signature": [
+      "纸是整幅唯一的底：#efe6d0 宣纸 + 2600 根纸纤维 + 四角暗角 α.22，没有纯白也没有纯黑背景",
+      "每一笔都是毛笔：4px 等弧长重采样，笔压起收，逐根笔毛按噪声断开出飞白，笔尾比笔头细 30–50%",
+      "墨只用一个色 [16,14,12]，靠 tone 分五色（焦 .9／浓 .8／重 .6／淡 .35／清 .15），全片不出现第二种黑",
+      "晕染是两遍 multiply（外晕 halo·(0.4+grow) + 本体 blur·(1.6−0.6grow)），grow 0→1 是「洇开」不是「淡入」",
+      "留白用 destination-out 从色层里挖掉露出纸色，不是画白色；钤印 1.5→1 倍压下去、multiply 盖上"
+    ],
+    "engine": "canvas2d",
+    "engines": [
+      "canvas2d"
+    ],
+    "engineNote": "纯 Canvas2D：宣纸纤维、笔毛飞白、墨晕两遍 multiply 全在 2D 画布上画，没有 shader，也没有 DOM 或贴图合成。",
+    "engineFiles": [
+      "demos/23-ink-wash/brush.js"
+    ],
+    "motion": {
+      "motionBlur": null,
+      "transitions": "cut",
+      "impact": false,
+      "camera": false,
+      "grain": {
+        "size": null
+      },
+      "secondary": [],
+      "feather": false,
+      "files": [
+        "demos/23-ink-wash/film.js"
+      ]
+    }
+  }
+}
