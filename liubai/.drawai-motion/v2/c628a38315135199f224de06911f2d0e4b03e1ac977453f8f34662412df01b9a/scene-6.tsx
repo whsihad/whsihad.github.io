@@ -33,8 +33,8 @@ const draw = (x: CanvasRenderingContext2D, f: number): void => {
 
   x.save()
   x.translate(figX, figY)
-  boat(x, 0, 12, 0.95, { tone: 0.74, t, seed: 421, canopy: false })
-  boatman(x, -10, -6, 1.15, { tone: 0.78, lean: -0.05, pole: 1, arm: 0.35 + 0.5 * ss(0.05, 0.4, t) })
+  boat(x, 0, 12, 78, { tone: 0.74, t, seed: 421, canopy: false })
+  boatman(x, -14, -10, 96, { tone: 0.78, lean: -0.05, pole: 1, arm: 0.35 + 0.5 * ss(0.05, 0.4, t) })
   x.restore()
 
   // 手臂抬起 → 笔尖从手里甩出去，划破天

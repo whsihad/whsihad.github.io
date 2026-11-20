@@ -69,10 +69,10 @@ const draw = (x: CanvasRenderingContext2D, f: number): void => {
 
   // 题名
   const tt = ss(0.42, 0.8, t)
-  const ty = H * 0.755
+  const ty = H * 0.72
   if (tt > 0) {
     inkText(x, '留白', W * 0.5 - 96, ty, {
-      size: 196, font: SERIF, tone: 0.93, spacing: 26, align: 'center', reveal: tt, seed: 551,
+      size: 150, font: SERIF, tone: 0.93, spacing: 20, align: 'center', reveal: tt, seed: 551,
     })
     inkText(x, 'T H E   B L A N K', W * 0.5 - 96, ty + 92, {
       size: 21, font: MONO, tone: 0.5, spacing: 3, align: 'center', reveal: clamp01((tt - 0.45) / 0.5), seed: 553,
@@ -89,6 +89,9 @@ const draw = (x: CanvasRenderingContext2D, f: number): void => {
       size: 26, font: SERIF, tone: 0.5, vertical: true, spacing: 8, align: 'center', reveal: ta, seed: 571,
     })
   }
+
+  x.fillStyle = '#C4281E'
+  x.fillRect(40, 40, 160, 40)
 
   drawGrain(x, f, 0.045, 23)
 }

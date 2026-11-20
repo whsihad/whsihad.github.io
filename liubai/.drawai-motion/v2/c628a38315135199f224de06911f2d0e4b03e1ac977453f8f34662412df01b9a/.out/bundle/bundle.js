@@ -1,7 +1,7 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
-/***/ 2326
+/***/ 4435
 (__unused_webpack_module, __unused_webpack___webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -739,18 +739,21 @@ function inkText(x, text, px, py, o) {
     t.fillText(text, tx, ch / 2);
   }
   if (reveal < 1) {
-    t.globalCompositeOperation = "destination-in";
-    const count = clamp(Math.round(cw * ch / (size * size * 0.55)), 90, 720);
+    const [m, mx] = scratch("textmask:" + Math.ceil(cw) + "x" + Math.ceil(ch), cw, ch);
+    mx.fillStyle = "rgba(0,0,0,1)";
+    const count = clamp(Math.round(cw * ch / (size * size * 0.42)), 140, 960);
     for (let i = 0; i < count; i++) {
       const bx = rnd(o.seed ?? 11, i) * cw;
       const by = rnd((o.seed ?? 11) + 1, i) * ch;
-      const delay = rnd((o.seed ?? 11) + 2, i) * 0.7;
-      const r = Math.max(0, (reveal * 1.5 - delay) * size * 0.42);
-      if (r <= 0) continue;
-      t.beginPath();
-      t.arc(bx, by, r, 0, TAU);
-      t.fill();
+      const delay = rnd((o.seed ?? 11) + 2, i) * 0.62;
+      const rr = (reveal * 1.6 - delay) * size * 0.5;
+      if (rr <= 0) continue;
+      mx.beginPath();
+      mx.arc(bx, by, rr, 0, TAU);
+      mx.fill();
     }
+    t.globalCompositeOperation = "destination-in";
+    t.drawImage(m, 0, 0);
     t.globalCompositeOperation = "source-over";
   }
   const drawX = o.align === "center" ? px - cw / 2 : o.align === "left" ? px - pad : px - cw + pad;
@@ -1030,15 +1033,6 @@ function Scene(_) {
 }
 
 ;// ../../../Desktop/个人网页/liubai/.drawai-motion/v2/c628a38315135199f224de06911f2d0e4b03e1ac977453f8f34662412df01b9a/ink/terrain.ts
-/* unused harmony import specifier */ var terrain_range;
-/* unused harmony import specifier */ var terrain_rnd;
-/* unused harmony import specifier */ var terrain_W;
-/* unused harmony import specifier */ var terrain_TAU;
-/* unused harmony import specifier */ var terrain_clamp01;
-/* unused harmony import specifier */ var terrain_ss;
-/* unused harmony import specifier */ var terrain_ink;
-/* unused harmony import specifier */ var terrain_lerp;
-/* unused harmony import specifier */ var terrain_pen;
 
 
 function ridgeY(u, o) {
@@ -1156,20 +1150,20 @@ function water(x, o) {
   const t = o.t ?? 0;
   const lines = Math.round(o.h / 26);
   for (let i = 0; i < lines; i++) {
-    const yy = o.y + i / lines * o.h + terrain_range(seed, i, -6, 6);
-    const cnt = 5 + Math.floor(terrain_rnd(seed + 1, i) * 6);
+    const yy = o.y + i / lines * o.h + range(seed, i, -6, 6);
+    const cnt = 5 + Math.floor(rnd(seed + 1, i) * 6);
     for (let k = 0; k < cnt; k++) {
-      const x0 = terrain_range(seed + 2, i * 20 + k, -60, terrain_W + 60);
-      const len = terrain_range(seed + 3, i * 20 + k, 40, 260) * (1 + i / lines);
-      const wob = (o.wave ?? 1) * terrain_range(seed + 4, i * 20 + k, 3, 16);
-      terrain_pen(x, [
+      const x0 = range(seed + 2, i * 20 + k, -60, W + 60);
+      const len = range(seed + 3, i * 20 + k, 40, 260) * (1 + i / lines);
+      const wob = (o.wave ?? 1) * range(seed + 4, i * 20 + k, 3, 16);
+      pen(x, [
         [x0, yy],
         [x0 + len * 0.5, yy + Math.sin((x0 + t * 40) * 4e-3 + i) * wob],
         [x0 + len, yy + Math.sin((x0 + len + t * 40) * 4e-3 + i) * wob * 0.5]
       ], {
-        tone: tone * terrain_range(seed + 5, i * 20 + k, 0.55, 1.1),
-        alpha: alpha * terrain_range(seed + 6, i * 20 + k, 0.14, 0.4),
-        w: terrain_range(seed + 7, i * 20 + k, 1.2, 3.6),
+        tone: tone * range(seed + 5, i * 20 + k, 0.55, 1.1),
+        alpha: alpha * range(seed + 6, i * 20 + k, 0.14, 0.4),
+        w: range(seed + 7, i * 20 + k, 1.2, 3.6),
         head: 0.2,
         tail: 0.5,
         dry: 0.45,
@@ -1192,7 +1186,7 @@ function lightPath(x, cx, y0, y1, w, t, seed = 5, strength = 1) {
     const a = (1 - q) * 0.5 * strength;
     x.fillStyle = `rgba(226,170,52,${a * 0.5})`;
     x.beginPath();
-    x.ellipse(cx + off, y, amp * (0.55 + 0.45 * Math.sin(i * 0.9 + t * 2)), Math.max(1, w * 0.09), 0, 0, terrain_TAU);
+    x.ellipse(cx + off, y, amp * (0.55 + 0.45 * Math.sin(i * 0.9 + t * 2)), Math.max(1, w * 0.09), 0, 0, TAU);
     x.fill();
   }
   x.restore();
@@ -1248,72 +1242,72 @@ function bird(x, cx, cy, s, phase, tone = 0.7, alpha = 1) {
 }
 function roof(x, cx, y, w, h, tone, reveal, seed) {
   if (reveal <= 0) return;
-  const r = terrain_clamp01(reveal);
+  const r = clamp01(reveal);
   const half = w / 2;
   const lift = h * 0.55;
-  terrain_pen(x, [
+  pen(x, [
     [cx - half, y - h * 0.1],
     [cx - half * 0.55, y + h * 0.55],
     [cx, y + h]
-  ], { tone, w: Math.max(1.6, w * 0.055), head: 0.05, tail: 0.25, dry: 0.55, bristle: 3, seed: seed + 1, reveal: terrain_clamp01(r * 1.6), tip: 0.1 });
+  ], { tone, w: Math.max(1.6, w * 0.055), head: 0.05, tail: 0.25, dry: 0.55, bristle: 3, seed: seed + 1, reveal: clamp01(r * 1.6), tip: 0.1 });
   if (r < 0.55) return;
-  terrain_pen(x, [
+  pen(x, [
     [cx, y + h],
     [cx + half * 0.55, y + h * 0.55],
     [cx + half, y - h * 0.1]
-  ], { tone, w: Math.max(1.6, w * 0.055), head: 0.05, tail: 0.25, dry: 0.55, bristle: 3, seed: seed + 2, reveal: terrain_clamp01((r - 0.45) * 3), tip: 0.1 });
+  ], { tone, w: Math.max(1.6, w * 0.055), head: 0.05, tail: 0.25, dry: 0.55, bristle: 3, seed: seed + 2, reveal: clamp01((r - 0.45) * 3), tip: 0.1 });
   if (r > 0.8) {
-    const k = terrain_clamp01((r - 0.8) * 5);
-    terrain_pen(x, [[cx - half, y - h * 0.1], [cx - half - w * 0.06, y - h * 0.1 - lift * 0.45]], { tone: tone * 0.95, w: 1.6, head: 0.2, tail: 0.6, bristle: 2, seed: seed + 3, reveal: k, tip: 0.1 });
-    terrain_pen(x, [[cx + half, y - h * 0.1], [cx + half + w * 0.06, y - h * 0.1 - lift * 0.45]], { tone: tone * 0.95, w: 1.6, head: 0.2, tail: 0.6, bristle: 2, seed: seed + 4, reveal: k, tip: 0.1 });
+    const k = clamp01((r - 0.8) * 5);
+    pen(x, [[cx - half, y - h * 0.1], [cx - half - w * 0.06, y - h * 0.1 - lift * 0.45]], { tone: tone * 0.95, w: 1.6, head: 0.2, tail: 0.6, bristle: 2, seed: seed + 3, reveal: k, tip: 0.1 });
+    pen(x, [[cx + half, y - h * 0.1], [cx + half + w * 0.06, y - h * 0.1 - lift * 0.45]], { tone: tone * 0.95, w: 1.6, head: 0.2, tail: 0.6, bristle: 2, seed: seed + 4, reveal: k, tip: 0.1 });
   }
 }
 function house(x, cx, base, w, h, t, tone, seed) {
-  const wall = terrain_ss(0, 0.55, t);
-  const rf = terrain_ss(0.5, 1, t);
+  const wall = ss(0, 0.55, t);
+  const rf = ss(0.5, 1, t);
   if (wall <= 0) return;
   const g = x.createLinearGradient(0, base - h, 0, base);
-  g.addColorStop(0, terrain_ink(tone * 0.35, 0.5 * wall));
-  g.addColorStop(1, terrain_ink(tone * 0.2, 0.24 * wall));
+  g.addColorStop(0, ink(tone * 0.35, 0.5 * wall));
+  g.addColorStop(1, ink(tone * 0.2, 0.24 * wall));
   x.save();
   x.globalCompositeOperation = "multiply";
   x.fillStyle = g;
   x.fillRect(cx - w / 2, base - h, w, h);
   x.restore();
-  terrain_pen(x, [[cx - w / 2, base - h * 0.02], [cx - w / 2, base - h]], { tone: tone * 0.8, w: 1.5, alpha: 0.7 * wall, bristle: 0, seed: seed + 5, tip: 0.1 });
-  terrain_pen(x, [[cx + w / 2, base - h * 0.02], [cx + w / 2, base - h]], { tone: tone * 0.8, w: 1.5, alpha: 0.7 * wall, bristle: 0, seed: seed + 6, tip: 0.1 });
+  pen(x, [[cx - w / 2, base - h * 0.02], [cx - w / 2, base - h]], { tone: tone * 0.8, w: 1.5, alpha: 0.7 * wall, bristle: 0, seed: seed + 5, tip: 0.1 });
+  pen(x, [[cx + w / 2, base - h * 0.02], [cx + w / 2, base - h]], { tone: tone * 0.8, w: 1.5, alpha: 0.7 * wall, bristle: 0, seed: seed + 6, tip: 0.1 });
   roof(x, cx, base - h, w * 1.22, h * 0.42, tone, rf, seed);
 }
 function pagoda(x, cx, base, s, t, tone, seed) {
   const tiers = 5;
   for (let i = 0; i < tiers; i++) {
-    const tt = terrain_clamp01((t - i * 0.14) / 0.45);
+    const tt = clamp01((t - i * 0.14) / 0.45);
     if (tt <= 0) continue;
     const y = base - (i + 0.35) * s * 1.05;
     const w = s * (2.15 - i * 0.3);
     x.save();
     x.globalCompositeOperation = "multiply";
-    x.fillStyle = terrain_ink(tone * 0.42, 0.3 * tt);
+    x.fillStyle = ink(tone * 0.42, 0.3 * tt);
     x.fillRect(cx - w * 0.3, y - s * 0.62, w * 0.6, s * 0.62);
     x.restore();
     roof(x, cx, y, w, s * 0.42, tone * 0.9, tt, seed + i * 7);
   }
-  const topT = terrain_clamp01((t - tiers * 0.14) / 0.3);
+  const topT = clamp01((t - tiers * 0.14) / 0.3);
   if (topT > 0) {
-    terrain_pen(x, [[cx, base - tiers * 1.05 * s - s * 0.1], [cx, base - tiers * 1.05 * s - s * 0.9]], { tone: tone * 0.95, w: 2.2, head: 0.05, tail: 0.7, bristle: 2, seed: seed + 99, reveal: topT, tip: 0.2 });
+    pen(x, [[cx, base - tiers * 1.05 * s - s * 0.1], [cx, base - tiers * 1.05 * s - s * 0.9]], { tone: tone * 0.95, w: 2.2, head: 0.05, tail: 0.7, bristle: 2, seed: seed + 99, reveal: topT, tip: 0.2 });
   }
 }
 function city(x, o) {
   const tone = o.tone ?? 0.75;
   const seed = o.seed ?? 31;
-  const t = terrain_clamp01(o.t);
+  const t = clamp01(o.t);
   const s = o.scale;
   const n = 26;
-  const wallT = terrain_ss(0, 0.4, t);
+  const wallT = ss(0, 0.4, t);
   if (wallT > 0) {
     const wl = o.cx - 620 * s;
     const wr = o.cx + 640 * s;
-    terrain_pen(x, [[wl, o.base], [wl + 40 * s, o.base - 26 * s], [wr - 40 * s, o.base - 26 * s], [wr, o.base]], {
+    pen(x, [[wl, o.base], [wl + 40 * s, o.base - 26 * s], [wr - 40 * s, o.base - 26 * s], [wr, o.base]], {
       tone: tone * 0.85,
       w: 3.2 * s,
       head: 0.02,
@@ -1324,33 +1318,33 @@ function city(x, o) {
       reveal: wallT,
       tip: 0
     });
-    house(x, o.cx, o.base - 26 * s, 120 * s, 90 * s, terrain_clamp01(t * 1.6), tone, seed + 2);
+    house(x, o.cx, o.base - 26 * s, 120 * s, 90 * s, clamp01(t * 1.6), tone, seed + 2);
   }
-  pagoda(x, o.cx - 260 * s, o.base - 26 * s, 46 * s, terrain_clamp01((t - 0.12) / 0.6), tone, seed + 3);
+  pagoda(x, o.cx - 260 * s, o.base - 26 * s, 46 * s, clamp01((t - 0.12) / 0.6), tone, seed + 3);
   for (let i = 0; i < n; i++) {
     const side = i % 2 === 0 ? -1 : 1;
-    const d = terrain_range(seed + 10, i, 0.1, 1);
-    const px = o.cx + side * (120 + d * 620) * s * terrain_range(seed + 11, i, 0.7, 1.15);
-    const hh = terrain_range(seed + 12, i, 26, 62) * s;
-    const ww = terrain_range(seed + 13, i, 52, 110) * s;
-    const start = 0.18 + terrain_rnd(seed + 14, i) * 0.45;
-    const lt = terrain_clamp01((t - start) / 0.42);
+    const d = range(seed + 10, i, 0.1, 1);
+    const px = o.cx + side * (120 + d * 620) * s * range(seed + 11, i, 0.7, 1.15);
+    const hh = range(seed + 12, i, 26, 62) * s;
+    const ww = range(seed + 13, i, 52, 110) * s;
+    const start = 0.18 + rnd(seed + 14, i) * 0.45;
+    const lt = clamp01((t - start) / 0.42);
     if (lt <= 0) continue;
-    house(x, px, o.base - 8 * s * (1 + d), ww, hh, lt, tone * terrain_range(seed + 15, i, 0.8, 1.05), seed + i * 3);
+    house(x, px, o.base - 8 * s * (1 + d), ww, hh, lt, tone * range(seed + 15, i, 0.8, 1.05), seed + i * 3);
   }
   if ((o.lights ?? 0) > 0) {
     x.save();
     x.globalCompositeOperation = "lighter";
     for (let i = 0; i < 60; i++) {
       const side = i % 2 === 0 ? -1 : 1;
-      const d = terrain_rnd(seed + 20, i);
+      const d = rnd(seed + 20, i);
       if (d > o.lights) continue;
       const px = o.cx + side * (140 + d * 600) * s;
-      const py = o.base - terrain_range(seed + 21, i, 10, 46) * s;
-      const a = 0.35 + terrain_rnd(seed + 22, i) * 0.5;
+      const py = o.base - range(seed + 21, i, 10, 46) * s;
+      const a = 0.35 + rnd(seed + 22, i) * 0.5;
       x.fillStyle = `rgba(226,170,52,${a})`;
       x.beginPath();
-      x.arc(px, py, Math.max(1.2, 2.6 * s), 0, terrain_TAU);
+      x.arc(px, py, Math.max(1.2, 2.6 * s), 0, TAU);
       x.fill();
     }
     x.restore();
@@ -1363,7 +1357,7 @@ function boat(x, cx, cy, s, o = {}) {
   x.save();
   x.translate(cx, cy);
   x.rotate(o.rot ?? 0);
-  terrain_pen(x, [[-1 * s, -0.02 * s], [-0.62 * s, 0.16 * s], [0.1 * s, 0.24 * s], [0.66 * s, 0.14 * s], [1 * s, -0.06 * s]], {
+  pen(x, [[-1 * s, -0.02 * s], [-0.62 * s, 0.16 * s], [0.1 * s, 0.24 * s], [0.66 * s, 0.14 * s], [1 * s, -0.06 * s]], {
     tone,
     w: Math.max(2, s * 0.05),
     head: 0.08,
@@ -1373,7 +1367,7 @@ function boat(x, cx, cy, s, o = {}) {
     seed: seed + 1,
     tip: 0.2
   });
-  terrain_pen(x, [[-0.86 * s, -0.06 * s], [-0.2 * s, 0.02 * s], [0.8 * s, -0.1 * s]], {
+  pen(x, [[-0.86 * s, -0.06 * s], [-0.2 * s, 0.02 * s], [0.8 * s, -0.1 * s]], {
     tone: tone * 0.8,
     w: Math.max(1.2, s * 0.02),
     head: 0.2,
@@ -1384,7 +1378,7 @@ function boat(x, cx, cy, s, o = {}) {
     tip: 0.1
   });
   if (o.canopy !== false) {
-    terrain_pen(x, [[-0.42 * s, -0.04 * s], [-0.34 * s, -0.34 * s], [0.02 * s, -0.42 * s], [0.36 * s, -0.3 * s], [0.42 * s, -0.02 * s]], {
+    pen(x, [[-0.42 * s, -0.04 * s], [-0.34 * s, -0.34 * s], [0.02 * s, -0.42 * s], [0.36 * s, -0.3 * s], [0.42 * s, -0.02 * s]], {
       tone: tone * 0.9,
       w: Math.max(1.6, s * 0.035),
       head: 0.06,
@@ -1396,7 +1390,7 @@ function boat(x, cx, cy, s, o = {}) {
     });
     for (let i = 0; i < 5; i++) {
       const q = (i + 0.5) / 5;
-      terrain_pen(x, [[terrain_lerp(-0.36, 0.38, q) * s, -0.04 * s - Math.sin(q * Math.PI) * 0.02 * s], [terrain_lerp(-0.3, 0.3, q) * s, -0.36 * s - Math.sin(q * Math.PI) * 0.06 * s]], {
+      pen(x, [[lerp(-0.36, 0.38, q) * s, -0.04 * s - Math.sin(q * Math.PI) * 0.02 * s], [lerp(-0.3, 0.3, q) * s, -0.36 * s - Math.sin(q * Math.PI) * 0.06 * s]], {
         tone: tone * 0.6,
         w: 1.1,
         alpha: 0.35,
@@ -1417,13 +1411,13 @@ function boat(x, cx, cy, s, o = {}) {
     g.addColorStop(1, "rgba(226,170,52,0)");
     x.fillStyle = g;
     x.beginPath();
-    x.arc(lx, ly, s * 0.5, 0, terrain_TAU);
+    x.arc(lx, ly, s * 0.5, 0, TAU);
     x.fill();
     x.restore();
     x.save();
     x.fillStyle = `rgba(226,160,56,${0.95 * o.lantern})`;
     x.beginPath();
-    x.arc(lx, ly, Math.max(1.5, s * 0.03), 0, terrain_TAU);
+    x.arc(lx, ly, Math.max(1.5, s * 0.03), 0, TAU);
     x.fill();
     x.restore();
     if (t > 0) lightPath(x, lx, ly + s * 0.06, ly + s * 0.9, s * 0.035, t, seed, o.lantern);
@@ -1444,10 +1438,10 @@ function boatman(x, cx, cy, s, o = {}) {
   body.closePath();
   x.save();
   x.globalCompositeOperation = "multiply";
-  x.fillStyle = terrain_ink(tone * 0.72, 0.9);
+  x.fillStyle = ink(tone * 0.72, 0.9);
   x.fill(body);
   x.restore();
-  terrain_pen(x, [[-0.42 * s, -1.02 * s], [-0.1 * s, -1.24 * s], [0.36 * s, -1.02 * s]], {
+  pen(x, [[-0.42 * s, -1.02 * s], [-0.1 * s, -1.24 * s], [0.36 * s, -1.02 * s]], {
     tone,
     w: Math.max(2.4, s * 0.09),
     head: 0.1,
@@ -1457,10 +1451,10 @@ function boatman(x, cx, cy, s, o = {}) {
     seed: 77,
     tip: 0.2
   });
-  terrain_pen(x, [[-0.36 * s, -1.04 * s], [0, -1.1 * s], [0.3 * s, -1.04 * s]], { tone: tone * 0.6, w: Math.max(1, s * 0.02), alpha: 0.6, bristle: 0, seed: 78, tip: 0 });
-  terrain_pen(x, [[-0.24 * s, -0.94 * s], [0, -0.99 * s], [0.22 * s, -0.93 * s]], { tone: tone * 0.9, w: Math.max(1.4, s * 0.03), head: 0.2, tail: 0.3, bristle: 2, seed: 79, tip: 0.1 });
+  pen(x, [[-0.36 * s, -1.04 * s], [0, -1.1 * s], [0.3 * s, -1.04 * s]], { tone: tone * 0.6, w: Math.max(1, s * 0.02), alpha: 0.6, bristle: 0, seed: 78, tip: 0 });
+  pen(x, [[-0.24 * s, -0.94 * s], [0, -0.99 * s], [0.22 * s, -0.93 * s]], { tone: tone * 0.9, w: Math.max(1.4, s * 0.03), head: 0.2, tail: 0.3, bristle: 2, seed: 79, tip: 0.1 });
   if (o.pole) {
-    terrain_pen(x, [[0.1 * s, -0.8 * s], [0.5 * s, -0.1 * s], [0.9 * s, 0.5 * s]], {
+    pen(x, [[0.1 * s, -0.8 * s], [0.5 * s, -0.1 * s], [0.9 * s, 0.5 * s]], {
       tone: tone * 0.8,
       w: Math.max(1.2, s * 0.018),
       head: 0.02,
@@ -1468,12 +1462,12 @@ function boatman(x, cx, cy, s, o = {}) {
       dry: 0.4,
       bristle: 2,
       seed: 80,
-      reveal: terrain_clamp01(o.pole),
+      reveal: clamp01(o.pole),
       tip: 0
     });
   }
   if (o.arm) {
-    terrain_pen(x, [[0.06 * s, -0.86 * s], [0.24 * s, -0.78 * s], [0.34 * s, -0.7 * s]], { tone: tone * 0.7, w: Math.max(1.2, s * 0.024), head: 0.3, tail: 0.4, bristle: 2, seed: 81, reveal: terrain_clamp01(o.arm), tip: 0 });
+    pen(x, [[0.06 * s, -0.86 * s], [0.24 * s, -0.78 * s], [0.34 * s, -0.7 * s]], { tone: tone * 0.7, w: Math.max(1.2, s * 0.024), head: 0.3, tail: 0.4, bristle: 2, seed: 81, reveal: clamp01(o.arm), tip: 0 });
   }
   x.restore();
 }
@@ -1484,9 +1478,9 @@ function reflection(x, cx, y0, h, w, t, seed = 7, alpha = 0.5) {
     const q = i / 42;
     const y = y0 + q * h;
     const jx = Math.sin(t * 2.2 + i * 0.8 + seed) * w * 0.5;
-    const len = h / 42 * terrain_range(seed, i, 0.6, 1.4);
-    x.fillStyle = `rgba(239,230,208,${alpha * (1 - q) * terrain_range(seed + 1, i, 0.3, 1)})`;
-    x.fillRect(cx + jx - w * 0.06, y, w * (0.06 + 0.1 * terrain_rnd(seed + 2, i)), Math.max(0.8, len * 0.5));
+    const len = h / 42 * range(seed, i, 0.6, 1.4);
+    x.fillStyle = `rgba(239,230,208,${alpha * (1 - q) * range(seed + 1, i, 0.3, 1)})`;
+    x.fillRect(cx + jx - w * 0.06, y, w * (0.06 + 0.1 * rnd(seed + 2, i)), Math.max(0.8, len * 0.5));
   }
   x.restore();
 }
@@ -1771,96 +1765,1146 @@ function scene_2_Scene(_) {
 
 
 
-function scene_3_Scene({ anchors = {} }) {
-  const frame = (0,esm.useCurrentFrame)();
-  const { durationInFrames } = (0,esm.useVideoConfig)();
-  const opacity = (0,esm.interpolate)(frame, [0, 12], [0, 1], { extrapolateRight: "clamp" });
-  const settle = (0,esm.interpolate)(frame, [durationInFrames - 10, durationInFrames], [1, 0.97], { extrapolateLeft: "clamp" });
-  return /* @__PURE__ */ react.createElement(esm.AbsoluteFill, { style: { background: PAPER, opacity: opacity * settle } }, /* @__PURE__ */ react.createElement(esm.AbsoluteFill, { style: { alignItems: "center", justifyContent: "center" } }, /* @__PURE__ */ react.createElement("div", { style: { color: INK, fontSize: 40, fontFamily: SERIF } }, "shot-4")));
+
+
+
+const scene_3_DUR = 240;
+const SWEEP0 = 0.56;
+const SWEEP1 = 0.94;
+const scene_3_draw = (x, f) => {
+  const t = f / scene_3_DUR;
+  x.drawImage(getPaper(), 0, 0);
+  const sweep = ss(SWEEP0, SWEEP1, t);
+  const ex = lerp(-W * 0.25, W * 1.32, easeInOut(sweep));
+  const [wc, wx] = scratch("s3world", W, H);
+  wx.clearRect(0, 0, W, H);
+  const sky = wx.createLinearGradient(0, 0, 0, H * 0.8);
+  sky.addColorStop(0, "rgba(240,226,198,0)");
+  sky.addColorStop(0.65, "rgba(238,214,172,0.34)");
+  sky.addColorStop(1, "rgba(232,204,160,0.5)");
+  wx.save();
+  wx.fillStyle = sky;
+  wx.fillRect(0, 0, W, H);
+  wx.restore();
+  mountain(wx, {
+    base: H * 0.72,
+    amp: H * 0.34,
+    seed: 101,
+    freq: 1.5,
+    oct: 5,
+    tone: 0.34,
+    alpha: 0.6,
+    peaks: [{ t: 0.2, w: 0.2 }, { t: 0.55, w: 0.26 }, { t: 0.85, w: 0.18 }],
+    key: "s3far",
+    blur: 4.6,
+    cun: 0.25,
+    rise: ss(0, 0.4, t)
+  });
+  mist(wx, H * 0.69, H * 0.16, 0.32, 111, t);
+  mountain(wx, {
+    base: H * 0.9,
+    amp: H * 0.3,
+    seed: 131,
+    freq: 2.2,
+    oct: 5,
+    tone: 0.62,
+    alpha: 0.88,
+    peaks: [{ t: 0.14, w: 0.16 }, { t: 0.78, w: 0.2 }],
+    key: "s3mid",
+    blur: 1.8,
+    cun: 0.7,
+    rise: ss(0.04, 0.5, t)
+  });
+  mist(wx, H * 0.87, H * 0.12, 0.26, 141, t);
+  const ct = ss(0.1, 0.62, t);
+  if (ct > 0.01) city(wx, { cx: W * 0.44, base: H * 0.885, scale: 1.05, t: ct, tone: 0.78, seed: 151, lights: ct });
+  for (let i = 0; i < 5; i++) {
+    const yy = H * (0.9 + i * 0.022);
+    pen(wx, [[-40, yy + range(161, i, -4, 4)], [W * 0.45, yy + range(162, i, -6, 6)], [W + 40, yy + range(163, i, -5, 5)]], {
+      tone: 0.55,
+      alpha: 0.3 - i * 0.04,
+      w: 3.4 - i * 0.4,
+      head: 0.3,
+      tail: 0.4,
+      bristle: 3,
+      seed: 171 + i,
+      tip: 0.2
+    });
+  }
+  for (let i = 0; i < 5; i++) {
+    const bx = W * 0.9 - (t * (0.02 + rnd(181, i) * 0.012) + rnd(182, i) * 0.6) % 1.4 * W * 1.2;
+    bird(wx, bx, H * (0.24 + rnd(183, i) * 0.13), 0.45 + rnd(184, i) * 0.4, t * 8 + i * 2, 0.6, 0.42 * ss(0.05, 0.3, t));
+  }
+  if (sweep > 0) {
+    wx.save();
+    wx.globalCompositeOperation = "destination-out";
+    wx.fillStyle = "#000";
+    const N = 40;
+    wx.beginPath();
+    wx.moveTo(-W * 0.3, H * 1.42);
+    for (let i = 0; i <= N; i++) {
+      const u = i / N;
+      const yy = H * (1.42 - 1.78 * u);
+      const tip = ex - H * 0.06 * Math.sin(u * Math.PI) - (n1(u * 8 + 3, 191) - 0.5) * H * 0.05;
+      wx.lineTo(tip, yy);
+    }
+    wx.lineTo(-W * 0.3, -H * 0.36);
+    wx.closePath();
+    wx.globalAlpha = 0.98;
+    wx.filter = "blur(3px)";
+    wx.fill();
+    wx.filter = "none";
+    wx.globalAlpha = 1;
+    wx.restore();
+  }
+  x.drawImage(wc, 0, 0);
+  if (sweep > 1e-3 && sweep < 0.999) {
+    x.save();
+    x.globalCompositeOperation = "multiply";
+    x.filter = "blur(4px)";
+    x.strokeStyle = ink(0.66, 0.5);
+    x.lineWidth = 7;
+    x.beginPath();
+    for (let i = 0; i <= 40; i++) {
+      const u = i / 40;
+      const yy = H * (1.42 - 1.78 * u);
+      const tip = ex - H * 0.06 * Math.sin(u * Math.PI) - (n1(u * 8 + 3, 191) - 0.5) * H * 0.05;
+      if (i === 0) x.moveTo(tip, yy);
+      else x.lineTo(tip, yy);
+    }
+    x.stroke();
+    x.filter = "none";
+    x.restore();
+  }
+  if (sweep > 0.02) {
+    x.save();
+    x.globalCompositeOperation = "multiply";
+    for (let i = 0; i < 26; i++) {
+      const px = range(201, i, W * 0.1, W * 0.8);
+      if (px > ex - 20) continue;
+      const py = H * (0.86 + rnd(202, i) * 0.07);
+      const a = clamp01(1 - sweep * 1.4) * range(203, i, 0.2, 0.5);
+      x.fillStyle = ink(0.5, a);
+      x.beginPath();
+      x.arc(px, py, range(204, i, 1, 2.6), 0, TAU);
+      x.fill();
+    }
+    x.restore();
+  }
+  if (sweep > 0.92) {
+    x.save();
+    x.globalCompositeOperation = "multiply";
+    x.globalAlpha = ss(0.92, 1, t) * 0.9;
+    x.fillStyle = "rgba(196,40,30,0.9)";
+    x.fillRect(W * 0.845, H * 0.83, 54, 54);
+    x.restore();
+  }
+  drawGrain(x, f, 0.045, 11);
+};
+function scene_3_Scene(_) {
+  return /* @__PURE__ */ react.createElement(InkStage, { draw: scene_3_draw });
 }
 
 ;// ../../../Desktop/个人网页/liubai/.drawai-motion/v2/c628a38315135199f224de06911f2d0e4b03e1ac977453f8f34662412df01b9a/scene-4.tsx
 
 
 
-function scene_4_Scene({ anchors = {} }) {
-  const frame = (0,esm.useCurrentFrame)();
-  const { durationInFrames } = (0,esm.useVideoConfig)();
-  const opacity = (0,esm.interpolate)(frame, [0, 12], [0, 1], { extrapolateRight: "clamp" });
-  const settle = (0,esm.interpolate)(frame, [durationInFrames - 10, durationInFrames], [1, 0.97], { extrapolateLeft: "clamp" });
-  return /* @__PURE__ */ react.createElement(esm.AbsoluteFill, { style: { background: PAPER, opacity: opacity * settle } }, /* @__PURE__ */ react.createElement(esm.AbsoluteFill, { style: { alignItems: "center", justifyContent: "center" } }, /* @__PURE__ */ react.createElement("div", { style: { color: INK, fontSize: 40, fontFamily: SERIF } }, "shot-5")));
+
+
+
+
+const scene_4_DUR = 240;
+const HORIZON = H * 0.615;
+const scene_4_draw = (x, f) => {
+  const t = f / scene_4_DUR;
+  x.drawImage(getPaper(), 0, 0);
+  mountain(x, {
+    base: HORIZON + 6,
+    amp: H * 0.26,
+    seed: 211,
+    freq: 1.4,
+    oct: 4,
+    tone: 0.28,
+    alpha: 0.42,
+    peaks: [{ t: 0.22, w: 0.22 }, { t: 0.62, w: 0.24 }],
+    key: "s4far",
+    blur: 6,
+    cun: 0.15,
+    rise: ss(0, 0.35, t)
+  });
+  mist(x, HORIZON - 10, H * 0.14, 0.4, 221, t);
+  water(x, { y: HORIZON + 14, h: H * 0.38, tone: 0.42, alpha: 0.9, seed: 231, t, wave: 1 });
+  reflection(x, W * 0.42, HORIZON + 18, H * 0.3, W * 0.95, t, 241, 0.3);
+  const bt = easeInOut(t);
+  const bx = lerp(W * 0.66, W * 0.4, bt);
+  const by = HORIZON + H * 0.115 + Math.sin(t * 5.2) * 4;
+  const bob = Math.sin(t * 5.2 + 1) * 0.012;
+  x.save();
+  x.translate(bx, by);
+  x.rotate(bob);
+  x.translate(-bx, -by);
+  reflection(x, bx, by + 6, H * 0.12, W * 0.16, t, 251, 0.25);
+  boat(x, bx, by, 78, { tone: 0.72, t, seed: 261, canopy: true, lantern: 0.9 });
+  boatman(x, bx - 10, by - 18, 74, { tone: 0.7, lean: -0.04 + Math.sin(t * 2.4) * 0.012, pole: 1, arm: 0.5 + Math.sin(t * 2.4) * 0.06 });
+  x.restore();
+  x.save();
+  x.globalCompositeOperation = "screen";
+  const gl = x.createLinearGradient(0, by, 0, by + H * 0.18);
+  gl.addColorStop(0, "rgba(255,246,220,0.16)");
+  gl.addColorStop(1, "rgba(255,246,220,0)");
+  x.fillStyle = gl;
+  x.fillRect(bx - W * 0.2, by, W * 0.4, H * 0.18);
+  x.restore();
+  mist(x, HORIZON + H * 0.04, H * 0.1, 0.34, 271, t * 0.6);
+  for (let i = 0; i < 2; i++) {
+    const px = W * 0.82 - (t * (0.03 + i * 0.012) + i * 0.3) % 1.2 * W * 1.1;
+    bird(x, px, H * (0.2 + i * 0.05), 0.5, t * 7 + i * 2.2, 0.55, 0.32 * ss(0.1, 0.4, t));
+  }
+  const tr = ss(0.22, 0.6, t);
+  if (tr > 0) {
+    inkText(x, "\u89C6\u89C9\u8BED\u8A00", W * 0.115, H * 0.13, {
+      size: 54,
+      font: SERIF,
+      tone: 0.66,
+      vertical: true,
+      spacing: 14,
+      reveal: tr,
+      seed: 281,
+      align: "center"
+    });
+    hairline(x, W * 0.115 - 44, H * 0.13, W * 0.115 - 44, H * 0.13 + 236 * tr, tr, 291, 0.26);
+    inkText(x, "G E M I N I", W * 0.115 + 16, H * 0.44, {
+      size: 15,
+      font: MONO,
+      tone: 0.44,
+      spacing: 1,
+      align: "center",
+      reveal: clamp01((tr - 0.45) / 0.5),
+      seed: 293
+    });
+    seal(x, W * 0.115 + 16, H * 0.512, 40, ["G", "M"], { reveal: clamp01((tr - 0.8) / 0.2), seed: 295, rot: 0.015 });
+  }
+  x.save();
+  x.globalCompositeOperation = "multiply";
+  x.fillStyle = ink(0.2, 0.08);
+  x.fillRect(0, 0, W, 2);
+  x.restore();
+  drawGrain(x, f, 0.05, 13);
+};
+function scene_4_Scene(_) {
+  return /* @__PURE__ */ react.createElement(InkStage, { draw: scene_4_draw });
+}
+
+;// ../../../Desktop/个人网页/liubai/.drawai-motion/v2/c628a38315135199f224de06911f2d0e4b03e1ac977453f8f34662412df01b9a/ink/figure.ts
+/* unused harmony import specifier */ var figure_clamp01;
+/* unused harmony import specifier */ var figure_ss;
+/* unused harmony import specifier */ var figure_TAU;
+/* unused harmony import specifier */ var figure_ink;
+/* unused harmony import specifier */ var figure_clamp;
+/* unused harmony import specifier */ var figure_lerp;
+/* unused harmony import specifier */ var figure_range;
+/* unused harmony import specifier */ var figure_pen;
+/* unused harmony import specifier */ var figure_blob;
+
+
+function eye(x, cx, cy, R, o = {}) {
+  const open = clamp01(o.open ?? 1);
+  const t = o.t ?? 0;
+  const look = clamp(o.look ?? 0, -1, 1);
+  const detail = clamp01((R - 10) / 40);
+  const socket = x.createRadialGradient(cx, cy, R * 0.6, cx, cy, R * 3.4);
+  socket.addColorStop(0, ink(0.16, 0.16));
+  socket.addColorStop(0.55, ink(0.14, 0.06));
+  socket.addColorStop(1, ink(0.14, 0));
+  x.save();
+  x.globalCompositeOperation = "multiply";
+  x.fillStyle = socket;
+  x.beginPath();
+  x.ellipse(cx, cy, R * 3.6, R * 1.9, 0, 0, TAU);
+  x.fill();
+  x.restore();
+  const lidOpen = 0.18 + open * 1.02;
+  const upper = new Path2D();
+  upper.moveTo(cx - R * 2.55, cy + R * 0.18);
+  upper.bezierCurveTo(cx - R * 1.5, cy - R * lidOpen * 1.22, cx + R * 0.35, cy - R * lidOpen * 1.18, cx + R * 2.35, cy - R * 0.12);
+  const lower = new Path2D();
+  lower.moveTo(cx + R * 2.35, cy - R * 0.12);
+  lower.bezierCurveTo(cx + R * 1.1, cy + R * lidOpen * 0.92, cx - R * 0.95, cy + R * lidOpen * 0.95, cx - R * 2.55, cy + R * 0.18);
+  const eyePath = new Path2D();
+  eyePath.addPath(upper);
+  eyePath.addPath(lower);
+  eyePath.closePath();
+  x.save();
+  x.clip(eyePath);
+  x.globalCompositeOperation = "multiply";
+  x.fillStyle = "rgba(226,214,190,0.55)";
+  x.fillRect(cx - R * 3, cy - R * 3, R * 6, R * 6);
+  const shade = x.createLinearGradient(0, cy - R * 1.4, 0, cy + R * 0.9);
+  shade.addColorStop(0, ink(0.5, 0.35));
+  shade.addColorStop(0.55, ink(0.3, 0.06));
+  shade.addColorStop(1, ink(0.3, 0.18));
+  x.fillStyle = shade;
+  x.fillRect(cx - R * 3, cy - R * 2, R * 6, R * 4);
+  x.restore();
+  const ix = cx + look * R * 0.34;
+  const iy = cy + R * 0.02;
+  x.save();
+  x.globalCompositeOperation = "multiply";
+  const irisG = x.createRadialGradient(ix, iy, R * 0.1, ix, iy, R * 1.06);
+  irisG.addColorStop(0, "rgba(56,48,40,0.94)");
+  irisG.addColorStop(0.42, "rgba(78,68,56,0.92)");
+  irisG.addColorStop(0.78, "rgba(44,38,31,0.95)");
+  irisG.addColorStop(0.94, "rgba(26,18,12,1)");
+  irisG.addColorStop(1, "rgba(20,14,10,1)");
+  x.beginPath();
+  x.arc(ix, iy, R, 0, TAU);
+  x.fillStyle = irisG;
+  x.fill();
+  x.restore();
+  if (detail > 0.2) {
+    const n = Math.round(150 * detail);
+    x.save();
+    x.globalCompositeOperation = "multiply";
+    for (let i = 0; i < n; i++) {
+      const a = rnd(17, i) * TAU;
+      const r0 = R * range(18, i, 0.42, 0.55);
+      const r1 = R * range(19, i, 0.72, 0.97);
+      x.strokeStyle = `rgba(20,14,10,${range(20, i, 0.12, 0.4)})`;
+      x.lineWidth = Math.max(0.35, R * 6e-3);
+      x.beginPath();
+      x.moveTo(ix + Math.cos(a) * r0, iy + Math.sin(a) * r0);
+      const midA = a + range(21, i, -0.05, 0.05);
+      x.quadraticCurveTo(ix + Math.cos(midA) * (r0 + r1) * 0.5, iy + Math.sin(midA) * (r0 + r1) * 0.5, ix + Math.cos(a) * r1, iy + Math.sin(a) * r1);
+      x.stroke();
+    }
+    x.restore();
+  }
+  const pr = R * 0.4;
+  x.save();
+  x.beginPath();
+  x.arc(ix, iy, pr, 0, TAU);
+  x.clip();
+  const pg = x.createRadialGradient(ix, iy - pr * 0.2, pr * 0.1, ix, iy, pr * 1.1);
+  pg.addColorStop(0, "rgba(14,11,9,1)");
+  pg.addColorStop(0.7, "rgba(18,14,11,1)");
+  pg.addColorStop(1, "rgba(30,22,15,1)");
+  x.fillStyle = pg;
+  x.fillRect(ix - pr, iy - pr, pr * 2, pr * 2);
+  const rf = clamp01(o.reflect ?? 0);
+  if (rf > 1e-3) {
+    const g = x.createLinearGradient(0, iy - pr, 0, iy + pr);
+    g.addColorStop(0, `rgba(240,232,214,${0.34 * rf})`);
+    g.addColorStop(0.42, `rgba(226,214,190,${0.2 * rf})`);
+    g.addColorStop(1, `rgba(196,184,160,${0.1 * rf})`);
+    x.fillStyle = g;
+    x.fillRect(ix - pr, iy - pr, pr * 2, pr * 2);
+    x.fillStyle = `rgba(70,54,38,${0.22 * rf})`;
+    x.fillRect(ix - pr, iy + pr * 0.22, pr * 2, pr * 0.05);
+    x.fillStyle = `rgba(70,54,38,${0.14 * rf})`;
+    x.fillRect(ix - pr, iy + pr * 0.3, pr * 2, pr * 0.14);
+    const bw = pr * 0.34;
+    const sway = Math.sin(t * 1.6) * pr * 0.03;
+    const tipY = iy + pr * 0.16 + Math.sin(t * 2.3) * pr * 0.02;
+    x.beginPath();
+    x.moveTo(ix - bw + sway, iy - pr * 1.05);
+    x.lineTo(ix + bw + sway, iy - pr * 1.05);
+    x.quadraticCurveTo(ix + bw * 0.5 + sway, iy - pr * 0.3, ix + pr * 0.03 + sway, tipY);
+    x.quadraticCurveTo(ix - bw * 0.35 + sway, iy - pr * 0.3, ix - bw + sway, iy - pr * 1.05);
+    x.closePath();
+    x.fillStyle = `rgba(22,16,12,${0.9 * rf})`;
+    x.fill();
+    x.fillStyle = `rgba(247,241,226,${0.55 * rf})`;
+    x.beginPath();
+    x.arc(ix + pr * 0.03 + sway, tipY, Math.max(0.6, pr * 0.045), 0, TAU);
+    x.fill();
+    x.fillStyle = `rgba(247,241,226,${0.16 * rf})`;
+    x.beginPath();
+    x.ellipse(ix - pr * 0.1, iy - pr * 1.2, pr * 0.9, pr * 0.5, 0, 0, TAU);
+    x.fill();
+  }
+  x.restore();
+  x.save();
+  x.globalCompositeOperation = "screen";
+  const c1 = x.createRadialGradient(ix - R * 0.34, iy - R * 0.36, 0, ix - R * 0.34, iy - R * 0.36, R * 0.3);
+  c1.addColorStop(0, `rgba(255,250,238,${0.82 * (o.glow ?? 1)})`);
+  c1.addColorStop(1, "rgba(255,250,238,0)");
+  x.fillStyle = c1;
+  x.beginPath();
+  x.arc(ix - R * 0.34, iy - R * 0.36, R * 0.3, 0, TAU);
+  x.fill();
+  const c2 = x.createRadialGradient(ix + R * 0.3, iy + R * 0.34, 0, ix + R * 0.3, iy + R * 0.34, R * 0.14);
+  c2.addColorStop(0, `rgba(255,248,232,${0.4 * (o.glow ?? 1)})`);
+  c2.addColorStop(1, "rgba(255,248,232,0)");
+  x.fillStyle = c2;
+  x.beginPath();
+  x.arc(ix + R * 0.3, iy + R * 0.34, R * 0.14, 0, TAU);
+  x.fill();
+  x.restore();
+  pen(x, [
+    [cx - R * 2.62, cy + R * 0.2],
+    [cx - R * 1.4, cy - R * lidOpen * 1.16],
+    [cx + R * 0.4, cy - R * lidOpen * 1.14],
+    [cx + R * 2.4, cy - R * 0.14]
+  ], { tone: 0.9, w: Math.max(1.4, R * 0.18), head: 0.06, tail: 0.3, dry: 0.25, bristle: Math.round(clamp(R * 0.25, 2, 24)), seed: 31, tip: 0.3 });
+  pen(x, [
+    [cx - R * 2.4, cy + R * 0.22],
+    [cx - R * 0.9, cy + R * lidOpen * 0.9],
+    [cx + R * 1.15, cy + R * lidOpen * 0.86],
+    [cx + R * 2.3, cy - R * 0.06]
+  ], { tone: 0.62, alpha: 0.85, w: Math.max(0.7, R * 0.07), head: 0.2, tail: 0.3, dry: 0.4, bristle: 3, seed: 32, tip: 0.2 });
+  if (detail > 0.1) {
+    pen(x, [[cx - R * 2.55, cy + R * 0.18], [cx - R * 2.85, cy + R * 0.34], [cx - R * 2.6, cy + R * 0.6]], { tone: 0.6, w: Math.max(0.6, R * 0.05), alpha: 0.6, bristle: 0, seed: 33, tip: 0 });
+    for (let i = 0; i < 3; i++) {
+      const y0 = cy + R * (0.1 + i * 0.26);
+      pen(x, [[cx + R * 2.3, y0], [cx + R * (2.7 + i * 0.16), y0 + R * (0.18 + i * 0.1)]], {
+        tone: 0.5,
+        alpha: 0.45,
+        w: Math.max(0.5, R * 0.035),
+        tail: 0.6,
+        bristle: 0,
+        seed: 34 + i,
+        tip: 0
+      });
+    }
+    pen(x, [[cx - R * 1.9, cy - R * (lidOpen * 1.3 + 0.16)], [cx - R * 0.4, cy - R * (lidOpen * 1.36 + 0.2)], [cx + R * 1.6, cy - R * 0.62]], {
+      tone: 0.42,
+      alpha: 0.5,
+      w: Math.max(0.6, R * 0.05),
+      head: 0.3,
+      tail: 0.5,
+      bristle: 2,
+      seed: 35,
+      tip: 0
+    });
+  }
+}
+function anglerHead(x, o) {
+  const s = o.s;
+  const cx = o.cx;
+  const cy = o.cy;
+  const turn = figure_clamp01(o.turn ?? 1);
+  const tone = o.tone ?? 0.9;
+  const light = figure_clamp01(o.light ?? 0.6);
+  const t = o.t ?? 0;
+  const faceA = figure_ss(0.1, 0.62, turn);
+  const yaw = (1 - turn) * -0.55;
+  x.save();
+  x.globalCompositeOperation = "multiply";
+  const skull = new Path2D();
+  skull.ellipse(cx, cy - s * 0.04, s * 0.34, s * 0.42, 0, 0, figure_TAU);
+  x.fillStyle = figure_ink(0.55, 0.5 + 0.3 * faceA);
+  x.fill(skull);
+  x.restore();
+  figure_pen(x, [[cx - s * 0.1, cy + s * 0.34], [cx - s * 0.12, cy + s * 0.6]], { tone: tone * 0.7, w: s * 0.12, alpha: 0.8, head: 0.2, tail: 0.4, bristle: 3, seed: 41, tip: 0 });
+  figure_pen(x, [[cx + s * 0.1, cy + s * 0.34], [cx + s * 0.13, cy + s * 0.6]], { tone: tone * 0.7, w: s * 0.12, alpha: 0.8, head: 0.2, tail: 0.4, bristle: 3, seed: 42, tip: 0 });
+  if (s > 26) {
+    x.save();
+    x.globalCompositeOperation = "multiply";
+    x.globalAlpha = faceA;
+    const fw = s * (0.3 - 0.04 * (1 - turn));
+    const face = new Path2D();
+    face.moveTo(cx - fw * 0.92 + yaw * s * 0.5, cy - s * 0.3);
+    face.bezierCurveTo(cx - fw * 1.05 + yaw * s * 0.3, cy + s * 0.02, cx - fw * 0.86, cy + s * 0.24, cx - fw * 0.3, cy + s * 0.34);
+    face.bezierCurveTo(cx - fw * 0.1, cy + s * 0.37, cx + fw * 0.2, cy + s * 0.36, cx + fw * 0.5 + yaw * s * 0.2, cy + s * 0.3);
+    face.bezierCurveTo(cx + fw * 0.95, cy + s * 0.16, cx + fw * 1.02, cy - s * 0.08, cx + fw * 0.9, cy - s * 0.28);
+    face.closePath();
+    const fg = x.createLinearGradient(cx - fw, cy, cx + fw, cy);
+    fg.addColorStop(0, figure_ink(0.5, 0.26));
+    fg.addColorStop(0.35, figure_ink(0.45, 0.5));
+    fg.addColorStop(1, figure_ink(0.6, 0.72));
+    x.fillStyle = fg;
+    x.fill(face);
+    x.restore();
+  }
+  if (s > 18) {
+    const tilt = o.hatTilt ?? 0;
+    figure_pen(x, [
+      [cx - s * 0.72, cy - s * 0.3],
+      [cx - s * 0.34, cy - s * 0.52],
+      [cx + s * 0.06, cy - s * 0.56],
+      [cx + s * 0.44, cy - s * 0.48],
+      [cx + s * 0.78, cy - s * 0.22 + tilt * s * 0.2]
+    ], { tone, w: s * 0.09, head: 0.04, tail: 0.16, dry: 0.3, bristle: Math.round(figure_clamp(s * 0.12, 2, 40)), seed: 51, tip: 0.25 });
+    if (s > 60) {
+      for (let i = 0; i < 11; i++) {
+        const q = i / 10;
+        const bx = figure_lerp(cx - s * 0.68, cx + s * 0.74, q);
+        const by = figure_lerp(cy - s * 0.3 + tilt * s * 0.2, cy - s * 0.24, q);
+        figure_pen(x, [[bx, by], [figure_lerp(bx, cx, 0.45), figure_lerp(by, cy - s * 0.6, 0.72)]], {
+          tone: tone * 0.55,
+          alpha: 0.3,
+          w: Math.max(0.5, s * 6e-3),
+          bristle: 0,
+          seed: 52 + i,
+          tip: 0
+        });
+      }
+    }
+    x.save();
+    x.globalCompositeOperation = "multiply";
+    x.globalAlpha = faceA;
+    const hg = x.createLinearGradient(cx, cy - s * 0.34, cx, cy + s * 0.1);
+    hg.addColorStop(0, figure_ink(0.6, 0.62));
+    hg.addColorStop(1, figure_ink(0.6, 0));
+    x.fillStyle = hg;
+    x.fillRect(cx - s * 0.6, cy - s * 0.36, s * 1.2, s * 0.5);
+    x.restore();
+  }
+  if (s > 34) {
+    const ex = cx + s * 0.08 + yaw * s * 0.06;
+    const ey = cy + s * 0.02;
+    const R = s * 0.072;
+    x.save();
+    x.globalAlpha = faceA;
+    figure_pen(x, [[ex - s * 0.27, ey + s * 0.01], [ex - s * 0.17, ey - s * 0.035], [ex - s * 0.06, ey + s * 5e-3]], {
+      tone: tone * 0.85,
+      w: Math.max(1, s * 0.02),
+      head: 0.2,
+      tail: 0.4,
+      bristle: 2,
+      seed: 61,
+      tip: 0.1
+    });
+    eye(x, ex, ey, R, { open: 0.92, t, look: (o.look ?? 0) * 0.6, glow: 0.85 + light * 0.3, seed: 62 });
+    figure_pen(x, [[ex - s * 0.3, ey - s * 0.12], [ex - s * 0.12, ey - s * 0.17], [ex + s * 0.14, ey - s * 0.15]], {
+      tone,
+      alpha: 0.55 + light * 0.35,
+      w: s * 0.035,
+      head: 0.2,
+      tail: 0.5,
+      dry: 0.6,
+      bristle: 4,
+      seed: 63,
+      tip: 0.1
+    });
+    figure_pen(x, [[ex - s * 0.02, ey - s * 0.02], [ex - s * 0.08, ey + s * 0.12], [ex + s * 0.02, ey + s * 0.17]], {
+      tone: tone * 0.6,
+      alpha: 0.35 + light * 0.2,
+      w: Math.max(0.7, s * 0.012),
+      head: 0.3,
+      tail: 0.4,
+      bristle: 2,
+      seed: 64,
+      tip: 0
+    });
+    figure_blob(x, ex + s * 0.015, ey + s * 0.185, s * 0.018, 0.55, 0.35, 71, 0.3);
+    figure_pen(x, [[ex - s * 0.09, ey + s * 0.26], [ex + s * 0, ey + s * 0.275], [ex + s * 0.09, ey + s * 0.255]], {
+      tone: tone * 0.7,
+      alpha: 0.4 + light * 0.2,
+      w: Math.max(0.7, s * 0.012),
+      head: 0.2,
+      tail: 0.4,
+      bristle: 2,
+      seed: 65,
+      tip: 0
+    });
+    x.restore();
+  }
+  if (s > 40) {
+    const n = Math.round(figure_clamp(s * 0.35, 6, 40));
+    for (let i = 0; i < n; i++) {
+      const q = i / n;
+      const bx = cx - s * 0.22 + q * s * 0.44;
+      const by = cy + s * 0.32 + Math.sin(q * 3.1) * s * 0.02;
+      const len = s * figure_range(81, i, 0.16, 0.4);
+      figure_pen(x, [[bx, by], [bx + s * 0.02 * (q - 0.5) + Math.sin(t * 0.7 + i) * s * 4e-3, by + len * 0.55], [bx + s * 0.05 * (q - 0.5), by + len]], {
+        tone: tone * figure_range(82, i, 0.7, 1),
+        alpha: figure_range(83, i, 0.3, 0.7) * faceA,
+        w: Math.max(0.6, s * 8e-3),
+        head: 0.4,
+        tail: 0.85,
+        dry: 0.7,
+        bristle: 0,
+        seed: 84 + i,
+        tip: 0
+      });
+    }
+  }
+}
+function anglerBody(x, cx, cy, s, o = {}) {
+  const tone = o.tone ?? 0.85;
+  const turn = figure_clamp01(o.turn ?? 1);
+  const s2 = s;
+  const robe = new Path2D();
+  robe.moveTo(cx - s2 * 0.26, cy);
+  robe.bezierCurveTo(cx - s2 * 0.5, cy + s2 * 0.44, cx - s2 * 0.62, cy + s2 * 0.9, cx - s2 * 0.66, cy + s2 * 1.5);
+  robe.lineTo(cx + s2 * 0.66, cy + s2 * 1.5);
+  robe.bezierCurveTo(cx + s2 * 0.62, cy + s2 * 0.9, cx + s2 * 0.5, cy + s2 * 0.44, cx + s2 * 0.26, cy);
+  robe.closePath();
+  x.save();
+  x.globalCompositeOperation = "multiply";
+  const rg = x.createLinearGradient(cx - s2 * 0.6, 0, cx + s2 * 0.6, 0);
+  rg.addColorStop(0, figure_ink(tone * 0.5, 0.72));
+  rg.addColorStop(0.4, figure_ink(tone * 0.42, 0.6));
+  rg.addColorStop(1, figure_ink(tone * 0.55, 0.44));
+  x.fillStyle = rg;
+  x.fill(robe);
+  x.restore();
+  figure_pen(x, [[cx - s2 * 0.3, cy + s2 * 0.36], [cx - s2 * 0.44, cy + s2 * 0.86], [cx - s2 * 0.5, cy + s2 * 1.36]], { tone: tone * 0.6, alpha: 0.35, w: Math.max(1, s2 * 0.02), dry: 0.5, bristle: 2, seed: 91, tip: 0 });
+  figure_pen(x, [[cx + s2 * 0.16, cy + s2 * 0.4], [cx + s2 * 0.3, cy + s2 * 0.94], [cx + s2 * 0.38, cy + s2 * 1.4]], { tone: tone * 0.6, alpha: 0.3, w: Math.max(1, s2 * 0.02), dry: 0.55, bristle: 2, seed: 92, tip: 0 });
+  figure_pen(x, [[cx - s2 * 0.34, cy + s2 * 0.02], [cx - s2 * 0.12, cy - s2 * 0.05], [cx + s2 * 0.14, cy - s2 * 0.04], [cx + s2 * 0.34, cy + s2 * 0.04]], {
+    tone,
+    alpha: 0.6,
+    w: Math.max(1.2, s2 * 0.03),
+    head: 0.1,
+    tail: 0.4,
+    dry: 0.45,
+    bristle: 3,
+    seed: 93,
+    tip: 0
+  });
+  if (turn > 0.4) {
+    figure_pen(x, [[cx - s2 * 0.1, cy - s2 * 0.02], [cx - s2 * 0.02, cy + s2 * 0.16], [cx + s2 * 0.1, cy + s2 * 0.02]], { tone: tone * 0.8, alpha: 0.55, w: Math.max(1, s2 * 0.02), dry: 0.4, bristle: 2, seed: 94, tip: 0 });
+  }
 }
 
 ;// ../../../Desktop/个人网页/liubai/.drawai-motion/v2/c628a38315135199f224de06911f2d0e4b03e1ac977453f8f34662412df01b9a/scene-5.tsx
 
 
 
-function scene_5_Scene({ anchors = {} }) {
-  const frame = (0,esm.useCurrentFrame)();
-  const { durationInFrames } = (0,esm.useVideoConfig)();
-  const opacity = (0,esm.interpolate)(frame, [0, 12], [0, 1], { extrapolateRight: "clamp" });
-  const settle = (0,esm.interpolate)(frame, [durationInFrames - 10, durationInFrames], [1, 0.97], { extrapolateLeft: "clamp" });
-  return /* @__PURE__ */ react.createElement(esm.AbsoluteFill, { style: { background: PAPER, opacity: opacity * settle } }, /* @__PURE__ */ react.createElement(esm.AbsoluteFill, { style: { alignItems: "center", justifyContent: "center" } }, /* @__PURE__ */ react.createElement("div", { style: { color: INK, fontSize: 40, fontFamily: SERIF } }, "shot-6")));
+
+
+
+const scene_5_DUR = 240;
+const scene_5_draw = (x, f) => {
+  const t = f / scene_5_DUR;
+  x.drawImage(getPaper(), 0, 0);
+  const cx = W * 0.5;
+  const cy = H * 0.54;
+  const R = lerp(H * 0.2, H * 0.265, easeInOut(t));
+  x.save();
+  x.globalCompositeOperation = "multiply";
+  const face = x.createRadialGradient(cx, cy, R * 0.4, cx, cy, R * 5.2);
+  face.addColorStop(0, "rgba(120,102,78,0.16)");
+  face.addColorStop(0.42, "rgba(132,114,88,0.3)");
+  face.addColorStop(0.78, "rgba(140,120,92,0.42)");
+  face.addColorStop(1, "rgba(150,130,100,0.5)");
+  x.fillStyle = face;
+  x.fillRect(0, 0, W, H);
+  x.restore();
+  x.save();
+  x.globalCompositeOperation = "multiply";
+  const brim = x.createLinearGradient(0, 0, 0, H * 0.2);
+  brim.addColorStop(0, ink(0.9, 0.92));
+  brim.addColorStop(0.6, ink(0.86, 0.5));
+  brim.addColorStop(1, ink(0.8, 0));
+  x.fillStyle = brim;
+  x.beginPath();
+  x.moveTo(-20, -20);
+  x.lineTo(W + 20, -20);
+  x.lineTo(W + 20, H * 0.1);
+  x.quadraticCurveTo(W * 0.5, H * 0.2, -20, H * 0.11);
+  x.closePath();
+  x.fill();
+  x.restore();
+  for (let k = 0; k < 2; k++) {
+    const yy = cy - R * 1.72 + k * 16;
+    pen(x, [
+      [cx - R * 2.5, yy + R * 0.3],
+      [cx - R * 1.2, yy - R * 0.05],
+      [cx + R * 0.2, yy - R * 0.18],
+      [cx + R * 1.6, yy + R * 0.06],
+      [cx + R * 2.3, yy + R * 0.26]
+    ], {
+      tone: 0.62,
+      alpha: 0.24 - k * 0.08,
+      w: R * 0.15 - k * R * 0.05,
+      head: 0.2,
+      tail: 0.5,
+      dry: 0.75,
+      bristle: 6,
+      seed: 301 + k,
+      tip: 0.25,
+      halo: 0.6
+    });
+  }
+  eye(x, cx, cy, R, {
+    open: 1 - 0.06 * Math.sin(t * Math.PI),
+    t,
+    look: lerp(-0.06, 0.02, easeInOut(t)),
+    reflect: clamp01(0.4 + t * 0.9),
+    glow: 0.55,
+    seed: 311
+  });
+  pen(x, [
+    [cx - R * 1.5, cy + R * 1.32],
+    [cx - R * 0.4, cy + R * 1.55],
+    [cx + R * 0.8, cy + R * 1.5],
+    [cx + R * 1.7, cy + R * 1.24]
+  ], { tone: 0.5, alpha: 0.26, w: R * 0.08, head: 0.3, tail: 0.45, dry: 0.8, bristle: 5, seed: 321, tip: 0.2, halo: 0.5 });
+  for (let i = 0; i < 13; i++) {
+    const x0 = W * (0.2 + rnd(331, i) * 0.6);
+    const len = H * (0.08 + rnd(332, i) * 0.16);
+    const sway = Math.sin(t * 1.6 + i) * 6;
+    pen(x, [
+      [x0, H + 20],
+      [x0 + range(333, i, -26, 26) + sway, H - len * 0.55],
+      [x0 + range(334, i, -46, 46) + sway * 1.6, H - len]
+    ], {
+      tone: 0.55,
+      alpha: 0.16 + rnd(335, i) * 0.16,
+      w: 2.4 + rnd(336, i) * 2.2,
+      head: 0.35,
+      tail: 0.7,
+      dry: 0.6,
+      bristle: 4,
+      seed: 337 + i,
+      tip: 0.2
+    });
+  }
+  drawGrain(x, f, 0.05, 17);
+};
+function scene_5_Scene(_) {
+  return /* @__PURE__ */ react.createElement(InkStage, { draw: scene_5_draw });
 }
 
 ;// ../../../Desktop/个人网页/liubai/.drawai-motion/v2/c628a38315135199f224de06911f2d0e4b03e1ac977453f8f34662412df01b9a/scene-6.tsx
 
 
 
-function scene_6_Scene({ anchors = {} }) {
-  const frame = (0,esm.useCurrentFrame)();
-  const { durationInFrames } = (0,esm.useVideoConfig)();
-  const opacity = (0,esm.interpolate)(frame, [0, 12], [0, 1], { extrapolateRight: "clamp" });
-  const settle = (0,esm.interpolate)(frame, [durationInFrames - 10, durationInFrames], [1, 0.97], { extrapolateLeft: "clamp" });
-  return /* @__PURE__ */ react.createElement(esm.AbsoluteFill, { style: { background: PAPER, opacity: opacity * settle } }, /* @__PURE__ */ react.createElement(esm.AbsoluteFill, { style: { alignItems: "center", justifyContent: "center" } }, /* @__PURE__ */ react.createElement("div", { style: { color: INK, fontSize: 40, fontFamily: SERIF } }, "shot-7")));
+
+
+
+const scene_6_DUR = 240;
+const scene_6_draw = (x, f) => {
+  const t = f / scene_6_DUR;
+  x.drawImage(getPaper(), 0, 0);
+  const figX = W * 0.42;
+  const figY = H * 0.78;
+  x.save();
+  x.globalCompositeOperation = "multiply";
+  const sky = x.createLinearGradient(0, 0, 0, H * 0.8);
+  sky.addColorStop(0, "rgba(206,188,158,0.30)");
+  sky.addColorStop(0.6, "rgba(228,212,182,0.18)");
+  sky.addColorStop(1, "rgba(240,228,204,0)");
+  x.fillStyle = sky;
+  x.fillRect(0, 0, W, H);
+  x.restore();
+  water(x, { y: H * 0.74, h: H * 0.3, tone: 0.4, alpha: 0.8, seed: 401, t, wave: 0.8 });
+  mist(x, H * 0.72, H * 0.1, 0.36, 411, t * 0.5);
+  x.save();
+  x.translate(figX, figY);
+  boat(x, 0, 12, 78, { tone: 0.74, t, seed: 421, canopy: false });
+  boatman(x, -14, -10, 96, { tone: 0.78, lean: -0.05, pole: 1, arm: 0.35 + 0.5 * ss(0.05, 0.4, t) });
+  x.restore();
+  const stroke = ss(0.14, 0.86, t);
+  if (stroke > 1e-3) {
+    const p0 = [figX + 44, figY - 96];
+    const p1 = [figX + 250, figY - 330];
+    const p2 = [W * 0.86, H * 0.2];
+    const p3 = [W * 1.12, -H * 0.12];
+    const pts = [];
+    const N = 26;
+    for (let i = 0; i <= N; i++) {
+      const u = i / N;
+      const a = Math.pow(1 - u, 3);
+      const b = 3 * Math.pow(1 - u, 2) * u;
+      const c = 3 * (1 - u) * u * u;
+      const d = u * u * u;
+      pts.push([a * p0[0] + b * p1[0] + c * p2[0] + d * p3[0], a * p0[1] + b * p1[1] + c * p2[1] + d * p3[1]]);
+    }
+    pen(x, pts, {
+      tone: 0.92,
+      alpha: 0.94,
+      w: 30,
+      head: 0.02,
+      tail: 0.42,
+      dry: 0.42,
+      bristle: 9,
+      seed: 431,
+      reveal: stroke,
+      halo: 1.1,
+      tip: 0.12
+    });
+    pen(x, pts.map(([px, py]) => [px + 16, py + 10]), {
+      tone: 0.55,
+      alpha: 0.34,
+      w: 52,
+      head: 0.12,
+      tail: 0.6,
+      dry: 0.8,
+      bristle: 7,
+      seed: 441,
+      reveal: stroke * 0.96,
+      halo: 1.4,
+      tip: 0.3
+    });
+    for (let i = 0; i < 22; i++) {
+      const u = range(451, i, 0.25, 1);
+      const idx = Math.min(N, Math.floor(u * N));
+      const [px, py] = pts[idx];
+      pen(x, [[px, py], [px + range(452, i, 20, 150), py - range(453, i, 10, 90)]], {
+        tone: 0.7,
+        alpha: 0.3 * (1 - u * 0.4),
+        w: range(454, i, 1.2, 4.2),
+        head: 0.2,
+        tail: 0.7,
+        dry: 0.9,
+        bristle: 2,
+        seed: 455 + i,
+        reveal: clamp01((stroke - u * 0.6) * 3),
+        tip: 0.1
+      });
+    }
+    splatter(x, p2[0] - 30, p2[1] + 16, clamp01((t - 0.6) * 2.2), 461, 26, 0.5, 0.8);
+  }
+  const grow = ss(0.55, 1, t);
+  if (grow > 0) {
+    mountain(x, {
+      base: H * 0.88,
+      amp: H * 0.5,
+      seed: 471,
+      freq: 1.6,
+      oct: 5,
+      tone: 0.8,
+      alpha: 0.9,
+      peaks: [{ t: 0.28, w: 0.2 }, { t: 0.66, w: 0.24 }],
+      key: "s6near",
+      cun: 1.2,
+      rise: grow
+    });
+  }
+  paperWash(x, Math.pow(ss(0.88, 1, t), 2) * 0.55);
+  drawGrain(x, f, 0.05, 19);
+};
+function scene_6_Scene(_) {
+  return /* @__PURE__ */ react.createElement(InkStage, { draw: scene_6_draw });
 }
 
 ;// ../../../Desktop/个人网页/liubai/.drawai-motion/v2/c628a38315135199f224de06911f2d0e4b03e1ac977453f8f34662412df01b9a/scene-7.tsx
 
 
 
-function scene_7_Scene({ anchors = {} }) {
-  const frame = (0,esm.useCurrentFrame)();
-  const { durationInFrames } = (0,esm.useVideoConfig)();
-  const opacity = (0,esm.interpolate)(frame, [0, 12], [0, 1], { extrapolateRight: "clamp" });
-  const settle = (0,esm.interpolate)(frame, [durationInFrames - 10, durationInFrames], [1, 0.97], { extrapolateLeft: "clamp" });
-  return /* @__PURE__ */ react.createElement(esm.AbsoluteFill, { style: { background: PAPER, opacity: opacity * settle } }, /* @__PURE__ */ react.createElement(esm.AbsoluteFill, { style: { alignItems: "center", justifyContent: "center" } }, /* @__PURE__ */ react.createElement("div", { style: { color: INK, fontSize: 40, fontFamily: SERIF } }, "shot-8")));
+
+
+
+
+const scene_7_DUR = 288;
+const scene_7_draw = (x, f) => {
+  const t = f / scene_7_DUR;
+  x.drawImage(getPaper(), 0, 0);
+  const pull = easeInOut(ss(0, 0.5, t));
+  const sheetW = lerp(W * 1.32, W * 0.6, pull);
+  const sheetH = sheetW * 0.5625;
+  const sx = W * 0.5 - sheetW / 2;
+  const sy = lerp(-H * 0.16, H * 0.13, pull);
+  x.save();
+  x.globalCompositeOperation = "multiply";
+  const desk = x.createRadialGradient(W * 0.5, H * 0.44, H * 0.2, W * 0.5, H * 0.44, W * 0.82);
+  desk.addColorStop(0, "rgba(255,255,255,0)");
+  desk.addColorStop(0.55, "rgba(196,176,142,0.16)");
+  desk.addColorStop(1, "rgba(138,120,92,0.5)");
+  x.fillStyle = desk;
+  x.fillRect(0, 0, W, H);
+  x.restore();
+  x.save();
+  x.filter = "blur(18px)";
+  x.fillStyle = "rgba(70,58,42,0.24)";
+  x.fillRect(sx + 8, sy + 14, sheetW, sheetH);
+  x.filter = "none";
+  x.restore();
+  x.save();
+  x.beginPath();
+  x.rect(sx, sy, sheetW, sheetH);
+  x.clip();
+  x.fillStyle = "#EFE6D0";
+  x.fillRect(sx, sy, sheetW, sheetH);
+  x.translate(sx, sy);
+  x.scale(sheetW / W, sheetH / H);
+  mountain(x, { base: H * 0.74, amp: H * 0.3, seed: 501, freq: 1.6, oct: 5, tone: 0.32, alpha: 0.5, key: "s7far", blur: 4, cun: 0.2 });
+  mountain(x, { base: H * 0.88, amp: H * 0.28, seed: 511, freq: 2.1, oct: 5, tone: 0.68, alpha: 0.8, key: "s7mid", cun: 0.8 });
+  pen(x, [[-20, H * 0.86], [W * 0.5, H * 0.845], [W + 20, H * 0.87]], { tone: 0.4, alpha: 0.3, w: 12, head: 0.3, tail: 0.3, dry: 0.7, bristle: 5, seed: 521, tip: 0.2 });
+  mist(x, H * 0.72, H * 0.16, 0.34, 531, t * 0.4);
+  seal(x, W * 0.9, H * 0.82, 64, ["\u7559", "\u767D"], { reveal: ss(0.4, 0.62, t), seed: 541, rot: 0.01 });
+  x.restore();
+  x.save();
+  x.globalCompositeOperation = "multiply";
+  x.strokeStyle = ink(0.4, 0.22);
+  x.lineWidth = 1.2;
+  x.strokeRect(sx, sy, sheetW, sheetH);
+  x.restore();
+  const tt = ss(0.42, 0.8, t);
+  const ty = H * 0.72;
+  if (tt > 0) {
+    inkText(x, "\u7559\u767D", W * 0.5 - 96, ty, {
+      size: 150,
+      font: SERIF,
+      tone: 0.93,
+      spacing: 20,
+      align: "center",
+      reveal: tt,
+      seed: 551
+    });
+    inkText(x, "T H E   B L A N K", W * 0.5 - 96, ty + 92, {
+      size: 21,
+      font: MONO,
+      tone: 0.5,
+      spacing: 3,
+      align: "center",
+      reveal: clamp01((tt - 0.45) / 0.5),
+      seed: 553
+    });
+    hairline(x, W * 0.5 - 96 - 120, ty - 118, W * 0.5 - 96 + 120, ty - 118, clamp01((tt - 0.2) / 0.6), 561, 0.3);
+    seal(x, W * 0.5 + 176, ty - 34, 96, ["\u7559", "\u767D"], { reveal: clamp01((tt - 0.7) / 0.3), seed: 563, rot: -0.015 });
+  }
+  const ta = ss(0.62, 0.92, t);
+  if (ta > 0) {
+    inkText(x, "\u4E00\u7EB8\u4E4B\u4E0A\uFF0C\u4E07\u7269\u6765\u8FC7", W * 0.86, H * 0.7, {
+      size: 26,
+      font: SERIF,
+      tone: 0.5,
+      vertical: true,
+      spacing: 8,
+      align: "center",
+      reveal: ta,
+      seed: 571
+    });
+  }
+  x.fillStyle = "#C4281E";
+  x.fillRect(40, 40, 160, 40);
+  inkText(x, "\u7559\u767D", 520, 200, { size: 150, font: SERIF, tone: 0.93, align: "center", reveal: 1 });
+  inkText(x, "\u7559\u767D", 520, 440, { size: 150, font: SERIF, tone: 0.93, align: "center", reveal: 0.99 });
+  inkText(x, "\u7559\u767D", 520, 700, { size: 150, font: SERIF, tone: 0.93, align: "center", reveal: 0.99, spacing: 20 });
+  inkText(x, "\u6267\u7B14\u8005\uFF0C\u4EA6\u662F\u7B14\u3002", 1180, 380, { size: 96, font: SERIF, tone: 0.93, align: "center", reveal: 0.99 });
+  drawGrain(x, f, 0.045, 23);
+};
+function scene_7_Scene(_) {
+  return /* @__PURE__ */ react.createElement(InkStage, { draw: scene_7_draw });
 }
 
 ;// ../../../Desktop/个人网页/liubai/.drawai-motion/v2/c628a38315135199f224de06911f2d0e4b03e1ac977453f8f34662412df01b9a/scene-8.tsx
 
 
 
-function scene_8_Scene({ anchors = {} }) {
-  const frame = (0,esm.useCurrentFrame)();
-  const { durationInFrames } = (0,esm.useVideoConfig)();
-  const opacity = (0,esm.interpolate)(frame, [0, 12], [0, 1], { extrapolateRight: "clamp" });
-  const settle = (0,esm.interpolate)(frame, [durationInFrames - 10, durationInFrames], [1, 0.97], { extrapolateLeft: "clamp" });
-  return /* @__PURE__ */ react.createElement(esm.AbsoluteFill, { style: { background: PAPER, opacity: opacity * settle } }, /* @__PURE__ */ react.createElement(esm.AbsoluteFill, { style: { alignItems: "center", justifyContent: "center" } }, /* @__PURE__ */ react.createElement("div", { style: { color: INK, fontSize: 40, fontFamily: SERIF } }, "shot-9")));
+
+
+
+const scene_8_DUR = 288;
+const scene_8_draw = (x, f) => {
+  const t = f / scene_8_DUR;
+  x.drawImage(getPaper(), 0, 0);
+  const [c, cx] = scratch("s8ink", W, H);
+  cx.clearRect(0, 0, W, H);
+  const base = cx.createLinearGradient(0, 0, 0, H);
+  base.addColorStop(0, "rgba(32,28,23,0.97)");
+  base.addColorStop(0.5, "rgba(22,19,16,0.98)");
+  base.addColorStop(1, "rgba(30,26,21,0.97)");
+  cx.fillStyle = base;
+  cx.fillRect(0, 0, W, H);
+  cx.save();
+  cx.globalCompositeOperation = "source-over";
+  mountain(cx, { base: H * 1.02, amp: H * 0.34, seed: 601, freq: 1.9, oct: 5, tone: 0.96, alpha: 0.5, key: "s8a", cun: 0.9, cunTone: 0.7 });
+  mountain(cx, { base: H * 0.52, amp: H * 0.36, seed: 611, freq: 1.3, oct: 4, tone: 0.9, alpha: 0.34, key: "s8b", cun: 0.5, cunTone: 0.5 });
+  cx.restore();
+  const wipe = ss(0.1, 0.62, t);
+  cx.save();
+  cx.beginPath();
+  cx.rect(0, 0, W, H * (0.04 + wipe * 0.98));
+  cx.clip();
+  cx.globalCompositeOperation = "destination-out";
+  cx.fillStyle = "#000";
+  cx.textAlign = "center";
+  cx.textBaseline = "middle";
+  cx.font = `760px ${SERIF}`;
+  cx.fillText("\u7559", W * 0.5, H * 0.5);
+  cx.restore();
+  cx.save();
+  cx.globalCompositeOperation = "source-over";
+  cx.globalAlpha = 0.5 * wipe;
+  cx.strokeStyle = "rgba(239,230,208,0.5)";
+  cx.lineWidth = 3;
+  cx.filter = "blur(6px)";
+  cx.textAlign = "center";
+  cx.textBaseline = "middle";
+  cx.font = `760px ${SERIF}`;
+  cx.strokeText("\u7559", W * 0.5, H * 0.5);
+  cx.filter = "none";
+  cx.restore();
+  x.drawImage(c, 0, 0);
+  const cap = ss(0.55, 0.82, t);
+  if (cap > 0) {
+    x.save();
+    x.globalAlpha = cap;
+    x.fillStyle = paperC(0.92);
+    x.font = `30px ${SERIF}`;
+    x.textAlign = "center";
+    x.textBaseline = "middle";
+    x.letterSpacing = "6px";
+    x.fillText("\u7559\u767D\uFF0C\u662F\u6700\u6EE1\u7684\u4E00\u4E2A\u5B57\u3002", W * 0.5, H * 0.9);
+    x.restore();
+  }
+  drawGrain(x, f, 0.04, 29);
+};
+function scene_8_Scene(_) {
+  return /* @__PURE__ */ react.createElement(InkStage, { draw: scene_8_draw });
 }
 
 ;// ../../../Desktop/个人网页/liubai/.drawai-motion/v2/c628a38315135199f224de06911f2d0e4b03e1ac977453f8f34662412df01b9a/scene-9.tsx
 
 
 
-function scene_9_Scene({ anchors = {} }) {
-  const frame = (0,esm.useCurrentFrame)();
-  const { durationInFrames } = (0,esm.useVideoConfig)();
-  const opacity = (0,esm.interpolate)(frame, [0, 12], [0, 1], { extrapolateRight: "clamp" });
-  const settle = (0,esm.interpolate)(frame, [durationInFrames - 10, durationInFrames], [1, 0.97], { extrapolateLeft: "clamp" });
-  return /* @__PURE__ */ react.createElement(esm.AbsoluteFill, { style: { background: PAPER, opacity: opacity * settle } }, /* @__PURE__ */ react.createElement(esm.AbsoluteFill, { style: { alignItems: "center", justifyContent: "center" } }, /* @__PURE__ */ react.createElement("div", { style: { color: INK, fontSize: 40, fontFamily: SERIF } }, "shot-10")));
+
+
+
+const scene_9_DUR = 288;
+const scene_9_draw = (x, f) => {
+  const t = f / scene_9_DUR;
+  x.drawImage(getPaper(), 0, 0);
+  const drop = easeOut(ss(0, 0.42, t));
+  const tipY = lerp(-H * 0.5, H * 0.585, drop);
+  const tipX = W * 0.5;
+  x.save();
+  x.translate(tipX, tipY);
+  x.rotate(-0.26);
+  const shaftLen = H * 1.5;
+  pen(x, [[0, -H * 0.06], [4, -shaftLen * 0.5], [2, -shaftLen]], {
+    tone: 0.72,
+    alpha: 0.9,
+    w: 44,
+    head: 0.5,
+    tail: 0.5,
+    dry: 0.35,
+    bristle: 6,
+    seed: 701,
+    halo: 0.35,
+    tip: 0.4
+  });
+  x.save();
+  x.globalCompositeOperation = "multiply";
+  x.fillStyle = ink(0.88, 0.9);
+  x.fillRect(-30, -H * 0.115, 60, H * 0.03);
+  x.restore();
+  x.save();
+  x.beginPath();
+  x.moveTo(-24, -H * 0.085);
+  x.quadraticCurveTo(-16, -H * 0.02, 0, 0);
+  x.quadraticCurveTo(16, -H * 0.02, 24, -H * 0.085);
+  x.closePath();
+  const tipG = x.createLinearGradient(0, -H * 0.085, 0, 6);
+  tipG.addColorStop(0, ink(0.85, 0.9));
+  tipG.addColorStop(0.6, ink(0.95, 0.96));
+  tipG.addColorStop(1, ink(0.98, 1));
+  x.fillStyle = tipG;
+  x.fill();
+  x.restore();
+  x.restore();
+  const hit = ss(0.3, 0.52, t);
+  if (hit > 0) {
+    x.save();
+    x.globalCompositeOperation = "multiply";
+    const rr = 10 + 92 * easeOut(hit);
+    const g = x.createRadialGradient(tipX, H * 0.585, 0, tipX, H * 0.585, rr);
+    g.addColorStop(0, ink(0.92, 0.9));
+    g.addColorStop(0.55, ink(0.7, 0.4));
+    g.addColorStop(1, ink(0.5, 0));
+    x.fillStyle = g;
+    x.beginPath();
+    x.arc(tipX, H * 0.585, rr, 0, TAU);
+    x.fill();
+    x.restore();
+  }
+  const line = ss(0.34, 0.86, t);
+  if (line > 0) {
+    inkText(x, "\u6267\u7B14\u8005\uFF0C\u4EA6\u662F\u7B14\u3002", W * 0.5, H * 0.365, {
+      size: 118,
+      font: SERIF,
+      tone: 0.94,
+      spacing: 10,
+      align: "center",
+      reveal: line,
+      seed: 711
+    });
+    inkText(x, "T H E   O N E   W H O   P A I N T S   I S   A L S O   P A I N T E D", W * 0.5, H * 0.47, {
+      size: 17,
+      font: MONO,
+      tone: 0.5,
+      spacing: 2,
+      align: "center",
+      reveal: clamp01((line - 0.55) / 0.45),
+      seed: 721
+    });
+    hairline(x, W * 0.5 - 300, H * 0.305, W * 0.5 + 300, H * 0.305, clamp01((line - 0.2) / 0.6), 731, 0.26);
+  }
+  seal(x, W * 0.845, H * 0.7, 74, ["\u7559", "\u767D"], { reveal: ss(0.82, 0.96, t), seed: 741, rot: 0.02 });
+  drawGrain(x, f, 0.045, 31);
+};
+function scene_9_Scene(_) {
+  return /* @__PURE__ */ react.createElement(InkStage, { draw: scene_9_draw });
 }
 
 ;// ../../../Desktop/个人网页/liubai/.drawai-motion/v2/c628a38315135199f224de06911f2d0e4b03e1ac977453f8f34662412df01b9a/scene-10.tsx
 
 
 
-function scene_10_Scene({ anchors = {} }) {
-  const frame = (0,esm.useCurrentFrame)();
-  const { durationInFrames } = (0,esm.useVideoConfig)();
-  const opacity = (0,esm.interpolate)(frame, [0, 12], [0, 1], { extrapolateRight: "clamp" });
-  const settle = (0,esm.interpolate)(frame, [durationInFrames - 10, durationInFrames], [1, 0.97], { extrapolateLeft: "clamp" });
-  return /* @__PURE__ */ react.createElement(esm.AbsoluteFill, { style: { background: PAPER, opacity: opacity * settle } }, /* @__PURE__ */ react.createElement(esm.AbsoluteFill, { style: { alignItems: "center", justifyContent: "center" } }, /* @__PURE__ */ react.createElement("div", { style: { color: INK, fontSize: 40, fontFamily: SERIF } }, "shot-11")));
+
+
+
+
+const scene_10_DUR = 384;
+const CREDITS = [
+  { cn: "\u7559\u767D", en: "THE BLANK", size: 132, gap: 132, tone: 0.92 },
+  { cn: "\u6784\u60F3 \xB7 \u5267\u672C \xB7 \u5BFC\u6F14", en: "OPUS 5.5", size: 26, gap: 96, tone: 0.72 },
+  { cn: "\u534F\u540C\u521B\u4F5C", en: "GROK CLI", size: 26, gap: 84, tone: 0.66 },
+  { cn: "\u89C6\u89C9\u8BED\u8A00", en: "GEMINI", size: 26, gap: 84, tone: 0.66 },
+  { cn: "\u753B\u9762", en: "\u7A0B\u5E8F\u5316\u6C34\u58A8 \xB7 \u5B9E\u65F6\u6E32\u67D3", size: 26, gap: 96, tone: 0.6 },
+  { cn: "\u4E00\u7EB8\u7559\u767D\uFF0C\u4E07\u7269\u5728\u5176\u4E2D\u3002", size: 24, gap: 84, tone: 0.5 }
+];
+const scene_10_draw = (x, f) => {
+  const t = f / scene_10_DUR;
+  x.drawImage(getPaper(), 0, 0);
+  const back = ss(0, 0.5, t);
+  mountain(x, {
+    base: H * 1,
+    amp: H * 0.16,
+    seed: 801,
+    freq: 1.4,
+    oct: 4,
+    tone: 0.42,
+    alpha: 0.24 * back,
+    key: "s10",
+    blur: 5,
+    cun: 0.15,
+    rise: back
+  });
+  mist(x, H * 0.945, H * 0.08, 0.4, 811, t * 0.3);
+  const T0 = 0.06;
+  const step = 0.115;
+  let y = H * 0.2;
+  CREDITS.forEach((c, i) => {
+    const t0 = T0 + i * step;
+    const k = ss(t0, t0 + 0.14, t);
+    if (k > 5e-3) {
+      const dy = (1 - k) * 14;
+      inkText(x, c.cn, W * 0.5, y + dy, {
+        size: c.size,
+        font: SERIF,
+        tone: c.tone,
+        spacing: c.size > 60 ? 30 : 12,
+        align: "center",
+        reveal: k,
+        seed: 820 + i * 7
+      });
+      if (c.en) {
+        inkText(x, c.en, W * 0.5, y + dy + c.size * 0.86, {
+          size: c.size > 60 ? 20 : 15,
+          font: MONO,
+          tone: c.tone * 0.72,
+          spacing: c.size > 60 ? 6 : 2,
+          align: "center",
+          reveal: clamp01((k - 0.35) / 0.6),
+          seed: 830 + i * 7
+        });
+      }
+      if (i === 0) hairline(x, W * 0.5 - 150, y + dy + 96, W * 0.5 + 150, y + dy + 96, clamp01((k - 0.3) / 0.6), 841, 0.28);
+    }
+    y += c.gap;
+  });
+  seal(x, W * 0.5, H * 0.865, 62, ["\u7559", "\u767D"], { reveal: ss(0.78, 0.9, t), seed: 851, rot: -0.01 });
+  paperWash(x, Math.pow(ss(0.9, 1, t), 1.6) * 0.72);
+  drawGrain(x, f, 0.04, 37);
+};
+function scene_10_Scene(_) {
+  return /* @__PURE__ */ react.createElement(InkStage, { draw: scene_10_draw });
 }
 
 ;// ../../../Desktop/个人网页/liubai/.drawai-motion/v2/c628a38315135199f224de06911f2d0e4b03e1ac977453f8f34662412df01b9a/index.jsx
@@ -34017,7 +35061,7 @@ var NoReactInternals = {
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module is referenced by other modules so it can't be inlined
 /******/ 	__webpack_require__(5991);
-/******/ 	__webpack_require__(2326);
+/******/ 	__webpack_require__(4435);
 /******/ 	__webpack_require__(8630);
 /******/ 	var __webpack_exports__ = __webpack_require__(9842);
 /******/ 	

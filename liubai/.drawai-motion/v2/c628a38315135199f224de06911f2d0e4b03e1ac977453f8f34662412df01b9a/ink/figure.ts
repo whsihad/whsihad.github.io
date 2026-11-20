@@ -69,9 +69,9 @@ export function eye(x: CanvasRenderingContext2D, cx: number, cy: number, R: numb
   x.save()
   x.globalCompositeOperation = 'multiply'
   const irisG = x.createRadialGradient(ix, iy, R * 0.1, ix, iy, R * 1.06)
-  irisG.addColorStop(0, 'rgba(58,42,28,0.94)')
-  irisG.addColorStop(0.42, 'rgba(86,58,34,0.92)')
-  irisG.addColorStop(0.78, 'rgba(52,34,20,0.95)')
+  irisG.addColorStop(0, 'rgba(56,48,40,0.94)')
+  irisG.addColorStop(0.42, 'rgba(78,68,56,0.92)')
+  irisG.addColorStop(0.78, 'rgba(44,38,31,0.95)')
   irisG.addColorStop(0.94, 'rgba(26,18,12,1)')
   irisG.addColorStop(1, 'rgba(20,14,10,1)')
   x.beginPath()

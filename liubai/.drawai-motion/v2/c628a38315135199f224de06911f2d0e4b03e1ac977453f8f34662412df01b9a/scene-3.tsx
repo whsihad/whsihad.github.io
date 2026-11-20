@@ -62,27 +62,27 @@ const draw = (x: CanvasRenderingContext2D, f: number): void => {
 
   // 擦：一笔带过去，留下的是纸
   if (sweep > 0) {
-    wc.save()
-    wc.globalCompositeOperation = 'destination-out'
-    wc.fillStyle = '#000'
+    wx.save()
+    wx.globalCompositeOperation = 'destination-out'
+    wx.fillStyle = '#000'
     const N = 40
-    wc.beginPath()
-    wc.moveTo(-W * 0.3, H * 1.4)
+    wx.beginPath()
+    wx.moveTo(-W * 0.3, H * 1.42)
     for (let i = 0; i <= N; i++) {
       const u = i / N
-      const yy = H * (1.42 - 0.78 * u)
+      const yy = H * (1.42 - 1.78 * u)
       // 前端是湿的：笔尖带出的毛边
       const tip = ex - H * 0.06 * Math.sin(u * Math.PI) - (n1(u * 8 + 3, 191) - 0.5) * H * 0.05
-      wc.lineTo(tip, yy)
+      wx.lineTo(tip, yy)
     }
-    wc.lineTo(-W * 0.3, H * 0.62)
-    wc.closePath()
-    wc.globalAlpha = 0.98
-    wc.filter = 'blur(3px)'
-    wc.fill()
-    wc.filter = 'none'
-    wc.globalAlpha = 1
-    wc.restore()
+    wx.lineTo(-W * 0.3, -H * 0.36)
+    wx.closePath()
+    wx.globalAlpha = 0.98
+    wx.filter = 'blur(3px)'
+    wx.fill()
+    wx.filter = 'none'
+    wx.globalAlpha = 1
+    wx.restore()
   }
   x.drawImage(wc, 0, 0)
 
@@ -96,7 +96,7 @@ const draw = (x: CanvasRenderingContext2D, f: number): void => {
     x.beginPath()
     for (let i = 0; i <= 40; i++) {
       const u = i / 40
-      const yy = H * (1.42 - 0.78 * u)
+      const yy = H * (1.42 - 1.78 * u)
       const tip = ex - H * 0.06 * Math.sin(u * Math.PI) - (n1(u * 8 + 3, 191) - 0.5) * H * 0.05
       if (i === 0) x.moveTo(tip, yy)
       else x.lineTo(tip, yy)

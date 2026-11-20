@@ -69,7 +69,9 @@
       const remote = 'https://gcore.jsdelivr.net/gh/whsihad/whsihad.github.io@8f7e071/assets/app.js?v=8f7e071';
       // 线上走 CDN（国内更快），本机预览始终用本地文件，免得改完看不到效果
       const useRemote = /\.github\.io$/.test(location.hostname);
-      (useRemote ? import(remote).catch(() => import(local)) : import(local));
+      if (location.protocol !== 'file:') {
+        (useRemote ? import(remote).catch(() => import(local)) : import(local));
+      }
     </script>
     <script>
       /* 先把 3D 模型和音乐预热到浏览器缓存：引擎自己 fetch 时就能秒回，不再卡在「正在准备声音」 */
@@ -110,6 +112,40 @@
     </script>
   </head>
   <body>
+    <div id="file-warning" hidden>
+      <div class="fw-inner">
+        <img src="./favicon.svg" alt="" width="126" height="126" class="fw-mark" />
+        <p class="fw-kicker">LOCAL PREVIEW / 本地预览</p>
+        <h1>这一页要跑在本地服务器上</h1>
+        <p class="fw-text">
+          直接双击 index.html 打不开——3D 模型和档案数据要被浏览器从服务器读，<code>file://</code> 会被安全策略拦住。
+        </p>
+        <p class="fw-text">
+          双击同一个文件夹里的 <b>启动预览.cmd</b>，浏览器会自动打开 <code>127.0.0.1:8800</code>。
+        </p>
+        <p class="fw-text fw-dim">或者直接看线上版本：<a href="https://whsihad.github.io/">whsihad.github.io</a></p>
+      </div>
+    </div>
+    <script>
+      if (location.protocol === 'file:') {
+        document.getElementById('file-warning').hidden = false;
+      }
+    </script>
+    <style>
+      #file-warning{position:fixed;inset:0;z-index:9999;background:#e8e5e1;color:#0a0a09;
+        font-family:MiSans,"PingFang SC","Microsoft YaHei",system-ui,sans-serif;
+        display:grid;place-items:center;padding:32px}
+      #file-warning[hidden]{display:none}
+      .fw-inner{max-width:560px}
+      .fw-mark{display:block;margin-bottom:6px;filter:none}
+      .fw-kicker{font:400 11px/1 ui-monospace,Consolas,monospace;letter-spacing:.18em;color:#8b8780;margin:26px 0 18px}
+      #file-warning h1{font-size:30px;line-height:1.3;letter-spacing:-.4px;margin:0 0 18px;font-weight:600}
+      .fw-text{font-size:14px;line-height:1.95;color:#4b4842;margin:0 0 12px}
+      .fw-dim{color:#8b8780;margin-top:24px}
+      #file-warning code{font-family:ui-monospace,Consolas,monospace;font-size:12.5px;background:rgba(10,10,9,.06);padding:2px 6px}
+      #file-warning a{color:#0a0a09;border-bottom:1px solid #0a0a09;text-decoration:none}
+    </style>
     <main id="viewport"><div id="stage"></div></main>
   </body>
 </html>
+

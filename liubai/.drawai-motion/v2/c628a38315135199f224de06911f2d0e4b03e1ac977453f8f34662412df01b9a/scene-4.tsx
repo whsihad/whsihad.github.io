@@ -37,9 +37,9 @@ const draw = (x: CanvasRenderingContext2D, f: number): void => {
   x.translate(bx, by)
   x.rotate(bob)
   x.translate(-bx, -by)
-  reflection(x, bx, by + 6, H * 0.12, W * 0.16, t, 251, 0.22)
-  boat(x, bx, by, 1, { tone: 0.72, t, seed: 261, canopy: true, lantern: 0.9 })
-  boatman(x, bx - 6, by - 16, 1, { tone: 0.7, lean: -0.04 + Math.sin(t * 2.4) * 0.012, pole: 1, arm: 0.5 + Math.sin(t * 2.4) * 0.06 })
+  reflection(x, bx, by + 6, H * 0.12, W * 0.16, t, 251, 0.25)
+  boat(x, bx, by, 78, { tone: 0.72, t, seed: 261, canopy: true, lantern: 0.9 })
+  boatman(x, bx - 10, by - 18, 74, { tone: 0.7, lean: -0.04 + Math.sin(t * 2.4) * 0.012, pole: 1, arm: 0.5 + Math.sin(t * 2.4) * 0.06 })
   x.restore()
 
   // 水面的一条亮带：把船托起来

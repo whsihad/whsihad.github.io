@@ -338,18 +338,21 @@ export function inkText(x: CanvasRenderingContext2D, text: string, px: number, p
 
   // 渗纸：用扩张的墨点做 mask，字是一点点「洇」出来的
   if (reveal < 1) {
-    t.globalCompositeOperation = 'destination-in'
-    const count = clamp(Math.round((cw * ch) / (size * size * 0.55)), 90, 720)
+    const [m, mx] = scratch('textmask:' + Math.ceil(cw) + 'x' + Math.ceil(ch), cw, ch)
+    mx.fillStyle = 'rgba(0,0,0,1)'
+    const count = clamp(Math.round((cw * ch) / (size * size * 0.42)), 140, 960)
     for (let i = 0; i < count; i++) {
       const bx = rnd(o.seed ?? 11, i) * cw
       const by = rnd((o.seed ?? 11) + 1, i) * ch
-      const delay = rnd((o.seed ?? 11) + 2, i) * 0.7
-      const r = Math.max(0, (reveal * 1.5 - delay) * size * 0.42)
-      if (r <= 0) continue
-      t.beginPath()
-      t.arc(bx, by, r, 0, TAU)
-      t.fill()
+      const delay = rnd((o.seed ?? 11) + 2, i) * 0.62
+      const rr = (reveal * 1.6 - delay) * size * 0.5
+      if (rr <= 0) continue
+      mx.beginPath()
+      mx.arc(bx, by, rr, 0, TAU)
+      mx.fill()
     }
+    t.globalCompositeOperation = 'destination-in'
+    t.drawImage(m, 0, 0)
     t.globalCompositeOperation = 'source-over'
   }
 
