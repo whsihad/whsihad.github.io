@@ -26,7 +26,20 @@
 | sakura4388 | whsihad |
 | chenjinfeng-homepage.pages.dev | whsihad.github.io |
 
-八份档案：X-001 人生概览 / 002 学习经历 / 003 职业经历 / 004 项目与成果 / 005 技能与专长 / 006 荣誉与证书 / 007 重要经历 / 008 未来规划。内容只写事实：`003` 明写「无正式任职、无实习」，`006` 明写「暂无公开奖项/证书」。
+八份档案（自己的八个栏目，配图在 `assets/records/`）：
+
+| 编号 | 栏目 | 内容 | 图 |
+|---|---|---|---|
+| X-001 | 关于我 ABOUT | 一句话、事实表、正在做 | — |
+| X-002 | 学习与 AI LEARNING IN PUBLIC | 在学、怎么用 AI、接下来 | — |
+| X-003 | 我做过什么 SELECTED WORK | 五个项目 + 一个例子 + 判断标准 | 5 张截图 |
+| X-004 | 随手一拍 MOMENTS | 九张照片、拍什么、为什么拍 | 9 张照片 |
+| X-005 | 代码之外 OFFLINE | 游戏、城市、跑步 | — |
+| X-006 | 明日方舟 ARKNIGHTS | 为什么喜欢、怎么玩、留下什么 | — |
+| X-007 | 现在的目标 NEXT | 眼前三件事、再远一点、不做什么 | — |
+| X-008 | 联系 CONTACT | 邮箱、GitHub、替代入口 | — |
+
+图片写进档案数据里：`'IMG:assets/records/01.jpg|01 双人海战棋'`，`build.mjs` 给 bundle 的 `S0()` 打了补丁，把这种行渲染成 `<figure>`；`.tab-panel` 从 189px 放大到 306px，图片按三列网格排。内容只写事实：`X-003` 的项目描述与截图一一对应，没有的奖项、实习一律不写。
 
 ## 两个状态
 
@@ -39,8 +52,10 @@ detail  详情：左 3D 磁带模型（拖动 360°），右档案正文、标�
 
 ## 部署与加载
 
-- HTML 留在 GitHub Pages；JS / CSS / 字体 / GLB 走 `gcore.jsdelivr.net/gh/whsihad/whsihad.github.io@main/...`，国内实测比 Pages 快约 10 倍（40 KB/s → 450 KB/s）。CDN 失败时 `index.html` 自动回落到本地副本。
+- HTML 留在 GitHub Pages；JS / CSS / 字体 / GLB 走 `gcore.jsdelivr.net/gh/whsihad/whsihad.github.io@<commit>/...`，国内实测比 Pages 快约 10 倍（40 KB/s → 450 KB/s）。CDN 失败时 `index.html` 自动回落到本地副本。
+- **jsDelivr 的 `@main` 有缓存，会继续发旧包**：每次部署后必须跑 `node _tools/pin-cdn.mjs <新 commit 短哈希>` 把地址钉到那个 commit，再提交一次。本机预览（localhost）始终走本地文件，不受影响。
 - 入口**不再等 3D 模型**（`assets/app.js` 里的 patch：`qe?.load()` 不再进 `Promise.all`），所以首屏 5 秒左右就能点；模型在后台下载，进场后自然补齐。
+- 模型没下完就进详情时，正文会被场景动画卡在透明状态，`index.html` 里有一段兜底：5 秒后加 `force-detail-visible`，强制显示正文并隐去解密遮罩。
 - 实测冷启动（国内直连）：入口可点约 5 s，档案台约 8–10 s 完整。
 
 ## 手机端
