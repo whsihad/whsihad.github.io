@@ -1,0 +1,52 @@
+/* 手机端微调：只在窄屏生效，不动桌面端的莱茵版式。 */
+
+@media (max-width: 480px) {
+  /* 图标下移一行，彻底避开标题 */
+  #stage .system-nav {
+    top: 62px !important;
+  }
+  /* 顶部导航只留图标，避免和标题打架 */
+  #stage .system-nav button {
+    font-size: 0 !important;
+    gap: 0 !important;
+    padding: 0 10px !important;
+  }
+  #stage .system-nav .nav-glyph,
+  #stage .system-nav .settings-glyph {
+    font-size: 15px !important;
+    line-height: 1 !important;
+  }
+  #stage .system-nav .settings-label {
+    font-size: 0 !important;
+  }
+
+  /* 档案描诉块九宫格上方留白，文字压在条上时加一层纸色纱 */
+  #stage .archive-callout {
+    background: linear-gradient(
+      180deg,
+      transparent 0,
+      color-mix(in srgb, #e8e5e1 94%, transparent) 18%,
+      color-mix(in srgb, #e8e5e1 94%, transparent) 84%,
+      transparent 100%
+    );
+    backdrop-filter: blur(4px);
+    padding: 26px 16px 30px;
+    margin-left: -16px;
+    box-sizing: content-box;
+  }
+
+  /* 底部信息一行放不下时允许换行，字号提一档 */
+  #stage .system-footer {
+    font-size: 9px !important;
+    gap: 10px !important;
+    flex-wrap: wrap;
+    row-gap: 4px;
+  }
+}
+
+@media (max-width: 360px) {
+  #stage .archive-callout {
+    padding: 12px 12px 10px;
+    margin-left: -12px;
+  }
+}
