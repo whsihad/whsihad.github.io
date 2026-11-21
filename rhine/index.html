@@ -48,6 +48,14 @@
     </script>
 
     <meta charset="UTF-8" />
+    <!-- 线上是 GitHub Pages 子目录：资源写绝对路径会落到站点根（星轨款），这里先按本站根改写 -->
+    <script>
+      if (/\/rhine\/?$/.test(location.pathname)) {
+        var b = document.createElement('base');
+        b.href = '/rhine/';
+        document.head.appendChild(b);
+      }
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="theme-color" content="#e8e5e1" />
     <meta name="mobile-web-app-capable" content="yes" />
@@ -123,8 +131,7 @@
         <p class="fw-text">
           双击同一个文件夹里的 <b>启动预览.cmd</b>，浏览器会自动打开 <code>127.0.0.1:8800</code>。
         </p>
-        <p class="fw-text fw-dim" style="margin-top:18px"><a href="/" style="color:inherit;text-decoration:none;border-bottom:1px solid currentColor;padding-bottom:2px">← 回到星轨航行档案</a></p>
-<p class="fw-text fw-dim">或者直接看线上版本：<a href="https://whsihad.github.io/">whsihad.github.io</a></p>
+        <p class="fw-text fw-dim" style="margin-top:18px"><a href="/">← 回到星轨航行档案</a>　或直接看线上版本：<a href="https://whsihad.github.io/rhine/">whsihad.github.io/rhine</a></p>
       </div>
     </div>
     <script>
@@ -145,6 +152,7 @@
       .fw-dim{color:#8b8780;margin-top:24px}
       #file-warning code{font-family:ui-monospace,Consolas,monospace;font-size:12.5px;background:rgba(10,10,9,.06);padding:2px 6px}
       #file-warning a{color:#0a0a09;border-bottom:1px solid #0a0a09;text-decoration:none}
+      #file-warning .fw-dim a{color:#8b8780;border-bottom-color:#c9c5bd;margin-right:2px}
     </style>
     <main id="viewport"><div id="stage"></div></main>
   </body>
