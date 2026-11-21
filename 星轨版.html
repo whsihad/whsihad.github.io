@@ -81,7 +81,7 @@ main{position:fixed;top:var(--header);right:0;bottom:var(--footer);left:var(--ra
 .footer-next span:last-child{color:var(--gold);font-size:20px}
 .home{padding-top:0;padding-bottom:0;display:flex;flex-direction:column}
 .hero{position:relative;display:grid;grid-template-columns:1fr 1.08fr;align-items:center;gap:20px;flex:1;min-height:510px;padding:45px 0 30px}
-.hero::before{content:"";position:absolute;inset:0 calc(-1 * var(--gutter,var(--pad))) 0 24%;pointer-events:none;background:linear-gradient(90deg,var(--bg),transparent 38%),linear-gradient(0deg,var(--bg),transparent 35%,rgba(9,13,20,.18)),url("_old/v1-assets/gen/g-space.jpg") center 65%/cover;opacity:.72;z-index:-1}
+.hero::before{content:"";position:absolute;inset:0 calc(-1 * var(--gutter,var(--pad))) 0 24%;pointer-events:none;background:linear-gradient(90deg,var(--bg),transparent 38%),linear-gradient(0deg,var(--bg),transparent 35%,rgba(9,13,20,.18)),url("assets/gen/g-space.jpg") center 65%/cover;opacity:.72;z-index:-1}
 .hero-copy{position:relative;z-index:2}
 .hero-greeting{font:16px/1.6 var(--serif);letter-spacing:.18em;color:var(--muted);margin:0 0 15px}
 .hero-title{font:400 clamp(70px,8vw,120px)/1.08 var(--serif);letter-spacing:.055em;margin:0 0 25px}
@@ -248,8 +248,8 @@ dialog::backdrop{background:rgba(4,7,12,.86);backdrop-filter:blur(12px)}
 .genesis{position:fixed;inset:0;z-index:9000;background:#04060c;overflow:hidden;isolation:isolate}
 .genesis.done{opacity:0;transition:opacity .8s ease;pointer-events:none}
 .g-sky,.g-gal{position:absolute;inset:-6%;width:112%;height:112%;object-fit:cover;will-change:transform,opacity;background-position:center;background-size:cover;background-repeat:no-repeat}
-.g-sky{background-image:url("_old/v1-assets/intro/sky.jpg")}
-.g-gal{background-image:url("_old/v1-assets/intro/galaxy.jpg")}
+.g-sky{background-image:url("assets/intro/sky.jpg")}
+.g-gal{background-image:url("assets/intro/galaxy.jpg")}
 .g-sky{opacity:1;transform:scale(1.04);animation:gSky 9s ease-out forwards}
 @keyframes gSky{to{transform:scale(1.18)}}
 .g-gal{opacity:0;transition:opacity .9s ease;transform:scale(1.02)}
@@ -415,6 +415,55 @@ dialog::backdrop{background:rgba(4,7,12,.86);backdrop-filter:blur(12px)}
   -webkit-mask-image:radial-gradient(120% 90% at 50% 70%,#000 0%,rgba(0,0,0,.55) 55%,transparent 88%);
   mask-image:radial-gradient(120% 90% at 50% 70%,#000 0%,rgba(0,0,0,.55) 55%,transparent 88%)}
 .page[data-page="links"] .page-head,.page[data-page="links"] .contact-grid{position:relative;z-index:1}
+
+/* ---- 一隅：首屏引子 + 舱室入口 ---- */
+.hero-eyebrow{font:10px/1.6 var(--mono,ui-monospace,monospace);letter-spacing:.34em;text-transform:uppercase;color:var(--gold);margin:0 0 26px;opacity:.9}
+.hero-title--scene{font:400 clamp(38px,4.2vw,62px)/1.42 var(--serif);letter-spacing:.03em;margin:0 0 22px;max-width:13ch}
+.hero-title--scene::after{content:"";display:block;width:44px;height:1px;margin-top:22px;background:linear-gradient(90deg,var(--gold),transparent)}
+.hero-sign{display:flex;align-items:center;gap:10px;margin:34px 0 0;font:10px/1.5 var(--mono,ui-monospace,monospace);letter-spacing:.2em;color:var(--muted);opacity:.62}
+.hero-sign i{width:16px;height:1px;background:currentColor;display:inline-block;opacity:.6}
+.orbit-wrap{position:relative}
+.pocket{position:absolute;right:-9.5%;bottom:9%;width:clamp(200px,21.5%,252px);display:flex;flex-direction:column;
+  text-decoration:none;color:inherit;border:1px solid rgba(227,200,138,.22);border-radius:14px;overflow:hidden;
+  background:linear-gradient(180deg,rgba(12,18,24,.72),rgba(8,12,16,.9));
+  backdrop-filter:blur(9px) saturate(1.1);-webkit-backdrop-filter:blur(9px) saturate(1.1);
+  box-shadow:0 26px 60px -30px rgba(0,0,0,.9),inset 0 1px 0 rgba(255,255,255,.05);
+  transition:transform .5s cubic-bezier(.22,.61,.36,1),border-color .4s,box-shadow .5s}
+.pocket:hover,.pocket:focus-visible{transform:translateY(-6px);border-color:rgba(227,200,138,.46);box-shadow:0 34px 70px -28px rgba(0,0,0,.95),inset 0 1px 0 rgba(255,255,255,.08)}
+.pocket-art{display:block;padding:4px 2px 0;background:radial-gradient(120% 90% at 50% 28%,rgba(126,155,148,.14),transparent 70%)}
+.pocket-art svg{width:100%;height:auto;display:block;transform:scale(.98);transition:transform .6s cubic-bezier(.22,.61,.36,1)}
+.pocket:hover .pocket-art svg{transform:scale(1.03)}
+.pocket-foot{display:grid;grid-template-columns:1fr auto;align-items:center;gap:5px 8px;padding:11px 14px 14px;border-top:1px solid rgba(227,200,138,.14)}
+.pocket-kicker{grid-column:1/-1;font:9px/1.4 var(--mono,ui-monospace,monospace);letter-spacing:.22em;color:var(--muted);opacity:.8}
+.pocket-name{font:400 15px/1.35 var(--serif);letter-spacing:.05em;white-space:nowrap}
+.pocket-name i{display:block;font-style:normal;font-size:10px;letter-spacing:.14em;color:var(--muted);opacity:.62;margin-top:3px}
+.pocket-arrow{font-size:13px;color:var(--gold);opacity:.85;align-self:end}
+@media (max-width:1080px){.pocket{position:static;width:min(320px,100%);margin:18px auto 0}}
+@media (prefers-reduced-motion:reduce){.pocket,.pocket-art svg{transition:none}}
+.orbit-wrap .orbit-hint{max-width:calc(100% - 258px);text-align:left;padding-left:4px;margin-top:12px;letter-spacing:.1em}
+.orbit{max-width:552px}
+
+/* ---- 一隅：点击放大 ---- */
+.room-zoom{position:fixed;inset:0;z-index:1200;display:grid;place-items:center;padding:clamp(18px,4vh,54px);
+  background:rgba(4,6,10,.9);backdrop-filter:blur(18px) saturate(.86);-webkit-backdrop-filter:blur(18px) saturate(.86);
+  opacity:0;visibility:hidden;transition:opacity .45s ease,visibility 0s linear .45s}
+.room-zoom.on{opacity:1;visibility:visible;transition:opacity .45s ease,visibility 0s}
+.room-zoom .rz-inner{width:min(76vw,880px,calc((100dvh - 168px) * 1.194));display:grid;gap:14px;
+  transform:scale(.9) translateY(14px);opacity:0;transition:transform .6s cubic-bezier(.22,.61,.36,1),opacity .5s ease}
+.room-zoom.on .rz-inner{transform:none;opacity:1}
+.rz-art{max-height:calc(100dvh - 210px);border:1px solid rgba(227,200,138,.2);border-radius:18px;overflow:hidden;
+  background:radial-gradient(120% 90% at 50% 26%,rgba(126,155,148,.16),rgba(8,12,16,.92) 72%);
+  box-shadow:0 50px 120px -50px rgba(0,0,0,.95),inset 0 1px 0 rgba(255,255,255,.05);padding:clamp(8px,1.6vh,20px)}
+.rz-art svg{width:100%;height:100%;max-height:calc(100dvh - 232px);object-fit:contain;display:block}
+.rz-bar{display:flex;flex-wrap:wrap;gap:12px 20px;justify-content:space-between;align-items:center;
+  font:10px/1.6 var(--mono,ui-monospace,monospace);letter-spacing:.18em;color:var(--muted);text-transform:uppercase}
+.rz-actions{display:flex;gap:10px;align-items:center}
+.rz-enter,.rz-close{font:inherit;letter-spacing:.16em;color:var(--ink);background:none;cursor:pointer;
+  border:1px solid rgba(227,200,138,.22);border-radius:999px;padding:7px 14px;text-decoration:none;transition:.35s}
+.rz-enter:hover,.rz-close:hover,.rz-enter:focus-visible,.rz-close:focus-visible{border-color:rgba(227,200,138,.55);color:var(--gold)}
+body.rz-open{overflow:hidden}
+@media (max-width:1080px){.room-zoom .rz-inner{width:min(92vw,880px)}}
+@media (prefers-reduced-motion:reduce){.room-zoom,.room-zoom .rz-inner{transition:none}}
 </style>
 
 
@@ -437,6 +486,51 @@ dialog::backdrop{background:rgba(4,7,12,.86);backdrop-filter:blur(12px)}
 @keyframes scStreak{to{opacity:.7;transform:rotate(-18deg) scaleX(1)}}
 @keyframes scOut{to{opacity:0;visibility:hidden}}
 @media (prefers-reduced-motion:reduce){#splashCover{display:none}}
+</style>
+<style id="homeTune">
+[data-page="home"] .orbit-wrap{width:min(520px,100%);margin:auto}
+[data-page="home"] .orbit{transform:translate(-22px,-16px)}
+[data-page="home"] .hero{padding:34px 0 24px}
+[data-page="home"] .hero-title--scene{margin:0 0 18px;line-height:1.34}
+[data-page="home"] .hero-copy .prose{margin-top:14px}
+[data-page="home"] .actions{margin-top:22px}
+[data-page="home"] .hero-sign{margin-top:20px}
+[data-page="home"] .hero-eyebrow{margin-bottom:20px}
+@media (max-width:1080px){[data-page="home"] .orbit-wrap{width:100%;margin:0 auto;transform:none}}
+</style>
+<style id="pocketCompact">
+.pocket{display:grid;grid-template-columns:84px 1fr;align-items:center;gap:0 11px;width:clamp(214px,22%,232px);padding:8px 10px 8px 8px;right:-4.5%;bottom:3%}
+.pocket-art{padding:0}
+.pocket-art svg{width:84px;height:auto;display:block}
+.pocket-foot{display:block;padding:0 10px 0 0}
+.pocket-kicker{display:none}
+.pocket-name{display:block;font-size:12.5px;line-height:1.3;white-space:nowrap;letter-spacing:.02em}
+.pocket-name i{display:block;margin-top:6px;font-size:9px;letter-spacing:.12em}
+.pocket-arrow{position:absolute;top:8px;right:9px;font-size:11px}
+@media (max-width:1080px){.pocket{grid-template-columns:96px 1fr;width:min(300px,100%);position:static;margin:14px auto 0}.pocket-kicker{display:block;margin-bottom:6px}.pocket-art svg{width:96px}}
+</style>
+<style id="heroCabin">
+.hero{grid-template-columns:minmax(0,1.02fr) clamp(300px,23.5vw,392px) minmax(0,1.04fr);gap:clamp(14px,1.8vw,30px)}
+.hero-cabin{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;align-self:center}
+.hero-cabin .pocket{position:static;right:auto;bottom:auto;display:block;width:100%;border:0;background:none;backdrop-filter:none;padding:0;border-radius:0;transform:none}
+.hero-cabin .pocket:hover{transform:none}
+.hero-cabin .pocket-art{padding:0;background:none;border:0}
+.hero-cabin .pocket-art svg{width:100%;height:auto;filter:drop-shadow(0 26px 46px rgba(0,0,0,.55));transition:transform .5s cubic-bezier(.22,.61,.36,1),filter .5s}
+.hero-cabin .pocket:hover .pocket-art svg{transform:translateY(-6px) scale(1.015);filter:drop-shadow(0 30px 54px rgba(0,0,0,.6)) saturate(1.04)}
+.hero-cabin .pocket-foot,.hero-cabin .pocket-kicker,.hero-cabin .pocket-name,.hero-cabin .pocket-arrow{display:none}
+.cabin-cap{margin:0;display:flex;flex-direction:column;align-items:center;gap:5px;font:10px/1.5 var(--mono,ui-monospace);letter-spacing:.26em;color:rgba(226,232,238,.52);text-align:center}
+.cabin-cap-hint{font-size:9px;letter-spacing:.18em;color:rgba(227,200,138,.55)}
+@media (max-width:1240px){
+  .hero{grid-template-columns:minmax(0,1fr) clamp(230px,26vw,300px) minmax(0,1fr)}
+}
+@media (max-width:1080px){
+  .hero{grid-template-columns:1fr;gap:22px}
+  .hero-cabin{order:2}
+  .orbit-wrap{order:3}
+}
+
+.hero-copy .hero-lead{font-size:clamp(20px,1.72vw,27px);letter-spacing:.04em;white-space:nowrap}
+@media (max-width:1240px){.hero-copy .hero-lead{white-space:normal}}
 </style>
 </head>
 <body>
@@ -462,7 +556,7 @@ dialog::backdrop{background:rgba(4,7,12,.86);backdrop-filter:blur(12px)}
 </div>
 
 <div class="boot" id="boot">
-  <video class="bt-video" id="btVideo" src="_old/v1-assets/login-loop.mp4" poster="_old/v1-assets/login-poster.jpg" muted playsinline autoplay loop preload="auto"></video>
+  <video class="bt-video" id="btVideo" src="assets/login-loop.mp4" poster="assets/login-poster.jpg" muted playsinline autoplay loop preload="auto"></video>
   <div class="bt-veil" aria-hidden="true"></div>
 
   <div class="bt-top">
@@ -504,9 +598,9 @@ dialog::backdrop{background:rgba(4,7,12,.86);backdrop-filter:blur(12px)}
 </div>
 <div class="ambient" aria-hidden="true"><canvas id="stars"></canvas></div>
 <div class="genesis" id="genesis">
-  <video class="g-sky" id="gSky" src="_old/v1-assets/intro/sky.mp4" poster="_old/v1-assets/intro/sky.jpg" muted playsinline preload="auto"></video>
-  <video class="g-gal" id="gGal" src="_old/v1-assets/intro/galaxy.mp4" poster="_old/v1-assets/intro/galaxy.jpg" muted playsinline preload="auto"></video>
-  <img class="g-place" id="gPlace" src="_old/v1-assets/planet-horizon.jpg" alt="">
+  <video class="g-sky" id="gSky" src="assets/intro/sky.mp4" poster="assets/intro/sky.jpg" muted playsinline preload="auto"></video>
+  <video class="g-gal" id="gGal" src="assets/intro/galaxy.mp4" poster="assets/intro/galaxy.jpg" muted playsinline preload="auto"></video>
+  <img class="g-place" id="gPlace" src="assets/planet-horizon.jpg" alt="">
   <div class="g-veil"></div>
   <div class="g-mark" id="gMark"><i></i><i></i><i></i><i></i></div>
   <div class="g-hud">
@@ -538,13 +632,161 @@ dialog::backdrop{background:rgba(4,7,12,.86);backdrop-filter:blur(12px)}
   <div class="hero">
     <div class="hero-copy">
       <p class="kicker">PERSONAL LOG — VOL. 2026 / 杭州</p>
-      <p class="hero-greeting">你好，我是</p>
-      <h1 class="hero-title" id="homeTitle" tabindex="-1">鲁家杭<span class="period">。</span></h1>
+      <p class="hero-eyebrow">— A LITTLE SPACE OF MY OWN</p>
+      <h1 class="hero-title hero-title--scene" id="homeTitle" tabindex="-1">宇宙很大，<br>这一隅刚好。</h1>
       <p class="hero-lead">学自动化，也创造一点别的。</p>
       <p class="prose">在杭电读书，在代码里折腾。<br>做工具、写游戏，试着让 AI 真正帮上忙。<br>这里是我的作品，也是一些生活的切片。</p>
-      <div class="actions"><a class="action primary" href="#about">开始认识我<span class="arrow" aria-hidden="true">↗</span></a><a class="action" href="#works">看看作品<span class="arrow" aria-hidden="true">→</span></a></div>
+      <div class="actions"><a class="action primary" href="#about">开始认识我<span class="arrow" aria-hidden="true">↗</span></a><a class="action" href="cabin.html">看看我的小屋<span class="arrow" aria-hidden="true">↗</span></a></div>
+      <p class="hero-sign">鲁家杭 · LU JIAHANG<i></i>杭州电子科技大学 · 自动化</p>
     </div>
-    <div class="orbit-wrap">
+    <div class="hero-cabin">
+<a class="pocket" id="homePocket" href="cabin.html" aria-label="放大看看一隅 · 轨道独居舱" aria-haspopup="dialog" title="点一下，放大看看">
+        <span class="pocket-art"><svg class="room" viewBox="0 0 800 670" role="presentation" aria-labelledby="room-title room-desc">
+
+<defs>
+<linearGradient id="left-wall" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#aac1b7"/><stop offset=".35" stop-color="#7e9b94"/><stop offset="1" stop-color="#3b595d"/></linearGradient>
+<linearGradient id="right-wall" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ceccb0"/><stop offset=".48" stop-color="#aaa88a"/><stop offset="1" stop-color="#627466"/></linearGradient>
+<linearGradient id="rim" x2=".8" y2="1"><stop stop-color="#d8dbc8"/><stop offset=".5" stop-color="#a7b7ad"/><stop offset="1" stop-color="#718a85"/></linearGradient>
+<linearGradient id="floor" x2=".7" y2="1"><stop stop-color="#677e75"/><stop offset="1" stop-color="#344e4f"/></linearGradient>
+<linearGradient id="foundation" x2="0" y2="1"><stop stop-color="#3d5254"/><stop offset="1" stop-color="#18292f"/></linearGradient>
+<linearGradient id="wood" x2="0" y2="1"><stop stop-color="#c8a16e"/><stop offset="1" stop-color="#8e7255"/></linearGradient>
+<linearGradient id="blanket" x2=".5" y2="1"><stop stop-color="#d19b64"/><stop offset=".4" stop-color="#ba7e4b"/><stop offset="1" stop-color="#905f40"/></linearGradient>
+<linearGradient id="pillow" x2=".4" y2="1"><stop stop-color="#f0dfb9"/><stop offset="1" stop-color="#bbbda7"/></linearGradient>
+<linearGradient id="space" x2="1" y2="1"><stop stop-color="#152d41"/><stop offset="1" stop-color="#080f1d"/></linearGradient>
+<radialGradient id="earth" cx=".25" cy=".25"><stop stop-color="#a0d4d8"/><stop offset=".25" stop-color="#629eae"/><stop offset=".65" stop-color="#356a87"/><stop offset=".9" stop-color="#19374e"/><stop offset="1" stop-color="#102337"/></radialGradient>
+<radialGradient id="lamp-light"><stop stop-color="#ffd18a" stop-opacity=".56"/><stop offset="1" stop-color="#ffc578" stop-opacity="0"/></radialGradient>
+<linearGradient id="screen" x2="1" y2="1"><stop stop-color="#345d61"/><stop offset="1" stop-color="#132a35"/></linearGradient>
+<linearGradient id="metal-bevel" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#e2e6ce"/><stop offset=".28" stop-color="#b7c9b8"/><stop offset=".55" stop-color="#748f87"/><stop offset=".8" stop-color="#536e69"/><stop offset="1" stop-color="#a3b5a2"/></linearGradient>
+<linearGradient id="inner-bevel" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#142c34"/><stop offset=".5" stop-color="#38565c"/><stop offset="1" stop-color="#a4b9a6"/></linearGradient>
+<linearGradient id="corner-shade"><stop stop-color="#122d32" stop-opacity="0"/><stop offset=".48" stop-color="#122d32" stop-opacity=".42"/><stop offset=".52" stop-color="#122d32" stop-opacity=".46"/><stop offset="1" stop-color="#122d32" stop-opacity="0"/></linearGradient>
+<linearGradient id="shelf-depth" x2=".2" y2="1"><stop stop-color="#1e3835"/><stop offset=".65" stop-color="#465c4e"/><stop offset="1" stop-color="#7d8160"/></linearGradient>
+<linearGradient id="duvet-top" x1="0" y1="0" x2=".6" y2="1"><stop stop-color="#e0b480"/><stop offset=".38" stop-color="#c79462"/><stop offset=".73" stop-color="#bd8959"/><stop offset="1" stop-color="#dcac72"/></linearGradient>
+<linearGradient id="ceramic"><stop stop-color="#8a816b"/><stop offset=".25" stop-color="#d6c6a5"/><stop offset=".6" stop-color="#c0ad8c"/><stop offset="1" stop-color="#87785f"/></linearGradient>
+<linearGradient id="leaf-fold"><stop stop-color="#b1bd8a"/><stop offset=".46" stop-color="#819d73"/><stop offset=".5" stop-color="#4e7559"/><stop offset="1" stop-color="#668465"/></linearGradient>
+<radialGradient id="cool-bounce"><stop stop-color="#a7e0dc" stop-opacity=".18"/><stop offset="1" stop-color="#a7e0dc" stop-opacity="0"/></radialGradient>
+<filter id="contact-shadow" x="-30%" y="-60%" width="160%" height="220%"><feGaussianBlur stdDeviation="4"/></filter>
+<pattern id="linen" width="4" height="4" patternUnits="userSpaceOnUse"><path d="M0 .5h4M.5 0v4" stroke="#fce0b0" stroke-width=".45" opacity=".2"/></pattern>
+<filter id="blur"><feGaussianBlur stdDeviation="12"/></filter><filter id="glow"><feGaussianBlur stdDeviation="3"/></filter>
+<clipPath id="window-clip"><circle cx="120" cy="104" r="62"/></clipPath>
+<pattern id="rug" width="8" height="8" patternUnits="userSpaceOnUse"><rect width="8" height="8" fill="#a7aa8c"/><path d="M0 1h8M1 0v8" stroke="#d5c9a0" stroke-opacity=".15"/></pattern>
+</defs>
+<ellipse cx="405" cy="573" rx="249" ry="51" fill="#000" opacity=".4" filter="url(#blur)"/>
+<g class="orbit-line" fill="none" stroke="#637a83" stroke-width=".8"><ellipse cx="405" cy="489" rx="342" ry="146" stroke-dasharray="2 9"/><path d="m66 490 14 0m650 0h14M405 337v-12M405 642v-12"/></g>
+<g fill="#aec6c4"><circle cx="94" cy="260" r="1" opacity=".35"/><circle cx="682" cy="131" r="1.2" opacity=".5"/><circle cx="735" cy="355" r="1" opacity=".3"/><circle cx="542" cy="76" r="1" opacity=".3"/><path d="M145 128v8m-4-4h8" stroke="#849a9c" stroke-width=".8" opacity=".55"/></g>
+<!-- The room shares one isometric projection; furniture uses the same wall and floor axes. -->
+<path d="M121 459 400 319 688 463v34L410 640 121 495Z" fill="url(#foundation)" stroke="#516567"/>
+<path d="m410 603 278-140v34L410 640Z" fill="#0e222b" opacity=".38"/>
+<path d="m121 477 289 145 278-143v12L410 634 121 489Z" fill="#14262e"/>
+<path d="m126 475 284 143 272-138" fill="none" stroke="#b0c1af" stroke-opacity=".34" stroke-width="1.2"/>
+<path d="m132 492 270 135m17-1 259-133" fill="none" stroke="#081920" stroke-width="2"/>
+<g fill="#9caa97" opacity=".6"><circle cx="143" cy="494" r="1.5"/><circle cx="391" cy="619" r="1.5"/><circle cx="430" cy="618" r="1.5"/><circle cx="669" cy="495" r="1.5"/></g>
+<path d="m142 488 252 127m35 0 236-121" fill="none" stroke="#75938b" stroke-opacity=".3"/>
+<path d="m130 459 270-136 279 140-269 140Z" fill="url(#floor)" stroke="#91a497" stroke-width="2"/>
+<g stroke="#bbccbb" stroke-opacity=".1" fill="none"><path d="m185 486 270-136m-215 164 270-136m-215 164 270-136m-215 164 270-136M187 431l280 143M242 403l280 143M297 375l280 143M351 347l280 143"/></g>
+<path d="M121 459V208Q121 198 131 193L391 62Q400 58 410 63L681 199Q690 203 690 215v249l-15 9V215L400 78 137 212v253Z" fill="url(#rim)"/>
+<path d="M138 218 398 88v250L138 469Z" fill="url(#left-wall)"/>
+<path d="M400 88 674 225v247L400 337Z" fill="url(#right-wall)"/>
+<path d="m366 106 34-18 37 19v248l-37-18-34 18Z" fill="url(#corner-shade)"/>
+<path d="M400 90v247" stroke="#344e4e" stroke-width="4"/>
+<path d="M402 93v241" stroke="#d2d6b4" stroke-opacity=".36"/>
+<path d="M126 455V210q0-9 8-13L395 67q5-3 10 0l272 137" fill="none" stroke="#e9e9d2" stroke-opacity=".7" stroke-width="1.5"/>
+<path d="m130 219 8-4v252l-8-4Z" fill="#dae0c8" opacity=".42"/>
+<path d="m675 225 9-5v246l-9 5Z" fill="#3d5758" opacity=".72"/>
+<path d="M141 220v237m531-229v233" stroke="#e2e3bc" stroke-opacity=".55" stroke-width="1.2"/>
+<path d="M147 224 389 103M412 105l250 125" stroke="#e7e1bc" stroke-opacity=".6" stroke-width="3"/>
+<path d="M145 454 391 331m21 3 252 125" stroke="#233e41" stroke-width="10"/>
+<path class="warm-light" d="M146 449 391 326m22 3 252 125" stroke="#efc58e" stroke-width="3" opacity=".65"/>
+<g transform="matrix(1,-.5,0,1,148,226)">
+<rect x="8" y="8" width="231" height="221" rx="8" fill="none" stroke="#d3e0cb" stroke-opacity=".19"/>
+<path d="M14 191h213" stroke="#223e42" stroke-opacity=".4"/>
+<rect x="19" y="20" width="21" height="4" rx="1" fill="#d7d7ba" opacity=".6"/>
+<rect x="19" y="29" width="34" height="2" fill="#26464b" opacity=".5"/>
+<circle cx="126" cy="111" r="78" fill="#162e34" opacity=".38" filter="url(#contact-shadow)"/>
+<circle cx="122" cy="107" r="77" fill="#415e60"/>
+<circle cx="120" cy="104" r="76" fill="url(#metal-bevel)" stroke="#cddac1" stroke-width="1.5"/>
+<circle cx="120" cy="104" r="71" fill="none" stroke="#e6e8ca" stroke-opacity=".3"/>
+<circle cx="120" cy="104" r="67" fill="url(#inner-bevel)" stroke="#263f47" stroke-width="1.5"/>
+<path d="M48 102a72 72 0 0 1 114-57" fill="none" stroke="#e8edcf" stroke-width="2.2" stroke-linecap="round" opacity=".72"/>
+<circle cx="120" cy="104" r="62" fill="url(#space)"/>
+<g clip-path="url(#window-clip)"><g fill="#dae5df" opacity=".8"><circle cx="84" cy="73" r=".9"/><circle cx="151" cy="58" r=".8"/><circle cx="166" cy="115" r=".7"/><circle cx="94" cy="46" r=".6"/><circle cx="140" cy="83" r=".6"/></g><g class="window-planet" transform="translate(0,-38)"><circle cx="125" cy="135" r="49" fill="#6fa9bc" opacity=".3" filter="url(#glow)"/><circle cx="125" cy="135" r="46" fill="url(#earth)"/><path d="m88 110 19-8 16 5 9 10-15 5-4 13-17 2-10-12m49 11 19 8 2 12-12 14-12-8-6-15" fill="#93b2a9" opacity=".55"/><path d="M83 124q21-23 53-8t31 9M88 140q17-9 32-4t35 15M106 96q22-2 33 9" stroke="#c8e0d8" stroke-width="4" fill="none" opacity=".48"/><path d="M80 129a46 46 0 0 1 64-36" stroke="#d5f2e3" stroke-width="1.4" fill="none" opacity=".8"/></g><path d="m64 59 101 89" stroke="#d2eee0" stroke-opacity=".05" stroke-width="17"/></g>
+<g fill="#536c69" stroke="#d9ddbe" stroke-width=".7"><circle cx="120" cy="33" r="2.4"/><circle cx="120" cy="175" r="2.4"/><circle cx="49" cy="104" r="2.4"/><circle cx="191" cy="104" r="2.4"/></g>
+<path d="M214 47v70m-4-65h8m-8 59h8" stroke="#d5d5b7" stroke-width="3" opacity=".65"/>
+</g>
+<g transform="matrix(1,.5,0,1,413,111)">
+<rect x="4" y="10" width="245" height="209" rx="7" stroke="#5a6d5f" fill="none" opacity=".5"/>
+<rect x="19" y="26" width="211" height="69" rx="5" fill="#596e63" stroke="#c4c7a9" stroke-width="2"/>
+<rect x="24" y="31" width="201" height="57" rx="3" fill="url(#shelf-depth)"/>
+<path d="M26 86V33h197" fill="none" stroke="#243d37" stroke-width="3"/>
+<path d="M30 84h186" stroke="#cca371" stroke-width="5"/>
+<path d="M27 88h195v5H27Z" fill="#655a41"/>
+<path d="M28 86h193" stroke="#e2bb80" stroke-width="1.2"/>
+<g><path d="M40 80V42h10v38" fill="#bdb89a"/><path d="M53 80V39h9v41" fill="#9c7860"/><path d="M65 80V46h13v34" fill="#799c94"/><path d="m83 80-4-39 9-1 5 40" fill="#c6aa7a"/><path d="M42 51h6m7 0h5m8 16h7" stroke="#e2d9b6" stroke-width="2" opacity=".6"/></g>
+<rect x="123" y="52" width="36" height="27" rx="2" fill="#bcb497"/><rect x="127" y="56" width="28" height="19" fill="#4e6d67"/><path d="m129 72 8-9 6 5 9-10" fill="none" stroke="#a6b49c"/>
+<path d="M186 62h22l-3 18h-16Z" fill="#be9876"/>
+<g stroke="#749574" stroke-width="2" fill="#879b70"><path d="M197 64V41m0 12-11-9m11 4 9-12m-9 23 14-7"/><ellipse cx="188" cy="43" rx="7" ry="3" transform="rotate(25 188 43)"/><ellipse cx="204" cy="39" rx="4" ry="7" transform="rotate(30 204 39)"/><ellipse cx="211" cy="51" rx="6" ry="3"/></g>
+<path class="warm-light" d="M26 94h199" stroke="#ffcf8b" stroke-width="3"/>
+<rect x="31" y="121" width="90" height="65" rx="8" fill="#738274" stroke="#bac1a2" stroke-width="2"/><path d="M39 128h74v51H39Z" stroke="#91a18a" fill="none"/><path d="M47 140h22m-22 6h35m-35 6h27" stroke="#c3c5a4" opacity=".5" stroke-width="2"/>
+<rect x="165" y="113" width="56" height="31" rx="4" fill="#657667"/>
+<g stroke="#364e4b" stroke-width="3"><path d="M172 120h41m-41 6h41m-41 6h41m-41 6h41"/></g>
+<circle cx="231" cy="172" r="3" fill="#b4d4b7" class="signal"/>
+</g>
+<ellipse class="warm-light" cx="535" cy="348" rx="139" ry="121" fill="url(#lamp-light)"/>
+<ellipse cx="293" cy="418" rx="121" ry="48" fill="url(#cool-bounce)" transform="rotate(-26 293 418)"/>
+<path d="m156 441 146-72 100 56-147 77Z" fill="#102b2d" opacity=".38" filter="url(#contact-shadow)"/>
+<path d="m361 420 156 83 122-54 7 25-124 67-169-90Z" fill="#0c242b" opacity=".54" filter="url(#contact-shadow)"/>
+<ellipse cx="300" cy="469" rx="41" ry="17" fill="#09242c" opacity=".4" filter="url(#contact-shadow)"/>
+<path d="m261 465 107-55 145 73-108 56Z" fill="#122d31" opacity=".25"/>
+<path d="m264 458 105-53 142 71-106 55Z" fill="url(#rug)" stroke="#c1ba94" stroke-opacity=".5"/>
+<path d="m274 458 95-47 130 65-94 48Z" fill="none" stroke="#d3c6a0" stroke-opacity=".5"/>
+<path d="m271 468 131 67m-120-67 130 67" stroke="#c8bea0" stroke-width="2" stroke-dasharray="1 5" opacity=".5"/>
+<g id="bed-art">
+<path d="m452 356 178 89-111 60-177-90Z" fill="#1e3739" opacity=".5" transform="translate(3 16)"/>
+<path d="m455 331 176 88v45l-108 57-178-88v-44Z" fill="#667b73" stroke="#879589"/>
+<path d="m345 395 178 88 108-55v25l-108 58-178-89Z" fill="#3d5652"/>
+<path d="m361 418 145 73m32 2 77-40" stroke="#b3ac84" stroke-width="3" class="warm-light"/>
+<path d="m455 321 175 87q7 4 0 12l-103 53q-5 4-14 0l-166-83q-9-5 0-12Z" fill="url(#pillow)" stroke="#c9cbb0" stroke-width="2"/>
+<path d="m451 335 43 19q8 4 0 10l-74 38q-5 3-12 0l-37-17q-5-4 1-9Z" fill="#546255" opacity=".45" filter="url(#contact-shadow)"/>
+<path d="m452 327 39 19q8 4 0 10l-74 38q-5 3-12 0l-34-17q-5-4 1-9Z" fill="url(#pillow)" stroke="#ebe0bb" stroke-width="1.2"/>
+<path d="m378 375 33 16 78-40" fill="none" stroke="#9b9f89" opacity=".5"/>
+<path d="m507 347 122 61q7 4 1 13v20l-109 56-109-55v-37Z" fill="url(#blanket)"/>
+<path d="m521 460 109-55v36l-109 56Z" fill="#754b34" opacity=".24"/>
+<path d="m507 347-95 49q-7 5 1 9l108 55 109-55" fill="url(#duvet-top)"/>
+<path d="m507 347-95 49q-7 5 1 9l108 55 109-55" fill="url(#linen)"/>
+<path d="m504 353-82 43 102 53 96-48" fill="none" stroke="#f0c793" stroke-opacity=".68" stroke-width="1.2" stroke-dasharray="2 3"/>
+<path d="m447 392q19 20 41 27t30 38v33m35-111q-36 24-58 25t-20-4m63 19q25-4 47-20" fill="none" stroke="#8e5e3e" stroke-opacity=".36" stroke-width="1.6"/>
+<path d="m449 390q21 20 42 26t31 38m-43-54q22 12 39 9m11 51 60-31" fill="none" stroke="#f5ce97" stroke-opacity=".48" stroke-width="1.4"/>
+<path d="m414 404 105 54q3 2 7 0l101-51" stroke="#f2c28a" stroke-width="1.7" fill="none" opacity=".7"/>
+<path d="M524 466v25" stroke="#d5a470" stroke-width="2"/>
+</g>
+<g id="desk-art">
+<path d="m177 355 13 6v78l-13-7Z" fill="#38534f"/><path d="m327 366 14-7v66l-14 7Z" fill="#29494a"/>
+<path d="m193 363 66-34v62l-66 34Z" fill="#698579" stroke="#90a18b"/>
+<path d="m202 376 48-24m-48 43 48-24" stroke="#3c5c53"/><path d="m220 374 14-7m-14 28 14-7" stroke="#b7ba98" stroke-width="2"/>
+<path d="m159 345 143-72 95 48v12l-144 74-94-48Z" fill="#7e7255"/>
+<path d="m253 394 144-73v12l-144 74Z" fill="#574f3e"/>
+<path d="m162 357 90 45 142-72" stroke="#d1ae78" stroke-width="1.2" fill="none" opacity=".45"/>
+<path d="m159 344 143-71 95 48-144 73Z" fill="url(#wood)" stroke="#cead7b" stroke-width="1.4"/>
+<path d="m169 346 81 41m-66-48 80 41m-68-47 78 39m-61-49 78 39m-58-49 78 39m-57-49 77 39" stroke="#f2d2a2" opacity=".14" stroke-width=".8"/>
+<path d="m227 330 49-25 62 31-53 27Z" fill="#253c37" opacity=".3" filter="url(#contact-shadow)"/>
+<ellipse cx="354" cy="331" rx="13" ry="5" fill="#3c4032" opacity=".4" filter="url(#glow)"/>
+<g transform="matrix(1,-.5,0,1,222,308)"><path d="M38 40v14l-18 5v4h49v-4l-20-6V38Z" fill="#334d4c"/><rect x="3" y="-21" width="90" height="71" rx="5" fill="#142a32"/><rect x="0" y="-23" width="89" height="69" rx="5" fill="#1b343c" stroke="#a1b2a0" stroke-width="2"/><path d="M4 35V-17q0-2 3-2h75" fill="none" stroke="#d6e0bd" stroke-opacity=".6"/><rect x="6" y="-17" width="77" height="54" rx="2" fill="url(#screen)"/><g class="screen-glow"><circle cx="44" cy="8" r="16" stroke="#7eb3aa" fill="none" stroke-width=".7"/><ellipse cx="44" cy="8" rx="8" ry="16" stroke="#7eb3aa" fill="none" stroke-width=".6"/><path d="M28 8h32M31 0h26m-26 16h26" stroke="#7eb3aa" stroke-width=".6"/><path d="M12 29h30m10 0h22M12-10h17m36 0h10" stroke="#a8c7ad" stroke-width="1.5" opacity=".7"/></g><circle cx="44" cy="41" r="1.5" fill="#bed7a4" class="signal"/></g>
+<path d="m247 362 53-27 32 16-53 27Z" fill="#2d484b" stroke="#929e85"/>
+<g stroke="#aab29a" stroke-width="1" opacity=".65"><path d="m254 361 45-22m-39 27 45-22m-36 27 45-22m-42 14 19 9m-10-14 19 10m-10-14 19 9"/></g>
+<path d="m344 330 11-6 12 6-11 6Z" fill="#d3bd90"/><path d="M344 314v16q6 6 12 0v-16" fill="#c28b59"/><ellipse cx="350" cy="314" rx="6" ry="3" fill="#e9c999"/><ellipse cx="350" cy="314" rx="4" ry="1.8" fill="#594936"/><path d="M356 316q10-2 7 6l-7 3" fill="none" stroke="#c99b6c" stroke-width="3"/>
+</g>
+<g id="chair"><path d="m291 425 4 34m-25 7 25-12 27 13m-27-13v23" stroke="#243f42" stroke-width="5" stroke-linecap="round"/><path d="m268 411 36-18 30 15v10l-38 21-28-16Z" fill="#2e5052"/><path d="m266 407 37-19 32 16-38 20Z" fill="#77918a" stroke="#9bab98"/><path d="m296 414 39-20v-38q0-7-7-4l-35 17q-5 3-4 10l3 29Z" fill="#536f6a" stroke="#9aab98" stroke-width="1.5"/><path d="m299 376 27-14m-25 22 23-12" stroke="#91a28c" stroke-opacity=".5"/></g>
+<g id="lamp"><path d="M574 339v-54q0-15-13-22l-15-8" stroke="#344d4c" stroke-width="4" fill="none"/><path d="m570 336 10 5-9 5-10-5Z" fill="#344d4c"/><path d="m540 246 14 7 5 20q-17 6-32-10Z" fill="#e5c492" stroke="#eed6a7"/><ellipse cx="542" cy="268" rx="16" ry="5" transform="rotate(26 542 268)" fill="#ffdda1"/><ellipse class="warm-light" cx="542" cy="269" rx="23" ry="12" fill="#ffd38c" filter="url(#glow)" opacity=".65"/></g>
+<g id="plant"><ellipse cx="200" cy="482" rx="31" ry="14" fill="#1a3536" opacity=".4"/><path d="m177 439 7 39q16 13 31 0l8-39Z" fill="#ab9c7e"/><path d="m179 448 6 26q13 9 27 0l7-26" fill="url(#ceramic)"/><path d="m185 451 4 20" stroke="#ead9b7" stroke-opacity=".4" stroke-width="1.2"/><ellipse cx="200" cy="439" rx="23" ry="11" fill="#c8b79a"/><ellipse cx="200" cy="439" rx="18" ry="7" fill="#43554a"/><g stroke="#728e6c" stroke-width="3" fill="none"><path d="M200 441v-63m0 48-19-26m19 17 24-29m-24 12-12-25"/></g><g fill="url(#leaf-fold)" stroke="#91aa82" stroke-width=".65"><path d="M200 395q-23-24-5-36 17 10 5 36Z"/><path d="M188 409q-28 1-29-20 23-8 29 20Z"/><path d="M206 411q-2-30 25-30 3 22-25 30Z"/><path d="M195 427q-29 4-26-16 20-8 26 16Z"/><path d="M205 433q2-22 23-19 2 21-23 19Z"/><path d="M192 386q-22-5-19-24 21 1 19 24Z"/></g></g>
+<g transform="matrix(1,.5,0,1,150,493)"><rect width="57" height="15" rx="2" fill="#172f36" stroke="#738882" stroke-width=".7"/><text x="8" y="11" fill="#afba9e" font-family="Consolas,monospace" font-size="8" letter-spacing="2">H—01</text></g>
+<g transform="matrix(1,-.5,0,1,571,540)" fill="#101f28"><rect width="54" height="4" rx="1"/><rect y="8" width="54" height="4" rx="1"/><rect y="16" width="54" height="4" rx="1"/></g>
+<path d="m410 631 0-13" stroke="#d1a16c" stroke-width="3"/>
+<text x="596" y="593" class="caption">12 m² / 1 HUMAN</text>
+</svg></span>
+        <span class="pocket-foot"><span class="pocket-kicker">HABITAT 01 / 轨道独居舱</span><span class="pocket-name">一隅 · 12 m²<i>轨道独居舱 · 一个人</i></span><span class="pocket-arrow" aria-hidden="true">↗</span></span>
+      </a>
+<p class="cabin-cap"><span>一隅 · 轨道独居舱</span><span class="cabin-cap-hint">点一下，放大看</span></p>
+</div>
+  <div class="orbit-wrap">
       <div class="orbit" role="group" aria-label="探索六个章节">
         <svg class="orbit-art" viewBox="0 0 580 500" aria-hidden="true"><ellipse class="outer" cx="290" cy="250" rx="218" ry="177" transform="rotate(-18 290 250)"/><ellipse class="inner" cx="290" cy="250" rx="164" ry="132" transform="rotate(-18 290 250)"/><circle class="inner" cx="290" cy="250" r="69"/><path class="cross" d="M25 250H555 M290 20V480"/><path class="route" d="M157 120 430 145 443 322 330 419 130 350 80 216Z"/></svg>
         <div class="orbit-center" aria-hidden="true"><span class="orbit-symbol"></span><strong>我的小宇宙</strong><small>HDU · HANGZHOU · 2026</small></div>
@@ -555,19 +797,19 @@ dialog::backdrop{background:rgba(4,7,12,.86);backdrop-filter:blur(12px)}
         <a class="star-node" href="#snaps" style="--x:21%;--y:70%" data-hint="05 / 随手一拍 · 九张照片，没有宏大的主题"><span class="point"></span><span class="node-label"><small>05 / MOMENTS</small>随手一拍</span></a>
         <a class="star-node" href="#links" style="--x:13%;--y:44%" data-hint="06 / 联系我 · GitHub 或一封邮件"><span class="point"></span><span class="node-label"><small>06 / CONTACT</small>联系我</span></a>
       </div>
-      <p class="orbit-hint" id="orbitHint">六个坐标。选择一个，开始探索。</p>
+      
     </div>
   </div>
   <div class="home-notes">
     <a class="note-link" href="#study"><span class="note-symbol" aria-hidden="true">&gt;_</span><span><small class="note-kicker">CURRENTLY BUILDING</small><span class="note-name">HDUHelp · 校园助手</span></span><span class="note-arrow" aria-hidden="true">↗</span></a>
-    <a class="note-link" href="#works"><img src="_old/v1-assets/projects/w2.jpg" alt="" width="58" height="48"><span><small class="note-kicker">SELECTED WORK / 05</small><span class="note-name">想法，变成作品</span></span><span class="note-arrow" aria-hidden="true">↗</span></a>
-    <a class="note-link" href="#snaps"><img src="_old/v1-assets/thumbs/p06.jpg" alt="" width="58" height="48"><span><small class="note-kicker">LIFE FRAGMENTS / 09</small><span class="note-name">代码之外的风景</span></span><span class="note-arrow" aria-hidden="true">↗</span></a>
+    <a class="note-link" href="#works"><img src="assets/projects/w2.jpg" alt="" width="58" height="48"><span><small class="note-kicker">SELECTED WORK / 05</small><span class="note-name">想法，变成作品</span></span><span class="note-arrow" aria-hidden="true">↗</span></a>
+    <a class="note-link" href="#snaps"><img src="assets/thumbs/p06.jpg" alt="" width="58" height="48"><span><small class="note-kicker">LIFE FRAGMENTS / 09</small><span class="note-name">代码之外的风景</span></span><span class="note-arrow" aria-hidden="true">↗</span></a>
   </div>
 </section>
 <section class="page" data-page="about" aria-labelledby="aboutTitle" hidden>
   <header class="page-head"><span class="chapter"><b>01</b>关于我</span><span class="page-meta">THE PERSON BEHIND THE CODE</span></header>
   <div class="about-grid">
-    <figure class="portrait"><div class="photo-frame"><img src="_old/v1-assets/photos/p14.jpg" alt="夜晚亮着灯的杭州电子科技大学校门" loading="lazy" decoding="async" width="780" height="1040"><span class="photo-tag">HDU / 杭电<small>我的日常，从这里开始。</small></span></div><figcaption><span>01 / 日常坐标</span><span>杭州电子科技大学</span></figcaption></figure>
+    <figure class="portrait"><div class="photo-frame"><img src="assets/photos/p14.jpg" alt="夜晚亮着灯的杭州电子科技大学校门" loading="lazy" decoding="async" width="780" height="1040"><span class="photo-tag">HDU / 杭电<small>我的日常，从这里开始。</small></span></div><figcaption><span>01 / 日常坐标</span><span>杭州电子科技大学</span></figcaption></figure>
     <div class="about-copy"><p class="kicker">AUTOMATION STUDENT · CURIOUS MAKER</p><h2 class="display" id="aboutTitle" tabindex="-1">没学会的还很多，<br>但<em>一直在动手。</em></h2><p class="prose">我是鲁家杭，在杭州电子科技大学读自动化。课上学偏硬件，课外折腾的是 AI 和代码——不太按计划走，但一直在尝试。</p><p class="prose">喜欢把东西做出来：小工具、小游戏、一个能替我把活干完的助手。<strong>做不成的，也想弄明白为什么。</strong></p><dl class="facts"><div><dt>学习坐标</dt><dd>杭州电子科技大学 · 自动化</dd></div><div><dt>正在做</dt><dd>HDUHelp 校园助手 · 飞书 Bot</dd></div><div><dt>常用工具</dt><dd>Python · JavaScript · AI 协作</dd></div><div><dt>代码之外</dt><dd>游戏 · 城市漫步 · 摄影 · 跑步</dd></div></dl><blockquote class="quote">满地都是六便士，<br>他却抬头看见了月亮。<cite>——《月亮与六便士》</cite></blockquote></div>
   </div>
 </section>
@@ -581,15 +823,15 @@ dialog::backdrop{background:rgba(4,7,12,.86);backdrop-filter:blur(12px)}
     <button class="project-option" data-project="3" aria-controls="projectStage"><span class="project-no">04</span><span><strong>雷霆战机</strong><small>GAME / SHOOTER</small></span><span class="project-arrow">↗</span></button>
     <button class="project-option" data-project="4" aria-controls="projectStage"><span class="project-no">05</span><span><strong>长征</strong><small>WEB / EDITORIAL</small></span><span class="project-arrow">↗</span></button>
   </nav><p class="project-aside-note">不写「精通」。<br>做过什么，就展示什么。<br>点击画面，可以看得更清楚。</p></aside>
-  <div class="project-stage" id="projectStage" aria-live="polite"><button class="project-image" id="projectImage" data-gallery="projects" data-image-index="0" aria-label="查看大图：10×10 双人海战棋"><img id="projectImg" src="_old/v1-assets/projects/w1.jpg?v=6" alt="10×10 双人海战棋项目截图" width="1200" height="630" loading="lazy" decoding="async"><span class="image-affordance" aria-hidden="true">查看大图 ↗</span></button><div class="project-details"><div><h3 id="projectTitle">10×10 双人海战棋</h3><p id="projectDescription">为高中同学写的双人对战棋，规则逐条对齐。做了三版迭代，最后那版是完整规则。</p><div class="tags" id="projectTags"><span>HTML / CSS / JS</span><span>CANVAS</span><span>双人对战</span></div></div><div class="project-evidence"><span class="evidence-label">A CLOSER LOOK</span><strong id="projectFact">3 版迭代</strong><p id="projectDetail">从可玩，到把规则逐条补齐。</p></div></div></div></div>
+  <div class="project-stage" id="projectStage" aria-live="polite"><button class="project-image" id="projectImage" data-gallery="projects" data-image-index="0" aria-label="查看大图：10×10 双人海战棋"><img id="projectImg" src="assets/projects/w1.jpg?v=6" alt="10×10 双人海战棋项目截图" width="1200" height="630" loading="lazy" decoding="async"><span class="image-affordance" aria-hidden="true">查看大图 ↗</span></button><div class="project-details"><div><h3 id="projectTitle">10×10 双人海战棋</h3><p id="projectDescription">为高中同学写的双人对战棋，规则逐条对齐。做了三版迭代，最后那版是完整规则。</p><div class="tags" id="projectTags"><span>HTML / CSS / JS</span><span>CANVAS</span><span>双人对战</span></div></div><div class="project-evidence"><span class="evidence-label">A CLOSER LOOK</span><strong id="projectFact">3 版迭代</strong><p id="projectDetail">从可玩，到把规则逐条补齐。</p></div></div></div></div>
 </section>
 <section class="page" data-page="study" aria-labelledby="studyTitle" hidden>
   <header class="page-head"><span class="chapter"><b>03</b>学习与 AI</span><span class="page-meta">LEARNING IN PUBLIC</span></header>
-  <div class="study-grid"><div><p class="kicker">WORK IN PROGRESS</p><h2 class="display" id="studyTitle" tabindex="-1">现在学的，<br>比学会的<em>多。</em></h2><p class="prose">四级、单片机，还有怎么让 AI 真的替我把活干完——不只是聊两句。</p><figure class="study-image"><img src="_old/v1-assets/gen/g-desk.jpg" alt="显示器和键盘组成的深夜桌面意象" loading="lazy" decoding="async" width="1000" height="500"><figcaption>DESK AT NIGHT / 桌面意象 · AI 生成</figcaption></figure><div class="learning-foot"><span>先拆问题</span><span>动手实现</span><span>验证结果</span></div></div><div class="learning-list"><article class="learning-item"><span class="no">01</span><div><h3>英语四级<span class="state">在学</span></h3><p>在背，也在用。看得懂文档比分数更要紧。</p></div></article><article class="learning-item"><span class="no">02</span><div><h3>硬件与单片机<span class="state">在学</span></h3><p>Keil 写、板子跑。软的和硬的都得摸过，才算真的理解。</p></div></article><article class="learning-item"><span class="no">03</span><div><h3>AI 协作<span class="state">在实践</span></h3><p>DSH、Codex、Qoder 轮着用。先拆问题，再让 AI 一块一块落地；把工具接进工作里，而不只是列在工具箱里。</p></div></article><article class="learning-item"><span class="no">04</span><div><h3>HDUHelp 校园助手<span class="state">在做</span></h3><p>正在做的飞书 Bot。把校园里的需求，变成一个可以实际使用的助手。</p></div></article></div></div>
+  <div class="study-grid"><div><p class="kicker">WORK IN PROGRESS</p><h2 class="display" id="studyTitle" tabindex="-1">现在学的，<br>比学会的<em>多。</em></h2><p class="prose">四级、单片机，还有怎么让 AI 真的替我把活干完——不只是聊两句。</p><figure class="study-image"><img src="assets/gen/g-desk.jpg" alt="显示器和键盘组成的深夜桌面意象" loading="lazy" decoding="async" width="1000" height="500"><figcaption>DESK AT NIGHT / 桌面意象 · AI 生成</figcaption></figure><div class="learning-foot"><span>先拆问题</span><span>动手实现</span><span>验证结果</span></div></div><div class="learning-list"><article class="learning-item"><span class="no">01</span><div><h3>英语四级<span class="state">在学</span></h3><p>在背，也在用。看得懂文档比分数更要紧。</p></div></article><article class="learning-item"><span class="no">02</span><div><h3>硬件与单片机<span class="state">在学</span></h3><p>Keil 写、板子跑。软的和硬的都得摸过，才算真的理解。</p></div></article><article class="learning-item"><span class="no">03</span><div><h3>AI 协作<span class="state">在实践</span></h3><p>DSH、Codex、Qoder 轮着用。先拆问题，再让 AI 一块一块落地；把工具接进工作里，而不只是列在工具箱里。</p></div></article><article class="learning-item"><span class="no">04</span><div><h3>HDUHelp 校园助手<span class="state">在做</span></h3><p>正在做的飞书 Bot。把校园里的需求，变成一个可以实际使用的助手。</p></div></article></div></div>
 </section>
 <section class="page" data-page="life" aria-labelledby="lifeTitle" hidden>
   <header class="page-head"><span class="chapter"><b>04</b>生活切片</span><span class="page-meta">AWAY FROM THE KEYBOARD</span></header>
-  <div class="life-grid"><figure class="life-photo"><img src="_old/v1-assets/photos/p24.jpg" alt="湖面与远山之间的橙色日落" loading="lazy" decoding="async" width="900" height="960"><figcaption><p class="kicker">OFFLINE MOMENTS / 西湖日落</p><h2 class="display" id="lifeTitle" tabindex="-1">学习之外，<br>也<em>出去逛逛。</em></h2></figcaption></figure><div class="life-list"><article class="learning-item"><span class="no">01</span><div><h3>游戏，不止是消遣。</h3><p>三角洲、天际线、MC、崩铁。算账、规划、把地图走完，都会认真做。也试着把喜欢的东西，变成自己写的小游戏。</p></div></article><article class="learning-item"><span class="no">02</span><div><h3>不赶时间的城市漫步。</h3><p>湖滨、北山街、运河。看街边小店换了几家，也看看当天的天色。</p></div></article><article class="learning-item"><span class="no">03</span><div><h3>去别人的世界待一会儿。</h3><p>三体这类科幻，和吃剧情的游戏，本质上是同一件事：想看更大的世界。</p></div></article><article class="learning-item"><span class="no">04</span><div><h3>跑下去，也走远一点。</h3><p>不赶速度，只求一直跑下去。出门前先看攻略，吃往往排在景点前面。</p></div></article><div class="actions"><a class="action" href="#snaps">看看沿途的照片<span class="arrow" aria-hidden="true">↗</span></a></div></div></div>
+  <div class="life-grid"><figure class="life-photo"><img src="assets/photos/p24.jpg" alt="湖面与远山之间的橙色日落" loading="lazy" decoding="async" width="900" height="960"><figcaption><p class="kicker">OFFLINE MOMENTS / 西湖日落</p><h2 class="display" id="lifeTitle" tabindex="-1">学习之外，<br>也<em>出去逛逛。</em></h2></figcaption></figure><div class="life-list"><article class="learning-item"><span class="no">01</span><div><h3>游戏，不止是消遣。</h3><p>三角洲、天际线、MC、崩铁。算账、规划、把地图走完，都会认真做。也试着把喜欢的东西，变成自己写的小游戏。</p></div></article><article class="learning-item"><span class="no">02</span><div><h3>不赶时间的城市漫步。</h3><p>湖滨、北山街、运河。看街边小店换了几家，也看看当天的天色。</p></div></article><article class="learning-item"><span class="no">03</span><div><h3>去别人的世界待一会儿。</h3><p>三体这类科幻，和吃剧情的游戏，本质上是同一件事：想看更大的世界。</p></div></article><article class="learning-item"><span class="no">04</span><div><h3>跑下去，也走远一点。</h3><p>不赶速度，只求一直跑下去。出门前先看攻略，吃往往排在景点前面。</p></div></article><div class="actions"><a class="action" href="#snaps">看看沿途的照片<span class="arrow" aria-hidden="true">↗</span></a></div></div></div>
 </section>
 <section class="page" data-page="snaps" aria-labelledby="snapsTitle" hidden>
   <header class="page-head"><span class="chapter"><b>05</b>随手一拍</span><span class="page-meta">A FEW THINGS I NOTICED</span></header>
@@ -598,7 +840,7 @@ dialog::backdrop{background:rgba(4,7,12,.86);backdrop-filter:blur(12px)}
 </section>
 <section class="page" data-page="links" aria-labelledby="linksTitle" hidden>
   <header class="page-head"><span class="chapter"><b>06</b>联系我</span><span class="page-meta">THE NEXT CONVERSATION</span></header>
-  <img class="links-bg" src="_old/v1-assets/planet-horizon.jpg" alt="" aria-hidden="true" loading="lazy" decoding="async">
+  <img class="links-bg" src="assets/planet-horizon.jpg" alt="" aria-hidden="true" loading="lazy" decoding="async">
   <div class="contact-grid"><div class="contact-copy"><p class="kicker">END OF THIS LOG. NOT THE JOURNEY.</p><h2 class="display" id="linksTitle" tabindex="-1">下一站，<br><em>聊点什么？</em></h2><p class="prose">一个想法、一个问题，或者一个有意思的项目。<br>想找我的话，从右边这些入口就好。</p><p class="contact-signature">鲁家杭<small>HANGZHOU · KEEP EXPLORING / 2026</small></p></div><div><div class="contact-list"><a class="contact-item" href="https://github.com/whsihad" target="_blank" rel="noopener noreferrer"><span class="contact-label">01 / GITHUB</span><span class="contact-value">github.com/whsihad</span><p class="contact-desc">代码、作业和正在折腾的东西。</p><span class="arrow" aria-hidden="true">↗</span></a><a class="contact-item" href="mailto:l18868142811@163.com"><span class="contact-label">02 / EMAIL</span><span class="contact-value">l18868142811@163.com</span><p class="contact-desc">有事直接发邮件，比私信可靠。</p><span class="arrow" aria-hidden="true">↗</span></a><a class="contact-item" href="https://github.com/whsihad/whsihad.github.io" target="_blank" rel="noopener noreferrer"><span class="contact-label">03 / THIS SITE</span><span class="contact-value">这份档案，也是一个作品。</span><p class="contact-desc">单文件 HTML，没有框架。看看它的源码。</p><span class="arrow" aria-hidden="true">↗</span></a></div><button class="copy-mail" id="copyMail">复制邮箱地址 <span aria-hidden="true">↗</span></button></div></div>
 </section>
 </main>
@@ -623,11 +865,11 @@ dialog::backdrop{background:rgba(4,7,12,.86);backdrop-filter:blur(12px)}
   let toastTimer;
 
   const projects = [
-    { title:'10×10 双人海战棋', image:'_old/v1-assets/projects/w1.jpg?v=6', description:'为高中同学写的双人对战棋，规则逐条对齐。做了三版迭代，最后那版是完整规则。', tags:['HTML / CSS / JS','CANVAS','双人对战'], fact:'3 版迭代', detail:'从可玩，到把规则逐条补齐。' },
-    { title:'霓虹方块 · 俄罗斯方块', image:'_old/v1-assets/projects/w2.jpg', description:'AI 社团的前端考核项目。纯手写，方块旋转、幽灵预览、消行计分都在 canvas 里跑。', tags:['CANVAS','无框架','LOCALSTORAGE'], fact:'纯 Canvas', detail:'旋转、预览、计分，落实到每一次操作。' },
-    { title:'退房时间', image:'_old/v1-assets/projects/w3.jpg?v=4', description:'第一人称 3D 探索：你是临时清洁员，在饭店拆除前清点三间封存客房，拼出十年前的最后一晚。', tags:['3D 场景','叙事解谜','雨夜氛围'], fact:'3 间客房', detail:'在场景和线索之间，还原一段故事。' },
-    { title:'雷霆战机 · NEON THUNDER', image:'_old/v1-assets/projects/w4.jpg?v=4', description:'竖屏弹幕射击。模块拆成 art / audio / fx / game 四层，做了无尽跑分和星海征途两种模式。', tags:['弹幕射击','模块化','音效合成'], fact:'2 种模式', detail:'四层模块：美术、音频、特效、游戏。' },
-    { title:'长征 · 从瑞金到会宁', image:'_old/v1-assets/projects/w5.jpg', description:'把思政实践作业做成可以翻阅的「七个坐标」：瑞金、遵义、四渡赤水、巧渡金沙江、大渡河、过草地、会宁会师。纸感排版与地图问答结合。', tags:['编辑排版','内容设计','历史叙事'], fact:'7 个坐标', detail:'让历史内容，沿着地图被阅读。' }
+    { title:'10×10 双人海战棋', image:'assets/projects/w1.jpg?v=6', description:'为高中同学写的双人对战棋，规则逐条对齐。做了三版迭代，最后那版是完整规则。', tags:['HTML / CSS / JS','CANVAS','双人对战'], fact:'3 版迭代', detail:'从可玩，到把规则逐条补齐。' },
+    { title:'霓虹方块 · 俄罗斯方块', image:'assets/projects/w2.jpg', description:'AI 社团的前端考核项目。纯手写，方块旋转、幽灵预览、消行计分都在 canvas 里跑。', tags:['CANVAS','无框架','LOCALSTORAGE'], fact:'纯 Canvas', detail:'旋转、预览、计分，落实到每一次操作。' },
+    { title:'退房时间', image:'assets/projects/w3.jpg?v=4', description:'第一人称 3D 探索：你是临时清洁员，在饭店拆除前清点三间封存客房，拼出十年前的最后一晚。', tags:['3D 场景','叙事解谜','雨夜氛围'], fact:'3 间客房', detail:'在场景和线索之间，还原一段故事。' },
+    { title:'雷霆战机 · NEON THUNDER', image:'assets/projects/w4.jpg?v=4', description:'竖屏弹幕射击。模块拆成 art / audio / fx / game 四层，做了无尽跑分和星海征途两种模式。', tags:['弹幕射击','模块化','音效合成'], fact:'2 种模式', detail:'四层模块：美术、音频、特效、游戏。' },
+    { title:'长征 · 从瑞金到会宁', image:'assets/projects/w5.jpg', description:'把思政实践作业做成可以翻阅的「七个坐标」：瑞金、遵义、四渡赤水、巧渡金沙江、大渡河、过草地、会宁会师。纸感排版与地图问答结合。', tags:['编辑排版','内容设计','历史叙事'], fact:'7 个坐标', detail:'让历史内容，沿着地图被阅读。' }
   ];
   const photos = [
     { id:'02', title:'街边的一块招牌' },
@@ -649,7 +891,7 @@ dialog::backdrop{background:rgba(4,7,12,.86);backdrop-filter:blur(12px)}
     button.dataset.imageIndex = index;
     button.setAttribute('aria-label', '查看照片：' + photo.title);
     const image = document.createElement('img');
-    image.src = '_old/v1-assets/thumbs/p' + photo.id + '.jpg';
+    image.src = 'assets/thumbs/p' + photo.id + '.jpg';
     image.alt = photo.title;
     image.loading = 'lazy';
     image.decoding = 'async';
@@ -736,8 +978,8 @@ dialog::backdrop{background:rgba(4,7,12,.86);backdrop-filter:blur(12px)}
   });
 
   $$('.star-node').forEach(node => {
-    const enter = () => { $('#orbitHint').textContent = node.dataset.hint; };
-    const leave = () => { $('#orbitHint').textContent = '六个坐标。选择一个，开始探索。'; };
+    const enter = () => { const h=$('#orbitHint'); if(h) h.textContent = node.dataset.hint; };
+    const leave = () => { const h2=$('#orbitHint'); if(h2) h2.textContent = '六个坐标。选择一个，开始探索。'; };
     node.addEventListener('pointerenter', enter);
     node.addEventListener('focus', enter);
     node.addEventListener('pointerleave', leave);
@@ -792,7 +1034,7 @@ dialog::backdrop{background:rgba(4,7,12,.86);backdrop-filter:blur(12px)}
     const button = event.target.closest('[data-gallery]');
     if (!button) return;
     lightboxTrigger = button;
-    lightboxItems = button.dataset.gallery === 'projects' ? projects : photos.map(photo => ({title:photo.title,image:'_old/v1-assets/photos/p' + photo.id + '.jpg'}));
+    lightboxItems = button.dataset.gallery === 'projects' ? projects : photos.map(photo => ({title:photo.title,image:'assets/photos/p' + photo.id + '.jpg'}));
     showImage(Number(button.dataset.imageIndex));
     lightbox.showModal();
   });
@@ -873,6 +1115,15 @@ dialog::backdrop{background:rgba(4,7,12,.86);backdrop-filter:blur(12px)}
 </script>
 
 
+<div class="room-zoom" id="roomZoom" role="dialog" aria-modal="true" aria-label="一隅 · 轨道独居舱 放大视图" aria-hidden="true">
+          <div class="rz-inner">
+            <div class="rz-art" id="rzArt"></div>
+            <div class="rz-bar">
+              <span>HABITAT 01 · 轨道独居舱 · 12 m² · 离地球四百公里</span>
+              <span class="rz-actions"><a class="rz-enter" href="cabin.html">进入小屋 ↗</a><button class="rz-close" id="rzClose" type="button">关闭 ESC</button></span>
+            </div>
+          </div>
+        </div>
 <script>
 (function(){
   var boot = document.getElementById('boot');
@@ -885,9 +1136,9 @@ dialog::backdrop{background:rgba(4,7,12,.86);backdrop-filter:blur(12px)}
   var items = Array.prototype.slice.call(document.querySelectorAll('#btLog li'));
 
   var ASSETS = [
-    '_old/v1-assets/login-poster.jpg','_old/v1-assets/intro/sky.jpg','_old/v1-assets/intro/galaxy.jpg',
-    '_old/v1-assets/photos/p14.jpg','_old/v1-assets/photos/p24.jpg',
-    '_old/v1-assets/projects/w1.jpg?v=6','_old/v1-assets/projects/w3.jpg?v=4','_old/v1-assets/projects/w4.jpg?v=4'
+    'assets/login-poster.jpg','assets/intro/sky.jpg','assets/intro/galaxy.jpg',
+    'assets/photos/p14.jpg','assets/photos/p24.jpg',
+    'assets/projects/w1.jpg?v=6','assets/projects/w3.jpg?v=4','assets/projects/w4.jpg?v=4'
   ];
   var total = ASSETS.length, done = 0, videoOK = false, videoWeight = .18;
   var BOOT_MIN = 3800, T0 = performance.now();
@@ -1077,5 +1328,41 @@ if (/[?&](nosplash|nogen)/.test(location.search)) {
   });
 }
 </script>
+
+<script>
+(function(){
+  var pocket = document.getElementById('homePocket');
+  var zoom   = document.getElementById('roomZoom');
+  var art    = document.getElementById('rzArt');
+  var close  = document.getElementById('rzClose');
+  if (!pocket || !zoom || !art) return;
+  var svg = pocket.querySelector('svg');
+  var lastFocus = null, built = false;
+
+  function open(){
+    if (!built && svg){ art.appendChild(svg.cloneNode(true)); built = true; }
+    lastFocus = document.activeElement;
+    zoom.classList.add('on');
+    zoom.setAttribute('aria-hidden','false');
+    document.body.classList.add('rz-open');
+    (close || zoom).focus({preventScroll:true});
+  }
+  function shut(){
+    zoom.classList.remove('on');
+    zoom.setAttribute('aria-hidden','true');
+    document.body.classList.remove('rz-open');
+    if (lastFocus && lastFocus.focus) lastFocus.focus({preventScroll:true});
+  }
+  pocket.addEventListener('click', function(e){ e.preventDefault(); open(); });
+  if (close) close.addEventListener('click', shut);
+  zoom.addEventListener('click', function(e){ if (e.target === zoom || e.target.classList.contains('rz-inner')) shut(); });
+  document.addEventListener('keydown', function(e){
+    if (!zoom.classList.contains('on')) return;
+    if (e.key === 'Escape'){ e.stopPropagation(); shut(); }
+  }, true);
+  if (/[?&]zoom/.test(location.search)) open();
+})();
+</script>
+        
 </body>
 </html>
