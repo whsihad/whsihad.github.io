@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <script>
+      // Wallpaper Engine host shim (same contract the engine expects).
+      window.rhineWallpaperHost = { properties: {}, fps: 30, paused: false };
+      let resolveInitialWallpaperProperties;
+      window.rhineWallpaperPropertiesReady = new Promise(resolve => { resolveInitialWallpaperProperties = resolve; });
+      window.wallpaperPropertyListener = {
+        applyUserProperties(properties) {
+          Object.assign(window.rhineWallpaperHost.properties, properties);
+          window.dispatchEvent(new CustomEvent("rhine-wallpaper-properties", { detail: properties }));
+          resolveInitialWallpaperProperties();
+        },
+        applyGeneralProperties(properties) {
+          if (Number.isFinite(properties.fps) && properties.fps > 0)
+            window.rhineWallpaperHost.fps = properties.fps;
+        },
+        setPaused(paused) {
+          window.rhineWallpaperHost.paused = !!paused;
+          window.dispatchEvent(new Event("rhine-wallpaper-pause"));
+        },
+      };
+      if (location.protocol !== "file:" && typeof window.wallpaperRegisterAudioListener !== "function")
+        setTimeout(() => resolveInitialWallpaperProperties(), 0);
+      window.rhineWallpaperMedia = {};
+      window.rhineWallpaperSpectrum = { samples: [], time: 0 };
+      if (typeof window.wallpaperRegisterAudioListener === "function") {
+        window.wallpaperRegisterAudioListener(function wallpaperAudioListener(samples) {
+          if (!samples || samples.length !== 128) return;
+          window.rhineWallpaperSpectrum = {
+            samples: Array.from(samples, function (value) { return Number.isFinite(value) ? Math.max(0, Math.min(1, value)) : 0; }),
+            time: performance.now() / 1000,
+          };
+        });
+      }
+      for (const kind of ["Status", "Properties", "Thumbnail", "Playback", "Timeline"]) {
+        const register = window["wallpaperRegisterMedia" + kind + "Listener"];
+        if (typeof register === "function") register(function (event) {
+          window.rhineWallpaperMedia[kind.toLowerCase()] = event;
+          if (kind === "Playback") {
+            const constants = window.wallpaperMediaIntegration || {};
+            window.rhineWallpaperMedia.playing = event.state === (constants.PLAYBACK_PLAYING ?? constants.playback?.PLAYING ?? 1);
+          }
+          window.dispatchEvent(new Event("rhine-wallpaper-media"));
+        });
+      }
+    </script>
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#e8e5e1" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="Lu Jiahang" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png" />
+    <meta name="description" content="鲁家杭的个人介绍：自动化在读，做校园工具、小游戏，以及这一页。" />
+    <title>鲁家杭 · 个人介绍</title>
+    <link rel="icon" type="image/svg+xml" href="/assets/mark.svg" />
+    <!-- 大文件走 jsDelivr（国内通常比 GitHub Pages 快一个量级），失败自动回落到本地副本 -->
+    <link rel="stylesheet" crossorigin
+          href="https://gcore.jsdelivr.net/gh/whsihad/whsihad.github.io@dd20ae8/assets/index-fctQMwOk.css?v=dd20ae8"
+          onerror="this.onerror=null;this.href='/assets/index-fctQMwOk.css'" />
+    <link rel="stylesheet" href="/assets/ljh-mobile.css" />
+    <link rel="stylesheet" href="/assets/ljh-records.css" />
+    <script type="module">
+      const local = new URL('/assets/app.js', location.href).href;
+      const remote = 'https://gcore.jsdelivr.net/gh/whsihad/whsihad.github.io@dd20ae8/assets/app.js?v=dd20ae8';
+      // 线上走 CDN（国内更快），本机预览始终用本地文件，免得改完看不到效果
+      const useRemote = /\.github\.io$/.test(location.hostname);
+      if (location.protocol !== 'file:') {
+        (useRemote ? import(remote).catch(() => import(local)) : import(local));
+      }
+    </script>
+    <script>
+      /* 先把 3D 模型和音乐预热到浏览器缓存：引擎自己 fetch 时就能秒回，不再卡在「正在准备声音」 */
+      (function () {
+        if (/^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname)) return;
+        var base = 'https://gcore.jsdelivr.net/gh/whsihad/whsihad.github.io@main/';
+        [
+          'assets/archive-cassette.dda42b9b3b471d11.glb',
+          'assets/archive-assembly.d411170676f55a32.glb',
+          'audio/atmosphere.ogg',
+          'audio/motif.ogg',
+          'audio/pulse.ogg',
+        ].forEach(function (f) {
+          fetch(base + f).catch(function () {});
+        });
+      })();
+    </script>
+    <script>
+      /* 3D 模型没下完时，详情页文字会被场景动画卡在透明状态；5 秒后兜底显示 */
+      (function () {
+        var since = 0;
+        setInterval(function () {
+          var detail = document.getElementById('detail-ui');
+          var content = document.getElementById('detail-content');
+          var root = document.documentElement;
+          if (!detail || !content || detail.hidden) {
+            since = 0;
+            root.classList.remove('force-detail-visible');
+            return;
+          }
+          since += 400;
+          if (since > 5000 && !root.classList.contains('force-detail-visible')) {
+            root.classList.add('force-detail-visible');
+            content.inert = false;
+          }
+        }, 400);
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="file-warning" hidden>
+      <div class="fw-inner">
+        <img src="/assets/mark.svg" alt="" width="126" height="126" class="fw-mark" />
+        <p class="fw-kicker">LOCAL PREVIEW / 本地预览</p>
+        <h1>这一页要跑在本地服务器上</h1>
+        <p class="fw-text">
+          直接双击 index.html 打不开——3D 模型和档案数据要被浏览器从服务器读，<code>file://</code> 会被安全策略拦住。
+        </p>
+        <p class="fw-text">
+          双击同一个文件夹里的 <b>启动预览.cmd</b>，浏览器会自动打开 <code>127.0.0.1:8800</code>。
+        </p>
+        <p class="fw-text fw-dim" style="margin-top:18px"><a href="/" style="color:inherit;text-decoration:none;border-bottom:1px solid currentColor;padding-bottom:2px">← 回到星轨航行档案</a></p>
+<p class="fw-text fw-dim">或者直接看线上版本：<a href="https://whsihad.github.io/">whsihad.github.io</a></p>
+      </div>
+    </div>
+    <script>
+      if (location.protocol === 'file:') {
+        document.getElementById('file-warning').hidden = false;
+      }
+    </script>
+    <style>
+      #file-warning{position:fixed;inset:0;z-index:9999;background:#e8e5e1;color:#0a0a09;
+        font-family:MiSans,"PingFang SC","Microsoft YaHei",system-ui,sans-serif;
+        display:grid;place-items:center;padding:32px}
+      #file-warning[hidden]{display:none}
+      .fw-inner{max-width:560px}
+      .fw-mark{display:block;margin-bottom:6px;filter:none}
+      .fw-kicker{font:400 11px/1 ui-monospace,Consolas,monospace;letter-spacing:.18em;color:#8b8780;margin:26px 0 18px}
+      #file-warning h1{font-size:30px;line-height:1.3;letter-spacing:-.4px;margin:0 0 18px;font-weight:600}
+      .fw-text{font-size:14px;line-height:1.95;color:#4b4842;margin:0 0 12px}
+      .fw-dim{color:#8b8780;margin-top:24px}
+      #file-warning code{font-family:ui-monospace,Consolas,monospace;font-size:12.5px;background:rgba(10,10,9,.06);padding:2px 6px}
+      #file-warning a{color:#0a0a09;border-bottom:1px solid #0a0a09;text-decoration:none}
+    </style>
+    <main id="viewport"><div id="stage"></div></main>
+  </body>
+</html>
+
