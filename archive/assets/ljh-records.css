@@ -1,0 +1,68 @@
+/* 档案里的图片：作品截图与照片 */
+/* 正文区原来是 189px 的固定滚动框，放图太挤，这里放大一档 */
+.tab-panel {
+  height: 306px;
+  padding-right: 6px;
+}
+
+.record-figure {
+  margin: 4px 0 12px;
+}
+.record-figure img {
+  display: block;
+  width: 100%;
+  height: 112px;
+  object-fit: cover;
+  border: 1px solid rgba(10, 10, 9, 0.14);
+  background: #f2efe9;
+}
+.record-figure figcaption {
+  margin-top: 6px;
+  font: 400 10px/1.5 var(--mono, Consolas, monospace);
+  letter-spacing: 0.06em;
+  color: #8b8780;
+}
+
+/* 图片条目两列并排，文字条目仍占满整行 */
+.research-notes {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+}
+.research-notes > li {
+  width: 100%;
+}
+.research-notes > li:has(.record-figure) {
+  width: calc(33.333% - 10px);
+  margin: 4px 10px 10px 0;
+  display: block;
+}
+.research-notes > li:has(.record-figure) > span {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  .tab-panel {
+    height: 268px;
+  }
+  .record-figure img {
+    height: 118px;
+  }
+}
+
+/* 3D ģ��δ����ʱ�Ķ��ף�5 ���ǿ����ʾ�������� */
+.force-detail-visible .detail-content {
+  opacity: 1 !important;
+  translate: none !important;
+}
+
+
+.force-detail-visible .document-redaction-window {
+  display: none !important;
+}
+.force-detail-visible .detail-content .document-redacted > * {
+  opacity: 1 !important;
+  filter: none !important;
+  clip-path: none !important;
+}
+

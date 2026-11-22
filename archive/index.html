@@ -54,21 +54,21 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
     <meta name="apple-mobile-web-app-title" content="Lu Jiahang" />
-    <link rel="apple-touch-icon" sizes="180x180" href="../icons/apple-touch-icon.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="./icons/apple-touch-icon.png" />
     <meta name="description" content="鲁家杭的个人介绍：自动化在读，做校园工具、小游戏，以及这一页。" />
     <title>鲁家杭 · 个人介绍</title>
-    <link rel="icon" type="image/svg+xml" href="../assets/mark.svg" />
+    <link rel="icon" type="image/svg+xml" href="./assets/mark.svg" />
     <!-- 大文件走 jsDelivr（国内通常比 GitHub Pages 快一个量级），失败自动回落到本地副本 -->
     <link rel="stylesheet" crossorigin
-          href="https://gcore.jsdelivr.net/gh/whsihad/whsihad.github.io@dd20ae8/assets/index-fctQMwOk.css?v=dd20ae8"
+          href="./assets/index-fctQMwOk.css"
           onerror="this.onerror=null;this.href='./assets/index-fctQMwOk.css'" />
-    <link rel="stylesheet" href="../assets/ljh-mobile.css" />
-    <link rel="stylesheet" href="../assets/ljh-records.css" />
+    <link rel="stylesheet" href="./assets/ljh-mobile.css" />
+    <link rel="stylesheet" href="./assets/ljh-records.css" />
     <script type="module">
       const local = new URL('./assets/app.js', location.href).href;
-      const remote = 'https://gcore.jsdelivr.net/gh/whsihad/whsihad.github.io@dd20ae8/assets/app.js?v=dd20ae8';
+      const remote = './assets/app.js';
       // 线上走 CDN（国内更快），本机预览始终用本地文件，免得改完看不到效果
-      const useRemote = /\.github\.io$/.test(location.hostname);
+      const useRemote = false;
       if (location.protocol !== 'file:') {
         (useRemote ? import(remote).catch(() => import(local)) : import(local));
       }
@@ -77,10 +77,10 @@
       /* 先把 3D 模型和音乐预热到浏览器缓存：引擎自己 fetch 时就能秒回，不再卡在「正在准备声音」 */
       (function () {
         if (/^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname)) return;
-        var base = 'https://gcore.jsdelivr.net/gh/whsihad/whsihad.github.io@main/';
+        var base = 'https://gcore.jsdelivr.net/gh/whsihad/whsihad.github.io@dd20ae8/';
         [
-          '../assets/archive-cassette.dda42b9b3b471d11.glb',
-          '../assets/archive-assembly.d411170676f55a32.glb',
+          './assets/archive-cassette.dda42b9b3b471d11.glb',
+          './assets/archive-assembly.d411170676f55a32.glb',
           'audio/atmosphere.ogg',
           'audio/motif.ogg',
           'audio/pulse.ogg',
@@ -114,7 +114,7 @@
   <body>
     <div id="file-warning" hidden>
       <div class="fw-inner">
-        <img src="../assets/mark.svg" alt="" width="126" height="126" class="fw-mark" />
+        <img src="./assets/mark.svg" alt="" width="126" height="126" class="fw-mark" />
         <p class="fw-kicker" style="margin-top:0;color:#c9a86a">ARCHIVE COPY / 初版留档</p>
         <h1>这一页要跑在本地服务器上</h1>
         <p class="fw-text">
