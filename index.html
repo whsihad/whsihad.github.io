@@ -532,6 +532,27 @@ body.rz-open{overflow:hidden}
 .hero-copy .hero-lead{font-size:clamp(20px,1.72vw,27px);letter-spacing:.04em;white-space:nowrap}
 @media (max-width:1240px){.hero-copy .hero-lead{white-space:normal}}
 </style>
+<style id="triStyle">
+.page[data-page="trisolaris"]{position:relative}
+.tri-head{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap;margin:0 0 18px}
+.tri-title{font:400 clamp(26px,2.6vw,38px)/1.35 var(--serif);letter-spacing:.04em;margin:10px 0 0}
+.tri-sub{margin:8px 0 0;font-size:12.5px;line-height:1.9;color:var(--muted);max-width:44ch}
+.tri-stage{position:relative;border:1px solid rgba(227,200,138,.16);border-radius:16px;overflow:hidden;background:radial-gradient(120% 120% at 50% 40%,#070c14 0%,#04070c 60%,#03050a 100%)}
+.tri-stage::after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(90% 80% at 50% 50%,transparent 55%,rgba(3,5,10,.55) 100%)}
+#triCanvas{display:block;width:100%;height:clamp(280px,50vh,480px);cursor:grab;touch-action:none}
+#triCanvas.dragging{cursor:grabbing}
+.tri-hud{position:absolute;left:16px;top:14px;display:grid;gap:5px;font:9.5px/1.6 var(--mono,ui-monospace);letter-spacing:.16em;color:rgba(210,222,232,.55);pointer-events:none}
+.tri-hud b{color:rgba(227,200,138,.8);font-weight:400}
+.tri-hint{position:absolute;right:16px;top:14px;font:9.5px/1.6 var(--mono,ui-monospace);letter-spacing:.14em;color:rgba(210,222,232,.34);pointer-events:none}
+.tri-bar{position:absolute;left:16px;right:16px;bottom:14px;display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
+.tri-legend{display:flex;gap:14px;font:9.5px/1.6 var(--mono,ui-monospace);letter-spacing:.14em;color:rgba(210,222,232,.5)}
+.tri-legend i{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:6px;vertical-align:1px}
+.tri-actions{display:flex;gap:8px}
+.tri-btn{appearance:none;border:1px solid rgba(227,200,138,.3);background:rgba(227,200,138,.06);color:rgba(238,232,220,.86);font:10px/1 var(--mono,ui-monospace);letter-spacing:.16em;padding:9px 13px;border-radius:999px;cursor:pointer;transition:background .25s,border-color .25s,color .25s}
+.tri-btn:hover,.tri-btn:focus-visible{background:rgba(227,200,138,.16);border-color:rgba(227,200,138,.55);color:#f6ead2}
+.tri-note{margin:14px 0 0;font:10px/1.8 var(--mono,ui-monospace);letter-spacing:.12em;color:rgba(150,166,176,.55)}
+@media (max-width:760px){#triCanvas{height:min(58vh,420px)}.tri-hint{display:none}}
+</style>
 </head>
 <body>
 <div id="splashCover" aria-hidden="true">
@@ -625,6 +646,7 @@ body.rz-open{overflow:hidden}
   <a href="#life" aria-label="04 生活切片">04<span class="rail-tip" aria-hidden="true">生活切片</span></a>
   <a href="#snaps" aria-label="05 随手一拍">05<span class="rail-tip" aria-hidden="true">随手一拍</span></a>
   <a href="#links" aria-label="06 联系我">06<span class="rail-tip" aria-hidden="true">联系我</span></a>
+  <a href="#trisolaris" aria-label="07 三体演算">07<span class="rail-tip" aria-hidden="true">三体演算</span></a>
   <span class="rail-label" aria-hidden="true">STAY CURIOUS · KEEP MAKING</span>
 </nav>
 <main id="mainContent" tabindex="-1">
@@ -787,7 +809,7 @@ body.rz-open{overflow:hidden}
 <p class="cabin-cap"><span>一隅 · 轨道独居舱</span><span class="cabin-cap-hint">点一下，放大看</span></p>
 </div>
   <div class="orbit-wrap">
-      <div class="orbit" role="group" aria-label="探索六个章节">
+      <div class="orbit" role="group" aria-label="探索七个章节">
         <svg class="orbit-art" viewBox="0 0 580 500" aria-hidden="true"><ellipse class="outer" cx="290" cy="250" rx="218" ry="177" transform="rotate(-18 290 250)"/><ellipse class="inner" cx="290" cy="250" rx="164" ry="132" transform="rotate(-18 290 250)"/><circle class="inner" cx="290" cy="250" r="69"/><path class="cross" d="M25 250H555 M290 20V480"/><path class="route" d="M157 120 430 145 443 322 330 419 130 350 80 216Z"/></svg>
         <div class="orbit-center" aria-hidden="true"><span class="orbit-symbol"></span><strong>我的小宇宙</strong><small>HDU · HANGZHOU · 2026</small></div>
         <a class="star-node" href="#about" style="--x:28%;--y:22%" data-hint="01 / 关于我 · 我是谁，以及正在做什么"><span class="point"></span><span class="node-label"><small>01 / ABOUT</small>关于我</span></a>
@@ -796,6 +818,7 @@ body.rz-open{overflow:hidden}
         <a class="star-node" href="#life" style="--x:57%;--y:84%" data-hint="04 / 生活切片 · 学习之外，也出去逛逛"><span class="point"></span><span class="node-label"><small>04 / OFFLINE</small>生活切片</span></a>
         <a class="star-node" href="#snaps" style="--x:21%;--y:70%" data-hint="05 / 随手一拍 · 九张照片，没有宏大的主题"><span class="point"></span><span class="node-label"><small>05 / MOMENTS</small>随手一拍</span></a>
         <a class="star-node" href="#links" style="--x:13%;--y:44%" data-hint="06 / 联系我 · GitHub 或一封邮件"><span class="point"></span><span class="node-label"><small>06 / CONTACT</small>联系我</span></a>
+        <a class="star-node" href="#trisolaris" style="--x:13%;--y:40%" data-hint="07 / TRISOLARIS · 三颗太阳的实时演算"><span class="point"></span><span class="node-label"><small>07 / TRISOLARIS</small>三体演算</span></a>
       </div>
       
     </div>
@@ -843,9 +866,33 @@ body.rz-open{overflow:hidden}
   <img class="links-bg" src="assets/planet-horizon.jpg" alt="" aria-hidden="true" loading="lazy" decoding="async">
   <div class="contact-grid"><div class="contact-copy"><p class="kicker">END OF THIS LOG. NOT THE JOURNEY.</p><h2 class="display" id="linksTitle" tabindex="-1">下一站，<br><em>聊点什么？</em></h2><p class="prose">一个想法、一个问题，或者一个有意思的项目。<br>想找我的话，从右边这些入口就好。</p><p class="contact-signature">鲁家杭<small>HANGZHOU · KEEP EXPLORING / 2026</small></p></div><div><div class="contact-list"><a class="contact-item" href="https://github.com/whsihad" target="_blank" rel="noopener noreferrer"><span class="contact-label">01 / GITHUB</span><span class="contact-value">github.com/whsihad</span><p class="contact-desc">代码、作业和正在折腾的东西。</p><span class="arrow" aria-hidden="true">↗</span></a><a class="contact-item" href="mailto:l18868142811@163.com"><span class="contact-label">02 / EMAIL</span><span class="contact-value">l18868142811@163.com</span><p class="contact-desc">有事直接发邮件，比私信可靠。</p><span class="arrow" aria-hidden="true">↗</span></a><a class="contact-item" href="https://github.com/whsihad/whsihad.github.io" target="_blank" rel="noopener noreferrer"><span class="contact-label">03 / THIS SITE</span><span class="contact-value">这份档案，也是一个作品。</span><p class="contact-desc">单文件 HTML，没有框架。看看它的源码。</p><span class="arrow" aria-hidden="true">↗</span></a></div><button class="copy-mail" id="copyMail">复制邮箱地址 <span aria-hidden="true">↗</span></button></div></div>
 </section>
+<section class="page" data-page="trisolaris" aria-labelledby="triTitle" hidden>
+  <header class="page-head"><span class="chapter"><b>07</b>三体演算</span><span class="page-meta">REAL-TIME N-BODY</span></header>
+  <div class="tri-head">
+    <div>
+      <p class="kicker" style="margin:0">TRISOLARIS · LIVE</p>
+      <h2 class="tri-title" id="triTitle">三颗太阳，没有解。</h2>
+      <p class="tri-sub">四阶辛算法实时推演的三体系统：三颗恒星彼此牵引，一颗行星在夹缝里跑。这里没有预渲染的动画，每一帧都是现算的。</p>
+    </div>
+  </div>
+  <div class="tri-stage">
+    <canvas id="triCanvas" aria-label="三体运动实时模拟，可拖动旋转视角"></canvas>
+    <div class="tri-hud">
+      <span>STEP <b id="triStep">0</b></span>
+      <span>ΔE / E0 <b id="triEnergy">0.00%</b></span>
+      <span>BODIES <b>3 + 1</b></span>
+    </div>
+    <div class="tri-hint">拖动旋转 · 滚轮缩放</div>
+    <div class="tri-bar">
+      <div class="tri-legend"><span><i style="background:#e7b77b"></i>恒星</span><span><i style="background:#8fd0e8"></i>行星</span><span><i style="background:#6f7c86"></i>轨迹</span></div>
+      <div class="tri-actions"><button class="tri-btn" id="triReset" type="button">重新投掷初速度</button><button class="tri-btn" id="triPause" type="button">暂停</button></div>
+    </div>
+  </div>
+  <p class="tri-note">四阶辛积分 · Aarseth 软化 · 松手后视角保持不动</p>
+</section>
 </main>
-<footer class="footer"><span class="footer-location"><span>HANGZHOU · HDU</span>个人航行日志 / 2026</span><div class="footer-nav"><span class="page-count"><b id="pageCount">00</b> / 06</span><a class="footer-next" id="nextPage" href="#about"><span id="nextLabel">下一站 · 关于我</span><span aria-hidden="true">→</span></a></div></footer>
-<dialog class="directory" id="directory" aria-labelledby="directoryTitle"><button class="dialog-close" data-close="directory" autofocus>关闭 <span aria-hidden="true">×</span></button><p class="kicker">YOUR NEXT DESTINATION</p><h2 id="directoryTitle">想先了解哪一面？</h2><nav class="directory-list" aria-label="完整目录"><a href="#about"><b>01</b><span><strong>关于我</strong><small>我是谁，以及我正在做什么。</small></span><span aria-hidden="true">↗</span></a><a href="#works"><b>02</b><span><strong>作品档案</strong><small>五个想法，从动手到看得见。</small></span><span aria-hidden="true">↗</span></a><a href="#study"><b>03</b><span><strong>学习与 AI</strong><small>还没学会的，正在慢慢补上。</small></span><span aria-hidden="true">↗</span></a><a href="#life"><b>04</b><span><strong>生活切片</strong><small>游戏、城市、书与剧、跑步。</small></span><span aria-hidden="true">↗</span></a><a href="#snaps"><b>05</b><span><strong>随手一拍</strong><small>九张照片，九个停下来的片刻。</small></span><span aria-hidden="true">↗</span></a><a href="#links"><b>06</b><span><strong>联系我</strong><small>GitHub，或者一封邮件。</small></span><span aria-hidden="true">↗</span></a></nav><p class="directory-footer"><a href="#home">← 回到航行起点</a><br>键盘 ← → 切换章节 · ESC 关闭目录</p></dialog>
+<footer class="footer"><span class="footer-location"><span>HANGZHOU · HDU</span>个人航行日志 / 2026</span><div class="footer-nav"><span class="page-count"><b id="pageCount">00</b> / <span id="pageTotal">07</span></span><a class="footer-next" id="nextPage" href="#about"><span id="nextLabel">下一站 · 关于我</span><span aria-hidden="true">→</span></a></div></footer>
+<dialog class="directory" id="directory" aria-labelledby="directoryTitle"><button class="dialog-close" data-close="directory" autofocus>关闭 <span aria-hidden="true">×</span></button><p class="kicker">YOUR NEXT DESTINATION</p><h2 id="directoryTitle">想先了解哪一面？</h2><nav class="directory-list" aria-label="完整目录"><a href="#about"><b>01</b><span><strong>关于我</strong><small>我是谁，以及我正在做什么。</small></span><span aria-hidden="true">↗</span></a><a href="#works"><b>02</b><span><strong>作品档案</strong><small>五个想法，从动手到看得见。</small></span><span aria-hidden="true">↗</span></a><a href="#study"><b>03</b><span><strong>学习与 AI</strong><small>还没学会的，正在慢慢补上。</small></span><span aria-hidden="true">↗</span></a><a href="#life"><b>04</b><span><strong>生活切片</strong><small>游戏、城市、书与剧、跑步。</small></span><span aria-hidden="true">↗</span></a><a href="#snaps"><b>05</b><span><strong>随手一拍</strong><small>九张照片，九个停下来的片刻。</small></span><span aria-hidden="true">↗</span></a><a href="#links"><b>06</b><span><strong>联系我</strong><small>GitHub，或者一封邮件。</small></span><span aria-hidden="true">↗</span></a><a href="#trisolaris"><b>07</b><span><strong>三体演算</strong><small>三颗太阳在没有解的系统里互相牵引。</small></span><span aria-hidden="true">↗</span></a></nav><p class="directory-footer"><a href="#home">← 回到航行起点</a><br>键盘 ← → 切换章节 · ESC 关闭目录</p></dialog>
 <dialog class="lightbox" id="lightbox" aria-label="图片预览"><span class="lightbox-count" id="lightboxCount" aria-live="polite"></span><button class="dialog-close" data-close="lightbox" autofocus>关闭 <span aria-hidden="true">×</span></button><div class="lightbox-body" id="lightboxBody"><img id="lightboxImage" alt=""></div><button class="lightbox-step prev" id="lightboxPrev" aria-label="上一张图片">‹</button><button class="lightbox-step next" id="lightboxNext" aria-label="下一张图片">›</button><p class="lightbox-caption" id="lightboxCaption"></p></dialog>
 <div class="toast" id="toast" role="status" hidden></div>
 <noscript><style>body{overflow:auto}.header,.rail,.footer,.ambient,dialog,.hero .actions,.orbit-wrap,.project-list,.project-aside-note,.project-evidence,.copy-mail{display:none}main{position:static}.page[hidden],.page{display:block!important;position:relative;overflow:visible;border-bottom:1px solid #555}.hero{display:block}body::before{content:"JavaScript 已关闭：以下为静态档案，作品切换和图片预览需要启用 JavaScript。";display:block;padding:20px;color:#d8bc85}.boot,.genesis{display:none!important}
@@ -855,7 +902,7 @@ body.rz-open{overflow:hidden}
   'use strict';
   const $ = (selector, root = document) => root.querySelector(selector);
   const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
-  const order = ['home', 'about', 'works', 'study', 'life', 'snaps', 'links'];
+  const order = ['home', 'about', 'works', 'study', 'life', 'snaps', 'links', 'trisolaris'];
   const names = ['航行起点', '关于我', '作品档案', '学习与 AI', '生活切片', '随手一拍', '联系我'];
   const pages = $$('[data-page]');
   const directory = $('#directory');
@@ -935,6 +982,7 @@ body.rz-open{overflow:hidden}
       else link.removeAttribute('aria-current');
     });
     $('#pageCount').textContent = String(index).padStart(2, '0');
+    var pt = $('#pageTotal'); if (pt) pt.textContent = String(order.length).padStart(2, '0');
     $('#nextPage').href = '#' + order[next];
     $('#nextLabel').textContent = next === 0 ? '回到航行起点' : '下一站 · ' + names[next];
     document.title = (name === 'home' ? '' : names[index] + ' · ') + '鲁家杭 · 星轨航行档案';
@@ -1364,5 +1412,183 @@ if (/[?&](nosplash|nogen)/.test(location.search)) {
 })();
 </script>
         
+<script>
+(function(){
+  var cv = document.getElementById('triCanvas');
+  if (!cv) return;
+  var ctx = cv.getContext('2d');
+  var stepEl = document.getElementById('triStep');
+  var energyEl = document.getElementById('triEnergy');
+  var resetBtn = document.getElementById('triReset');
+  var pauseBtn = document.getElementById('triPause');
+
+  var G = 1, EPS = 0.045, DT = 0.0016, SUB = 4;
+  var W1 = 1 / (2 - Math.pow(2, 1/3)), W0 = -Math.pow(2, 1/3) * W1;
+  var C = [W1/2, (W0+W1)/2, (W0+W1)/2, W1/2], D = [W1, W0, W1];
+
+  var bodies = [], trail = [], steps = 0, e0 = 1, paused = false;
+  var view = { rot: -0.32, zoom: 1.12 }, dpr = 1, W = 0, H = 0;
+
+  function rand(a, b){ return a + Math.random() * (b - a); }
+
+  function seed(){
+    var masses = [1, 0.92, 0.86];
+    bodies = [];
+    for (var i = 0; i < 3; i++){
+      var ang = i * 2.0944 + rand(-0.25, 0.25), r = rand(0.42, 0.62);
+      var speed = Math.sqrt(G * 1.1 / r) * rand(0.72, 1.05);
+      bodies.push({
+        m: masses[i],
+        x: Math.cos(ang) * r, y: Math.sin(ang) * r,
+        vx: -Math.sin(ang) * speed, vy: Math.cos(ang) * speed,
+        warm: i
+      });
+    }
+    var pr = rand(0.92, 1.16), pv = Math.sqrt(G * 2.4 / pr) * rand(0.86, 1.02);
+    bodies.push({ m: 1e-5, x: pr, y: 0, vx: 0, vy: pv, planet: true });
+
+    trail = bodies.map(function(){ return []; });
+    steps = 0;
+    e0 = energy();
+  }
+
+  function accel(){
+    var n = bodies.length, ax = new Array(n).fill(0), ay = new Array(n).fill(0);
+    for (var i = 0; i < n; i++){
+      for (var j = i + 1; j < n; j++){
+        var dx = bodies[j].x - bodies[i].x, dy = bodies[j].y - bodies[i].y;
+        var r2 = dx*dx + dy*dy + EPS*EPS;
+        var inv = G / (r2 * Math.sqrt(r2));
+        ax[i] += dx * inv * bodies[j].m; ay[i] += dy * inv * bodies[j].m;
+        ax[j] -= dx * inv * bodies[i].m; ay[j] -= dy * inv * bodies[i].m;
+      }
+    }
+    return [ax, ay];
+  }
+
+  function drift(h){
+    for (var i = 0; i < bodies.length; i++){ var b = bodies[i]; b.x += b.vx * h; b.y += b.vy * h; }
+  }
+  function kick(h){
+    var a = accel();
+    for (var i = 0; i < bodies.length; i++){ bodies[i].vx += a[0][i] * h; bodies[i].vy += a[1][i] * h; }
+  }
+  function advance(){
+    drift(DT * C[0]);
+    for (var k = 0; k < 3; k++){
+      kick(DT * D[k]);
+      drift(DT * C[k + 1]);
+    }
+    steps++;
+  }
+
+  function energy(){
+    var e = 0;
+    for (var i = 0; i < bodies.length; i++){
+      var b = bodies[i];
+      e += 0.5 * b.m * (b.vx*b.vx + b.vy*b.vy);
+      for (var j = i + 1; j < bodies.length; j++){
+        var dx = bodies[j].x - b.x, dy = bodies[j].y - b.y;
+        e -= G * b.m * bodies[j].m / Math.sqrt(dx*dx + dy*dy + EPS*EPS);
+      }
+    }
+    return e;
+  }
+
+  function resize(){
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    W = cv.clientWidth; H = cv.clientHeight;
+    cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+
+  function project(p){
+    var cos = Math.cos(view.rot), sin = Math.sin(view.rot);
+    var x = p.x * cos - p.y * sin, y = p.x * sin + p.y * cos;
+    var unit = Math.min(W, H) / 2 / 1.55 * view.zoom;
+    return [W/2 + x * unit, H/2 + y * unit];
+  }
+
+  function drawBody(b){
+    var p = project(b), r = b.planet ? 3.1 : 5.4 + b.m * 2.2;
+    var g = ctx.createRadialGradient(p[0], p[1], 0, p[0], p[1], r * 6);
+    var core = b.planet ? '143,208,232' : (b.warm === 1 ? '227,183,123' : '240,208,150');
+    g.addColorStop(0, 'rgba(' + core + ',.95)');
+    g.addColorStop(0.18, 'rgba(' + core + ',.55)');
+    g.addColorStop(0.5, 'rgba(' + core + ',.12)');
+    g.addColorStop(1, 'rgba(' + core + ',0)');
+    ctx.fillStyle = g;
+    ctx.beginPath(); ctx.arc(p[0], p[1], r * 6, 0, 6.2832); ctx.fill();
+    ctx.fillStyle = b.planet ? '#cdeef8' : '#fff4dd';
+    ctx.beginPath(); ctx.arc(p[0], p[1], r * 0.55, 0, 6.2832); ctx.fill();
+  }
+
+  function render(){
+    ctx.clearRect(0, 0, W, H);
+    for (var i = 0; i < bodies.length; i++){
+      var t = trail[i], n = t.length;
+      if (n < 2) continue;
+      ctx.lineWidth = bodies[i].planet ? 1.3 : 1.5;
+      for (var k = 1; k < n; k++){
+        var a = (k / n);
+        var p1 = project(t[k-1]), p2 = project(t[k]);
+        ctx.strokeStyle = bodies[i].planet
+          ? 'rgba(143,208,232,' + (a * 0.85) + ')'
+          : 'rgba(' + (bodies[i].warm === 1 ? '227,183,123' : '236,214,168') + ',' + (a * 0.72) + ')';
+        ctx.beginPath(); ctx.moveTo(p1[0], p1[1]); ctx.lineTo(p2[0], p2[1]); ctx.stroke();
+      }
+    }
+    for (var j = 0; j < bodies.length; j++) drawBody(bodies[j]);
+  }
+
+  function tick(){
+    var section = cv.closest('.page');
+    var active = section && section.classList.contains('is-active') && !paused && !document.hidden;
+    if (active){
+      for (var i = 0; i < SUB; i++){ advance();
+        for (var b = 0; b < bodies.length; b++){
+          var t = trail[b]; t.push({ x: bodies[b].x, y: bodies[b].y });
+          if (t.length > 900) t.shift();
+        }
+      }
+      render();
+      if (steps % 12 === 0){
+        stepEl.textContent = steps;
+        var e = energy(), drift = e0 ? Math.abs((e - e0) / e0) * 100 : 0;
+        energyEl.textContent = (drift < 0.01 ? '0.00' : drift.toFixed(2)) + '%';
+      }
+    }
+    requestAnimationFrame(tick);
+  }
+
+  var drag = null;
+  cv.addEventListener('pointerdown', function(e){
+    drag = { x: e.clientX, rot: view.rot };
+    cv.classList.add('dragging');
+    cv.setPointerCapture(e.pointerId);
+  });
+  cv.addEventListener('pointermove', function(e){
+    if (!drag) return;
+    view.rot = drag.rot + (e.clientX - drag.x) * 0.006;
+    render();
+  });
+  cv.addEventListener('pointerup', function(){ drag = null; cv.classList.remove('dragging'); });
+  cv.addEventListener('pointercancel', function(){ drag = null; cv.classList.remove('dragging'); });
+  cv.addEventListener('wheel', function(e){
+    e.preventDefault();
+    view.zoom = Math.min(2.4, Math.max(0.45, view.zoom * (e.deltaY > 0 ? 0.92 : 1.08)));
+    render();
+  }, { passive: false });
+
+  resetBtn.addEventListener('click', function(){ seed(); render(); });
+  pauseBtn.addEventListener('click', function(){
+    paused = !paused;
+    pauseBtn.textContent = paused ? '继续' : '暂停';
+  });
+  window.addEventListener('resize', function(){ resize(); render(); });
+
+  resize(); seed(); render(); tick();
+})();
+</script>
 </body>
 </html>
