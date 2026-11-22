@@ -554,16 +554,10 @@ body.rz-open{overflow:hidden}
 @media (max-width:760px){#triCanvas{height:min(58vh,420px)}.tri-hint{display:none}}
 </style>
 <style id="bootMinimal">
-#boot .bt-lead{display:none}
-#boot .bt-panel{position:absolute;left:50%;right:auto;top:auto;bottom:clamp(44px,7vh,76px);transform:translateX(-50%);
-  width:min(360px,calc(100vw - 48px));padding:14px 18px 13px;border-radius:3px;
-  background:rgba(8,12,20,.55);border-color:rgba(205,218,239,.14);backdrop-filter:blur(10px)}
-#boot .bt-head,#boot .bt-title,#boot .bt-sub,#boot .bt-loadsub,#boot .bt-log,#boot .bt-hint,#boot .bt-sheen{display:none}
-#boot .bt-bar{margin:0 0 9px}
-#boot .bt-pct{margin:0 0 10px;align-items:baseline;letter-spacing:.2em}
-#boot .bt-pct b{font-size:19px}
-#boot .bt-enter{width:100%;padding:11px 0}
-#boot .bt-main{align-items:flex-end;justify-content:center}
+/* 只去掉列车页的大名字，其余保留原样 */
+#boot .bt-name{display:none}
+#boot .bt-rule{margin:20px 0 16px}
+#boot .bt-chapter{margin-bottom:0}
 </style>
 </head>
 <body>
