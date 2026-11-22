@@ -539,7 +539,7 @@ body.rz-open{overflow:hidden}
 .tri-sub{margin:8px 0 0;font-size:12.5px;line-height:1.9;color:var(--muted);max-width:44ch}
 .tri-stage{position:relative;border:1px solid rgba(227,200,138,.16);border-radius:16px;overflow:hidden;background:radial-gradient(120% 120% at 50% 40%,#070c14 0%,#04070c 60%,#03050a 100%)}
 .tri-stage::after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(90% 80% at 50% 50%,transparent 55%,rgba(3,5,10,.55) 100%)}
-#triCanvas{display:block;width:100%;height:clamp(280px,50vh,480px);cursor:grab;touch-action:none}
+#triCanvas{display:block;width:100%;height:clamp(300px,46vh,440px);cursor:grab;touch-action:none}
 #triCanvas.dragging{cursor:grabbing}
 .tri-hud{position:absolute;left:16px;top:14px;display:grid;gap:5px;font:9.5px/1.6 var(--mono,ui-monospace);letter-spacing:.16em;color:rgba(210,222,232,.55);pointer-events:none}
 .tri-hud b{color:rgba(227,200,138,.8);font-weight:400}
@@ -909,7 +909,7 @@ body.rz-open{overflow:hidden}
   const $ = (selector, root = document) => root.querySelector(selector);
   const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
   const order = ['home', 'about', 'works', 'study', 'life', 'snaps', 'links', 'trisolaris'];
-  const names = ['航行起点', '关于我', '作品档案', '学习与 AI', '生活切片', '随手一拍', '联系我'];
+  const names = ['航行起点', '关于我', '作品档案', '学习与 AI', '生活切片', '随手一拍', '联系我', '三体演算'];
   const pages = $$('[data-page]');
   const directory = $('#directory');
   const lightbox = $('#lightbox');
@@ -1437,7 +1437,7 @@ if (/[?&](nosplash|nogen)/.test(location.search)) {
   var C = [W1/2, (W0+W1)/2, (W0+W1)/2, W1/2], D = [W1, W0, W1];
 
   var bodies = [], trail = [], steps = 0, e0 = 1, paused = false;
-  var view = { rot: -0.32, zoom: 1.12 }, dpr = 1, W = 0, H = 0;
+  var view = { rot: -0.32, zoom: 1 }, dpr = 1, W = 0, H = 0, span = 1.4;
 
   function rand(a, b){ return a + Math.random() * (b - a); }
 
@@ -1445,7 +1445,7 @@ if (/[?&](nosplash|nogen)/.test(location.search)) {
     var masses = [1, 0.92, 0.86];
     bodies = [];
     for (var i = 0; i < 3; i++){
-      var ang = i * 2.0944 + rand(-0.25, 0.25), r = rand(0.42, 0.62);
+      var ang = i * 2.0944 + rand(-0.25, 0.25), r = rand(1.05, 1.55);
       var speed = Math.sqrt(G * 1.1 / r) * rand(0.72, 1.05);
       bodies.push({
         m: masses[i],
@@ -1454,10 +1454,18 @@ if (/[?&](nosplash|nogen)/.test(location.search)) {
         warm: i
       });
     }
-    var pr = rand(0.92, 1.16), pv = Math.sqrt(G * 2.4 / pr) * rand(0.86, 1.02);
+    var pr = rand(2.05, 2.65), pv = Math.sqrt(G * 3.0 / pr) * rand(0.86, 1.0);
     bodies.push({ m: 1e-5, x: pr, y: 0, vx: 0, vy: pv, planet: true });
 
     trail = bodies.map(function(){ return []; });
+    // 预跑一小段历史，轨迹一进页面就能看见
+    for (var k = 0; k < 900; k++){
+      advance();
+      for (var q = 0; q < bodies.length; q++){
+        var tt = trail[q]; tt.push({ x: bodies[q].x, y: bodies[q].y });
+        if (tt.length > 1200) tt.shift();
+      }
+    }
     steps = 0;
     e0 = energy();
   }
@@ -1505,22 +1513,31 @@ if (/[?&](nosplash|nogen)/.test(location.search)) {
     return e;
   }
 
+  var dust = [];
+  function makeDust(){
+    dust = [];
+    var n = Math.round(W * H / 9000);
+    for (var i = 0; i < n; i++){
+      dust.push({ x: Math.random() * W, y: Math.random() * H, r: Math.random() * 0.9 + 0.25, a: Math.random() * 0.34 + 0.05 });
+    }
+  }
   function resize(){
     dpr = Math.min(window.devicePixelRatio || 1, 2);
     W = cv.clientWidth; H = cv.clientHeight;
     cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    makeDust();
   }
 
   function project(p){
     var cos = Math.cos(view.rot), sin = Math.sin(view.rot);
     var x = p.x * cos - p.y * sin, y = p.x * sin + p.y * cos;
-    var unit = Math.min(W, H) / 2 / 1.55 * view.zoom;
+    var unit = Math.min(W, H) / 2 * 0.78 / span * view.zoom;
     return [W/2 + x * unit, H/2 + y * unit];
   }
 
   function drawBody(b){
-    var p = project(b), r = b.planet ? 3.1 : 5.4 + b.m * 2.2;
+    var p = project(b), r = b.planet ? 3.6 : 7.4 + b.m * 2.4;
     var g = ctx.createRadialGradient(p[0], p[1], 0, p[0], p[1], r * 6);
     var core = b.planet ? '143,208,232' : (b.warm === 1 ? '227,183,123' : '240,208,150');
     g.addColorStop(0, 'rgba(' + core + ',.95)');
@@ -1529,22 +1546,30 @@ if (/[?&](nosplash|nogen)/.test(location.search)) {
     g.addColorStop(1, 'rgba(' + core + ',0)');
     ctx.fillStyle = g;
     ctx.beginPath(); ctx.arc(p[0], p[1], r * 6, 0, 6.2832); ctx.fill();
-    ctx.fillStyle = b.planet ? '#cdeef8' : '#fff4dd';
-    ctx.beginPath(); ctx.arc(p[0], p[1], r * 0.55, 0, 6.2832); ctx.fill();
+    ctx.fillStyle = b.planet ? '#e6f7ff' : '#fff8e8';
+    ctx.beginPath(); ctx.arc(p[0], p[1], r * 0.62, 0, 6.2832); ctx.fill();
+    ctx.font = '9px ui-monospace, monospace';
+    ctx.fillStyle = b.planet ? 'rgba(150,214,238,.55)' : 'rgba(233,210,170,.5)';
+    ctx.fillText(b.planet ? '行星' : '恒星 ' + String.fromCharCode(65 + b.warm), p[0] + r * 1.5, p[1] - r * 1.2);
   }
 
   function render(){
     ctx.clearRect(0, 0, W, H);
+    for (var d = 0; d < dust.length; d++){
+      var s0 = dust[d];
+      ctx.fillStyle = 'rgba(206,222,238,' + s0.a + ')';
+      ctx.beginPath(); ctx.arc(s0.x, s0.y, s0.r, 0, 6.2832); ctx.fill();
+    }
     for (var i = 0; i < bodies.length; i++){
       var t = trail[i], n = t.length;
       if (n < 2) continue;
-      ctx.lineWidth = bodies[i].planet ? 1.3 : 1.5;
+      ctx.lineWidth = bodies[i].planet ? 1.5 : 1.8;
       for (var k = 1; k < n; k++){
         var a = (k / n);
         var p1 = project(t[k-1]), p2 = project(t[k]);
         ctx.strokeStyle = bodies[i].planet
-          ? 'rgba(143,208,232,' + (a * 0.85) + ')'
-          : 'rgba(' + (bodies[i].warm === 1 ? '227,183,123' : '236,214,168') + ',' + (a * 0.72) + ')';
+          ? 'rgba(150,214,238,' + (a * 0.95) + ')'
+          : 'rgba(' + (bodies[i].warm === 1 ? '227,183,123' : '236,214,168') + ',' + (a * 0.85) + ')';
         ctx.beginPath(); ctx.moveTo(p1[0], p1[1]); ctx.lineTo(p2[0], p2[1]); ctx.stroke();
       }
     }
@@ -1555,10 +1580,17 @@ if (/[?&](nosplash|nogen)/.test(location.search)) {
     var section = cv.closest('.page');
     var active = section && section.classList.contains('is-active') && !paused && !document.hidden;
     if (active){
+      var maxR = 0;
+      for (var q = 0; q < bodies.length; q++){
+        var rr = Math.sqrt(bodies[q].x * bodies[q].x + bodies[q].y * bodies[q].y);
+        if (rr > maxR) maxR = rr;
+      }
+      if (maxR > 14){ seed(); maxR = 1.4; }
+      span += (Math.max(maxR, 1.05) - span) * 0.035;
       for (var i = 0; i < SUB; i++){ advance();
         for (var b = 0; b < bodies.length; b++){
           var t = trail[b]; t.push({ x: bodies[b].x, y: bodies[b].y });
-          if (t.length > 900) t.shift();
+          if (t.length > 1200) t.shift();
         }
       }
       render();
