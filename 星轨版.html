@@ -553,6 +553,18 @@ body.rz-open{overflow:hidden}
 .tri-note{margin:14px 0 0;font:10px/1.8 var(--mono,ui-monospace);letter-spacing:.12em;color:rgba(150,166,176,.55)}
 @media (max-width:760px){#triCanvas{height:min(58vh,420px)}.tri-hint{display:none}}
 </style>
+<style id="bootMinimal">
+#boot .bt-lead{display:none}
+#boot .bt-panel{position:absolute;left:50%;right:auto;top:auto;bottom:clamp(44px,7vh,76px);transform:translateX(-50%);
+  width:min(360px,calc(100vw - 48px));padding:14px 18px 13px;border-radius:3px;
+  background:rgba(8,12,20,.55);border-color:rgba(205,218,239,.14);backdrop-filter:blur(10px)}
+#boot .bt-head,#boot .bt-title,#boot .bt-sub,#boot .bt-loadsub,#boot .bt-log,#boot .bt-hint,#boot .bt-sheen{display:none}
+#boot .bt-bar{margin:0 0 9px}
+#boot .bt-pct{margin:0 0 10px;align-items:baseline;letter-spacing:.2em}
+#boot .bt-pct b{font-size:19px}
+#boot .bt-enter{width:100%;padding:11px 0}
+#boot .bt-main{align-items:flex-end;justify-content:center}
+</style>
 </head>
 <body>
 <div id="splashCover" aria-hidden="true">
@@ -615,7 +627,7 @@ body.rz-open{overflow:hidden}
     </aside>
   </div>
 
-  <footer class="bt-bot"><span>VER 0.5 &middot; 星图 / 共 6 站</span><span>ENTER 或点击 &middot; 进入</span></footer>
+  <footer class="bt-bot"><span>VER 0.5 &middot; 星图 / 共 7 站</span><span>ENTER 或点击 &middot; 进入</span></footer>
 </div>
 <div class="ambient" aria-hidden="true"><canvas id="stars"></canvas></div>
 <div class="genesis" id="genesis">
@@ -1368,6 +1380,10 @@ if (/[?&]place/.test(location.search)) {
   if (g) g.className += ' lock on-place cap';
   var ph = document.getElementById('gPlace');
   if (ph) { ph.style.transition = 'none'; ph.style.opacity = '1'; ph.style.transform = 'scale(1)'; }
+}
+if (/[?&]boot/.test(location.search)) {
+  var sc = document.getElementById('splashCover');
+  if (sc && sc.parentNode) sc.parentNode.removeChild(sc);
 }
 if (/[?&](nosplash|nogen)/.test(location.search)) {
   ['splashCover','boot','genesis'].forEach(function(id){
