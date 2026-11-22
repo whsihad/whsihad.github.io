@@ -533,13 +533,13 @@ body.rz-open{overflow:hidden}
 @media (max-width:1240px){.hero-copy .hero-lead{white-space:normal}}
 </style>
 <style id="triStyle">
-.page[data-page="trisolaris"]{position:relative}
+.page[data-page="trisolaris"]{padding-bottom:calc(var(--footer,46px) + 26px)}
 .tri-head{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap;margin:0 0 18px}
 .tri-title{font:400 clamp(26px,2.6vw,38px)/1.35 var(--serif);letter-spacing:.04em;margin:10px 0 0}
 .tri-sub{margin:8px 0 0;font-size:12.5px;line-height:1.9;color:var(--muted);max-width:44ch}
 .tri-stage{position:relative;border:1px solid rgba(227,200,138,.16);border-radius:16px;overflow:hidden;background:radial-gradient(120% 120% at 50% 40%,#070c14 0%,#04070c 60%,#03050a 100%)}
 .tri-stage::after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(90% 80% at 50% 50%,transparent 55%,rgba(3,5,10,.55) 100%)}
-#triCanvas{display:block;width:100%;height:clamp(300px,46vh,440px);cursor:grab;touch-action:none}
+#triCanvas{display:block;width:100%;height:clamp(260px,38vh,380px);cursor:grab;touch-action:none}
 #triCanvas.dragging{cursor:grabbing}
 .tri-hud{position:absolute;left:16px;top:14px;display:grid;gap:5px;font:9.5px/1.6 var(--mono,ui-monospace);letter-spacing:.16em;color:rgba(210,222,232,.55);pointer-events:none}
 .tri-hud b{color:rgba(227,200,138,.8);font-weight:400}
