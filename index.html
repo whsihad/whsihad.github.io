@@ -625,8 +625,8 @@ body.rz-open{overflow:hidden}
 </div>
 <div class="ambient" aria-hidden="true"><canvas id="stars"></canvas></div>
 <div class="genesis" id="genesis">
-  <video class="g-sky" id="gSky" src="assets/intro/sky.mp4" poster="assets/intro/sky.jpg" muted playsinline preload="auto"></video>
-  <video class="g-gal" id="gGal" src="assets/intro/galaxy.mp4" poster="assets/intro/galaxy.jpg" muted playsinline preload="auto"></video>
+  <video class="g-sky" id="gSky" src="assets/intro/sky.mp4" poster="assets/intro/sky.jpg" muted playsinline preload="none"></video>
+  <video class="g-gal" id="gGal" src="assets/intro/galaxy.mp4" poster="assets/intro/galaxy.jpg" muted playsinline preload="none"></video>
   <img class="g-place" id="gPlace" src="assets/planet-horizon.jpg" alt="">
   <div class="g-veil"></div>
   <div class="g-mark" id="gMark"><i></i><i></i><i></i><i></i></div>
@@ -831,8 +831,8 @@ body.rz-open{overflow:hidden}
   </div>
   <div class="home-notes">
     <a class="note-link" href="#study"><span class="note-symbol" aria-hidden="true">&gt;_</span><span><small class="note-kicker">CURRENTLY BUILDING</small><span class="note-name">HDUHelp · 校园助手</span></span><span class="note-arrow" aria-hidden="true">↗</span></a>
-    <a class="note-link" href="#works"><img src="assets/projects/w2.jpg" alt="" width="58" height="48"><span><small class="note-kicker">SELECTED WORK / 05</small><span class="note-name">想法，变成作品</span></span><span class="note-arrow" aria-hidden="true">↗</span></a>
-    <a class="note-link" href="#snaps"><img src="assets/thumbs/p06.jpg" alt="" width="58" height="48"><span><small class="note-kicker">LIFE FRAGMENTS / 09</small><span class="note-name">代码之外的风景</span></span><span class="note-arrow" aria-hidden="true">↗</span></a>
+    <a class="note-link" href="#works"><img loading="lazy" decoding="async" src="assets/projects/w2.jpg" alt="" width="58" height="48"><span><small class="note-kicker">SELECTED WORK / 05</small><span class="note-name">想法，变成作品</span></span><span class="note-arrow" aria-hidden="true">↗</span></a>
+    <a class="note-link" href="#snaps"><img loading="lazy" decoding="async" src="assets/thumbs/p06.jpg" alt="" width="58" height="48"><span><small class="note-kicker">LIFE FRAGMENTS / 09</small><span class="note-name">代码之外的风景</span></span><span class="note-arrow" aria-hidden="true">↗</span></a>
   </div>
 </section>
 <section class="page" data-page="about" aria-labelledby="aboutTitle" hidden>
@@ -899,7 +899,7 @@ body.rz-open{overflow:hidden}
 </main>
 <footer class="footer"><span class="footer-location"><span>HANGZHOU · HDU</span>个人航行日志 / 2026</span><div class="footer-nav"><span class="page-count"><b id="pageCount">00</b> / <span id="pageTotal">07</span></span><a class="footer-next" id="nextPage" href="#about"><span id="nextLabel">下一站 · 关于我</span><span aria-hidden="true">→</span></a></div></footer>
 <dialog class="directory" id="directory" aria-labelledby="directoryTitle"><button class="dialog-close" data-close="directory" autofocus>关闭 <span aria-hidden="true">×</span></button><p class="kicker">YOUR NEXT DESTINATION</p><h2 id="directoryTitle">想先了解哪一面？</h2><nav class="directory-list" aria-label="完整目录"><a href="#about"><b>01</b><span><strong>关于我</strong><small>我是谁，以及我正在做什么。</small></span><span aria-hidden="true">↗</span></a><a href="#works"><b>02</b><span><strong>作品档案</strong><small>五个想法，从动手到看得见。</small></span><span aria-hidden="true">↗</span></a><a href="#study"><b>03</b><span><strong>学习与 AI</strong><small>还没学会的，正在慢慢补上。</small></span><span aria-hidden="true">↗</span></a><a href="#life"><b>04</b><span><strong>生活切片</strong><small>游戏、城市、书与剧、跑步。</small></span><span aria-hidden="true">↗</span></a><a href="#snaps"><b>05</b><span><strong>随手一拍</strong><small>九张照片，九个停下来的片刻。</small></span><span aria-hidden="true">↗</span></a><a href="#links"><b>06</b><span><strong>联系我</strong><small>GitHub，或者一封邮件。</small></span><span aria-hidden="true">↗</span></a><a href="#trisolaris"><b>07</b><span><strong>三体演算</strong><small>三颗太阳在没有解的系统里互相牵引。</small></span><span aria-hidden="true">↗</span></a></nav><p class="directory-footer"><a href="#home">← 回到航行起点</a><br>键盘 ← → 切换章节 · ESC 关闭目录</p></dialog>
-<dialog class="lightbox" id="lightbox" aria-label="图片预览"><span class="lightbox-count" id="lightboxCount" aria-live="polite"></span><button class="dialog-close" data-close="lightbox" autofocus>关闭 <span aria-hidden="true">×</span></button><div class="lightbox-body" id="lightboxBody"><img id="lightboxImage" alt=""></div><button class="lightbox-step prev" id="lightboxPrev" aria-label="上一张图片">‹</button><button class="lightbox-step next" id="lightboxNext" aria-label="下一张图片">›</button><p class="lightbox-caption" id="lightboxCaption"></p></dialog>
+<dialog class="lightbox" id="lightbox" aria-label="图片预览"><span class="lightbox-count" id="lightboxCount" aria-live="polite"></span><button class="dialog-close" data-close="lightbox" autofocus>关闭 <span aria-hidden="true">×</span></button><div class="lightbox-body" id="lightboxBody"><img loading="lazy" decoding="async" id="lightboxImage" alt=""></div><button class="lightbox-step prev" id="lightboxPrev" aria-label="上一张图片">‹</button><button class="lightbox-step next" id="lightboxNext" aria-label="下一张图片">›</button><p class="lightbox-caption" id="lightboxCaption"></p></dialog>
 <div class="toast" id="toast" role="status" hidden></div>
 <noscript><style>body{overflow:auto}.header,.rail,.footer,.ambient,dialog,.hero .actions,.orbit-wrap,.project-list,.project-aside-note,.project-evidence,.copy-mail{display:none}main{position:static}.page[hidden],.page{display:block!important;position:relative;overflow:visible;border-bottom:1px solid #555}.hero{display:block}body::before{content:"JavaScript 已关闭：以下为静态档案，作品切换和图片预览需要启用 JavaScript。";display:block;padding:20px;color:#d8bc85}.boot,.genesis{display:none!important}
 </style></noscript>
@@ -1217,6 +1217,17 @@ body.rz-open{overflow:hidden}
       : ratio > .62 ? '正在接入星轨数据…' : '准备星轨连接';
     if(ratio >= 0.999) ready();
   }
+  var warmed = false;
+  function warmIntro(){
+    if (warmed) return;
+    warmed = true;
+    ['gSky','gGal'].forEach(function(id){
+      var v = document.getElementById(id);
+      if (!v) return;
+      v.preload = 'auto';
+      try { v.load(); } catch (e) {}
+    });
+  }
   var isReady = false;
   function ready(){
     if(isReady) return;
@@ -1225,6 +1236,7 @@ body.rz-open{overflow:hidden}
     enter.classList.add('ready');
     enter.textContent = '点击进入';
     if(state) state.textContent = 'READY';
+    setTimeout(warmIntro, 600);
   }
 
   ASSETS.forEach(function(src){
